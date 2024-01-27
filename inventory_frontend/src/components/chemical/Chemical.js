@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
 import { getChemicalApi } from '../../services/AppinfoService';
 import "../../App.css";
-import '../Appinfo.css'
 import { NavLink } from 'react-router-dom';
 
 const Chemical = () => {
@@ -26,7 +25,7 @@ const Chemical = () => {
   return(
     <div className="container-fluid side-container">
     <div className="header-container">
-      <h2 className="appinfo-header">Chemicals</h2>
+      <h2 style={{ textAlign: 'center' }} className="appinfo-header">Chemicals</h2>
     </div>
       <div className="row side-row">
         <NavLink exact to="/chemical_manage" activeClassName="activeClicked" className="manage-button">

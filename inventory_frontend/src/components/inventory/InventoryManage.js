@@ -7,7 +7,6 @@ import { RiDeleteBin5Line } from 'react-icons/ri';
 import AddInventoryModal from "./AddInventoryModal";
 import UpdateInventoryModal from "./UpdateInventoryModal";
 import { getInventoryApi, deleteInventoryApi } from '../../services/AppinfoService';
-import '../Appinfo.css'
 
 
 const InventoryManage = () => {
@@ -63,7 +62,7 @@ const InventoryManage = () => {
             e.preventDefault();
             deleteInventoryApi(eno)
             .then((result)=>{
-                alert(result);
+                alert("Deleted Successfully");
                 setIsUpdated(true);
             },
             (error)=>{
@@ -77,7 +76,7 @@ const InventoryManage = () => {
     return(
         <div className="container-fluid side-container">
         <div className="header-container">
-          <h2 className="appinfo-header">Inventory</h2>
+          <h2 style={{ textAlign: 'center' }} className="appinfo-header">Inventory</h2>
         </div>
         <div className="row side-row" >
         <p id="manage"></p>

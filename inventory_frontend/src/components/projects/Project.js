@@ -3,7 +3,6 @@ import { Table, Button } from 'react-bootstrap';
 import { getProjectApi } from '../../services/AppinfoService';
 import "../../App.css";
 import { NavLink } from 'react-router-dom';
-import '../Appinfo.css'
 
 const Project = () => {
   const [project, setProject] = useState([]);
@@ -26,7 +25,7 @@ const Project = () => {
   return(
     <div className="container-fluid side-container">
     <div className="header-container">
-      <h2 className="appinfo-header">Projects</h2>
+      <h2 style={{ textAlign: 'center' }} className="appinfo-header">Projects</h2>
     </div>
       <div className="row side-row">
         <NavLink exact to="/project_manage" activeClassName="activeClicked" className="manage-button">

@@ -7,7 +7,6 @@ import { RiDeleteBin5Line } from 'react-icons/ri';
 import AddProjectModal from "./AddProjectModal";
 import UpdateProjectModal from "./UpdateProjectModal";
 import { getProjectApi, deleteProjectApi } from '../../services/AppinfoService';
-import '../Appinfo.css'
 
 
 const ProjectManage = () => {
@@ -63,7 +62,7 @@ const ProjectManage = () => {
             e.preventDefault();
             deleteProjectApi(project_code)
             .then((result)=>{
-                alert(result);
+                alert("Deleted Successfully");
                 setIsUpdated(true);
             },
             (error)=>{
@@ -77,7 +76,7 @@ const ProjectManage = () => {
     return(
         <div className="container-fluid side-container">
         <div className="header-container">
-          <h2 className="appinfo-header">Projects</h2>
+          <h2 style={{ textAlign: 'center' }} className="appinfo-header">Projects</h2>
         </div>
         <div className="row side-row" >
         <p id="manage"></p>
@@ -95,7 +94,7 @@ const ProjectManage = () => {
                       <td>{proj.project_code}</td>
                       <td>{proj.project_name || ''}</td>
                       <td>
-                          <Button className="mr-2" variant="danger" onClick={(event) => handleDelete(event, proj.c_id)}>
+                          <Button className="mr-2" variant="danger" onClick={(event) => handleDelete(event, proj.project_code)}>
                               <RiDeleteBin5Line />
                           </Button>
                           <span>&nbsp;&nbsp;&nbsp;</span>

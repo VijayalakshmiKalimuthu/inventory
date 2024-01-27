@@ -2,7 +2,6 @@
 
 from django.urls import path 
 from . import views
-from .views import RegisterUserView, LoginUserView
 
 urlpatterns = [
     path('add_appinfo', views.add_appinfo),
@@ -25,9 +24,7 @@ urlpatterns = [
     path('update_inventory/<int:pk>', views.update_inventory),
     path('delete_inventory/<int:pk>', views.delete_inventory),
 
-    
-    
-    path('api/users/register/', RegisterUserView.as_view(), name='register-user'),
-    path('api/users/login/', LoginUserView.as_view(), name='login-user'),
+    path('register/', views.register_user, name='register_user'),
+    path('login/', views.login_user, name='login_user'),
     
 ]

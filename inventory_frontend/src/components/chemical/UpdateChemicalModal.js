@@ -24,7 +24,7 @@ const UpdateChemicalModal = (props) => {
       
         try {
           const result = await updateChemicalApi(props.chemical.c_id, chemicalData);
-          alert(result);
+          alert("Updated Successfully");
           props.setUpdated(true);
         } catch (error) {
           console.error('Failed to Update Chemical:', error);
@@ -46,7 +46,7 @@ const UpdateChemicalModal = (props) => {
     
                     <Modal.Header closeButton>
                         <Modal.Title id="contained-modal-title-vcenter">
-                            Update Student Information
+                            Update Chemical Information
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>

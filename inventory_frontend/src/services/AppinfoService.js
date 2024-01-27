@@ -6,7 +6,7 @@ export function getAppinfo() {
 }
 
 export function deleteAppinfo(infocode) {
-  return axios.delete(`http://127.0.0.1:8000/delete_appinfo/${infocode}/`, {
+  return axios.delete(`http://127.0.0.1:8000/delete_appinfo/${infocode}`, {
     method: 'DELETE',
     headers: {
       'Accept': 'application/json',
@@ -56,14 +56,18 @@ export function getChemicalApi() {
 }
 
 export function deleteChemicalApi(c_id) {
-  return axios.delete('http://127.0.0.1:8000/delete_chemical' + c_id, {
-   method: 'DELETE',
-   headers: {
-     'Accept':'application/json',
-     'Content-Type':'application/json'
-   }
+  return axios.delete(`http://127.0.0.1:8000/delete_chemical/${c_id}`, {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
   })
   .then(response => response.data)
+  .catch(error => {
+    console.error('Error deleting appinfo:', error);
+    throw error;
+  });
 }
 
 export function addChemicalApi(chemical) {
@@ -110,15 +114,19 @@ export function getProjectApi() {
     .then(response => response.data)
 }
 
-export function deleteProjectApi(proCode) {
-  return axios.delete('http://127.0.0.1:8000/delete_project/' + proCode, {
-   method: 'DELETE',
-   headers: {
-     'Accept':'application/json',
-     'Content-Type':'application/json'
-   }
+export function deleteProjectApi(project_code) {
+  return axios.delete(`http://127.0.0.1:8000/delete_project/${project_code}`, {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
   })
   .then(response => response.data)
+  .catch(error => {
+    console.error('Error deleting appinfo:', error);
+    throw error;
+  });
 }
 
 export function addProjectApi(project) {
@@ -146,14 +154,18 @@ export function getInventoryApi() {
 }
 
 export function deleteInventoryApi(enNo) {
-  return axios.delete('http://127.0.0.1:8000/delete_inventory' + enNo, {
-   method: 'DELETE',
-   headers: {
-     'Accept':'application/json',
-     'Content-Type':'application/json'
-   }
+  return axios.delete(`http://127.0.0.1:8000/delete_inventory/${enNo}`, {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
   })
   .then(response => response.data)
+  .catch(error => {
+    console.error('Error deleting appinfo:', error);
+    throw error;
+  });
 }
 
 export function addInventoryApi(inventory) {
@@ -195,24 +207,26 @@ export async function updateInventoryApi(enNo, inventory) {
   
 }
 
-
-
 const BASE_URL = 'http://127.0.0.1:8000';  // Replace with your actual base URL
 
-export function LoginUser(credentials) {
-  return axios.post(`${BASE_URL}/auth/`, credentials)
-    .then(response => response.data)
-    .catch(error => {
-      console.error('Error logging in:', error);
-      throw error;
-    });
+export async function loginUserApi(credentials) {
+  try {
+    const response = await axios.post(`${BASE_URL}/login/`, credentials);
+    return response.data;
+  } catch (error) {
+    console.error('Error logging in:', error);
+    throw error;
+  }
 }
 
-export function RegisterUser(userInfo) {
-  return axios.post(`${BASE_URL}/api/users/`, userInfo)
-    .then(response => response.data)
-    .catch(error => {
-      console.error('Error registering user:', error);
-      throw error;
-    });
+export async function registerUserApi(userInfo) {
+  try {
+    const response = await axios.post(`${BASE_URL}/register/`, userInfo);
+    return response.data;
+  } catch (error) {
+    console.error('Error registering user:', error);
+    throw error;
+  }
 }
+
+

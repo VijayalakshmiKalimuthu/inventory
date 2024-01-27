@@ -7,7 +7,6 @@ import { RiDeleteBin5Line } from 'react-icons/ri';
 import AddChemicalModal from "./AddChemicalModal";
 import UpdateChemicalModal from "./UpdateChemicalModal";
 import { getChemicalApi, deleteChemicalApi } from '../../services/AppinfoService';
-import '../Appinfo.css'
 
 
 const Manage = () => {
@@ -63,7 +62,7 @@ const Manage = () => {
             e.preventDefault();
             deleteChemicalApi(entry_no)
             .then((result)=>{
-                alert(result);
+                alert("Deleted Successfully");
                 setIsUpdated(true);
             },
             (error)=>{
@@ -77,7 +76,7 @@ const Manage = () => {
     return(
         <div className="container-fluid side-container">
         <div className="header-container">
-          <h2 className="appinfo-header">Chemicals</h2>
+          <h2 style={{ textAlign: 'center' }} className="appinfo-header">Chemicals</h2>
         </div>
         <div className="row side-row" >
         <p id="manage"></p>

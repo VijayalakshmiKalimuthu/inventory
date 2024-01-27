@@ -41,7 +41,7 @@ const UpdateAppinfoModal = (props) => {
     
                     <Modal.Header closeButton>
                         <Modal.Title id="contained-modal-title-vcenter">
-                            Update Student Information
+                            Update Appinfo Information
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
@@ -79,7 +79,7 @@ const UpdateAppinfoModal = (props) => {
                 </Form.Group>
                 <Form.Group>
                   <p></p>
-                  <Button variant="primary" type="submit">
+                  <Button variant="primary" type="submit" onClick={props.onHide}>
                                     Submit
                                 </Button>
                             </Form.Group>

@@ -1,52 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import { LoginUser, RegisterUser } from '../services/AppinfoService';  
-import './Login.css';
+import { loginUserApi, registerUserApi } from '../services/AppinfoService';  
+import App from '../App';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [token, setToken] = useCookies(['mytoken']);
-  const navigate = useNavigate();
-  const [isLogin, setLogin] = useState(true);
-
+  const [isLoggedIn, setLoggedIn] = useState(false);
+/*
   useEffect(() => {
-    var userToken = token['mytoken'];
+    const userToken = token['mytoken'];
     console.log('Login User token is', userToken);
-    console.log('Data type', typeof token['mytoken']);
 
-    if (String(userToken) === 'undefined') {
-      navigate('/');
-    } else {
-      navigate('/home');
+    if (userToken) {
+      setLoggedIn(true);
     }
-  }, [token, navigate]); // Add 'navigate' to the dependency array
-
-  const handleLogin = () => {
-    if (username.trim().length !== 0 && password.trim().length) {
-      console.log('Username And Password Are Set');
-      LoginUser({ username, password })
-        .then((resp) => {
-          setToken('mytoken', resp.token);
-          navigate('/home');
-        })
-        .catch((error) => console.log(error));
-    } else {
-      console.log('Username And Password Are Not Set');
-      navigate('/');
+  }, [token]);
+*/
+  const handleLogin = async () => {
+    try {
+      if (username.trim().length !== 0 && password.trim().length) {
+        alert("Login Successfully");
+        console.log('Username And Password Are Set');
+        const resp = await loginUserApi({ username, password });
+        setToken('mytoken', resp.token);
+        setLoggedIn(true);
+      } else {
+        alert("Invalid Credentials");
+        console.log('Username And Password Are Not Set');
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  const handleRegister = () => {
-    if (username.trim().length !== 0 && password.trim().length !== 0) {
-      console.log('Username and password are set');
-      RegisterUser({ username, password })
-        .then(() => handleLogin())
-        .catch((error) => console.log(error));
-    } else {
-      navigate('/');
-      console.log('Username and password are not set');
+  const handleRegister = async () => {
+    try {
+      if (username.trim().length !== 0 && password.trim().length !== 0) {
+        alert("Register Successfully");
+        console.log('Username and password are set');
+        await registerUserApi({ username, password });
+        handleLogin(); // Log in the user after registration
+      } else {
+        alert("Username and password are not Register");
+        console.log('Username and password are not set');
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -63,13 +64,17 @@ function Login() {
   return (
     <div className="App">
       <div className="container-fluid">
+        {isLoggedIn ? (
+          <App />
+        ) : (
+
         <div className="row">
           <h1 className="alert alert-danger">WELCOME</h1>
           <br />
           <br />
 
           <div className="col-sm-4">
-            {isLogin ? <h3>Login Here</h3> : <h3>Register Here</h3>}
+            {isLoggedIn ? <h3>Login Here</h3> : <h3>Register Here</h3>}
             <div className="form-group">
               <label htmlFor="username">Username</label>
               <input
@@ -95,14 +100,14 @@ function Login() {
             <br />
 
             <div>
-              {isLogin ? (
+              {isLoggedIn ? (
                 <div>
                   <button onClick={handleLogin} className="btn btn-primary">
                     Login
                   </button>
                   <p>
                     If You Don't Have Account, Please
-                    <button onClick={() => setLogin(false)} className="btn btn-primary">
+                    <button onClick={() => setLoggedIn(false)} className="btn btn-primary">
                       Register
                     </button>
                   </p>
@@ -114,20 +119,22 @@ function Login() {
                   </button>
                   <p>
                     If You Have Account, Please{' '}
-                    <button className="btn btn-primary" onClick={() => setLogin(true)}>
+                    <button className="btn btn-primary" onClick={() => setLoggedIn(true)}>
                       Login
                     </button>
-                  </p>
+                    </p>
                 </div>
               )}
             </div>
           </div>
 
-          <div className="col-sm-8 full-img" style={loginStyle}></div>
-        </div>
+            <div className="col-sm-8 full-img" style={loginStyle}></div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
 export default Login;
+

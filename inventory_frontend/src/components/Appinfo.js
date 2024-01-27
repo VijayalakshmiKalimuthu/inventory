@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
 import { getAppinfo } from '../services/AppinfoService';
 import "../App.css";
-import "./Appinfo.css"
 import { NavLink } from 'react-router-dom';
 
 const Appinfo = () => {
@@ -26,7 +25,7 @@ const Appinfo = () => {
   return(
     <div className="container-fluid side-container">
     <div className="header-container">
-      <h2 className="appinfo-header">Appinfo</h2>
+      <h2 style={{ textAlign: 'center' }} className="appinfo-header">Appinfo</h2>
     </div>
       <div className="row side-row">
         <NavLink exact to="/appinfo_manage" activeClassName="activeClicked" className="manage-button">

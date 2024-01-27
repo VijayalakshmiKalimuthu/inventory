@@ -62,7 +62,7 @@ const Manage = () => {
           e.preventDefault();
           deleteAppinfo(infocode)
               .then((result) => {
-                  alert(result); // Display a success message
+                  alert("Deleted Successfully"); // Display a success message
                   setIsUpdated(true); // Update state or trigger a re-fetch of data
               })
               .catch((error) => {
@@ -77,14 +77,14 @@ const Manage = () => {
     return(
         <div className="container-fluid side-container">
         <div className="header-container">
-          <h2 className="appinfo-header">Appinfo</h2>
+          <h2 style={{ textAlign: 'center' }} className="appinfo-header">Appinfo</h2>
         </div>
         <div className="row side-row" >
         <p id="manage"></p>
             <Table striped bordered hover className="react-bootstrap-table" id="dataTable">
                 <thead>
                 <tr>
-                  <th>Indo Code</th>
+                  <th>Info Code</th>
                   <th>Info Value</th>
                   <th>Remarks</th>
                   <th>Created On</th>

@@ -11,14 +11,14 @@ import ProjectManage from './components/projects/ProjectManage'
 import Inventory from './components/inventory/Inventory'
 import InventoryManage from './components/inventory/InventoryManage';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import Login from '../src/components/Login';
 
 function App() {
   return (
     <BrowserRouter>
       <Navigation />
       <Routes>
-         <Route exact path="/" element={<Home/>} />
+         <Route path="/" element={<Home/>} />
+         <Route exact path="/home" element={<Home/>} />
          <Route path="/appinfo" element={<Appinfo/>} />
          <Route path="/appinfo_manage" element={<Manage/>} />
 

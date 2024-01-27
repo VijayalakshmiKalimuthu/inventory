@@ -1,5 +1,5 @@
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from .serializers import AppinfoSerializer, ChemicalSerializer, ProjectSerializer, InventorySerializer, UserSerializer
 from django.http.response import JsonResponse
 from .models import Appinfo, Chemical_Master, Project_Master, Inventory_Tran
@@ -15,6 +15,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+
 
 
 
@@ -63,14 +66,11 @@ def update_appinfo(request, pk=None):
 
 @api_view(['DELETE'])
 def delete_appinfo(request, pk=None):
-    print("Before Checking")
-    print(pk)
-    appinfo_to_delete = Appinfo.objects.get(infocode=pk)
-    serializer = AppinfoSerializer(instance=appinfo_to_delete, data=request.data, partial=True)
-    print("###########")
-    print(appinfo_to_delete)
-    if serializer.is_valid():
-        serializer.delete()
+    appinfo_to_delete = get_object_or_404(Appinfo, infocode=pk)
+
+    # No need for a serializer in DELETE requests, just delete the object
+    appinfo_to_delete.delete()
+
     return JsonResponse("Appinfo Deleted Successfully", safe=False)
 
 # -------------------------CHEMICAL MASTER-------------------------------------------------------
@@ -107,14 +107,14 @@ def view_chemical(request):
 		return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(['POST'])
+@api_view(['PUT'])
 def update_chemical(request, pk=None):
     chemical_to_update = Chemical_Master.objects.get(c_id=pk)
-
     serializer = ChemicalSerializer(instance=chemical_to_update, data=request.data, partial=True)
     
     if serializer.is_valid():
         serializer.save()
+        print("Updtaed.")
         return JsonResponse("Chemical Updated Successfully", safe=False)
     return JsonResponse("Failed to Update Chemical")
 
@@ -129,7 +129,7 @@ def delete_chemical(request, pk):
 
 @api_view(['POST'])
 def add_project(request):
-    project = Project_Master(data=request.data)
+    project = ProjectSerializer(data=request.data)
  
     # validating for already existing data
     if Project_Master.objects.filter(**request.data).exists():
@@ -172,9 +172,12 @@ def update_project(request, pk=None):
 
 @api_view(['DELETE'])
 def delete_project(request, pk):
-	project = get_object_or_404(Project_Master, project_code=pk)
-	project.delete()
-	return Response(status=status.HTTP_202_ACCEPTED)
+    project_to_delete = get_object_or_404(Project_Master, project_code=pk)
+
+    # No need for a serializer in DELETE requests, just delete the object
+    project_to_delete.delete()
+
+    return JsonResponse("Project Deleted Successfully", safe=False)
 
 # ---------------------------------------INVENTORY TRANS---------------------------------------------------
 
@@ -227,45 +230,46 @@ def delete_inventory(request, pk):
 	return Response(status=status.HTTP_202_ACCEPTED)
 
 
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def register_user(request):
+    # Get data from the request
+    username = request.data.get('username')
+    password = request.data.get('password')
 
-class RegisterUserView(APIView):
-    @permission_classes([AllowAny])
-    def post(self, request):
-        # Get data from the request
-        username = request.data.get('username')
-        password = request.data.get('password')
+    # Validate data
+    if not username or not password:
+        return Response({'error': 'Both username and password are required'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Validate data
-        if not username or not password:
-            return Response({'error': 'Both username and password are required'}, status=status.HTTP_400_BAD_REQUEST)
+    # Check if the user already exists
+    if User.objects.filter(username=username).exists():
+        return Response({'error': 'Username is already taken'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Check if the user already exists
-        if User.objects.filter(username=username).exists():
-            return Response({'error': 'Username is already taken'}, status=status.HTTP_400_BAD_REQUEST)
+    # Create a new user
+    user = User.objects.create_user(username=username, password=password)
+    Token.objects.create(user=user)
 
-        # Create a new user
-        user = User.objects.create_user(username=username, password=password)
-        Token.objects.create(user=user)
+    return Response({'token': str(Token.objects.get(user=user))}, status=status.HTTP_201_CREATED)
 
-        return Response({'token': str(Token.objects.get(user=user))}, status=status.HTTP_201_CREATED)
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def login_user(request):
+    # Get data from the request
+    username = request.data.get('username')
+    password = request.data.get('password')
 
-class LoginUserView(APIView):
-    @permission_classes([AllowAny])
-    def post(self, request):
-        # Get data from the request
-        username = request.data.get('username')
-        password = request.data.get('password')
+    # Validate data
+    if not username or not password:
+        return Response({'error': 'Both username and password are required'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Validate data
-        if not username or not password:
-            return Response({'error': 'Both username and password are required'}, status=status.HTTP_400_BAD_REQUEST)
+    # Authenticate the user
+    user = authenticate(username=username, password=password)
 
-        # Authenticate the user
-        user = authenticate(username=username, password=password)
+    if user is not None:
+        # If authentication is successful, create a token
+        token, _ = Token.objects.get_or_create(user=user)
+        return Response({'token': str(token)}, status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'Invalid username or password'}, status=status.HTTP_401_UNAUTHORIZED)
 
-        if user is not None:
-            # If authentication is successful, create a token
-            token, _ = Token.objects.get_or_create(user=user)
-            return Response({'token': str(token)}, status=status.HTTP_200_OK)
-        else:
-            return Response({'error': 'Invalid username or password'}, status=status.HTTP_401_UNAUTHORIZED)
+

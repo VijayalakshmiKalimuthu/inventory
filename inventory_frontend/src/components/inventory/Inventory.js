@@ -3,7 +3,6 @@ import { Table, Button } from 'react-bootstrap';
 import { getInventoryApi } from '../../services/AppinfoService';
 import "../../App.css";
 import { NavLink } from 'react-router-dom';
-import '../Appinfo.css'
 
 const Inventory = () => {
   const [inventory, setInventory] = useState([]);
@@ -26,7 +25,7 @@ const Inventory = () => {
   return(
     <div className="container-fluid side-container">
     <div className="header-container">
-      <h2 className="appinfo-header">Inventory</h2>
+      <h2 style={{ textAlign: 'center' }} className="appinfo-header">Inventory</h2>
     </div>
       <div className="row side-row">
         <NavLink exact to="/inventory_manage" activeClassName="activeClicked" className="manage-button">
