@@ -1,0 +1,132 @@
+import React from 'react';
+import { Modal, Col, Row, Form, Button } from 'react-bootstrap';
+import { updateInventoryApi } from '../../services/AppinfoService';
+
+const UpdateInventoryModal = (props) => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+      
+        const formData = new FormData(e.target);
+    
+        const inventoryData = {
+            item_code: formData.get('itemCode'),
+            tran_type_IR: formData.get('tranTypeIR'),
+            qnty: formData.get('qnty'),
+            ref_number: formData.get('refNumber'),
+            ref_type: formData.get('refType'),
+            batch_number: formData.get('batchNumber'),
+            remarks: formData.get('remarks'),
+            created_on: formData.get('createdOn'),
+            created_by: formData.get('createdBy'),
+            modified_on: formData.get('modifiedOn'),
+            modified_by: formData.get('modifiedBy'),
+            dev_remarks: formData.get('devRemarks'),
+        };
+
+      
+        try {
+          const result = await updateInventoryApi(props.inventory.entry_no, inventoryData);
+          alert(result);
+          props.setUpdated(true);
+        } catch (error) {
+          console.error('Failed to Update Inventory:', error);
+          alert(`Failed to Update Inventory: ${error.message}`);
+        }
+      };
+
+      
+      
+        return (
+            <div className="container">
+    
+                <Modal
+                    {...props}
+                    size="lg"
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered >
+    
+                    <Modal.Header closeButton>
+                        <Modal.Title id="contained-modal-title-vcenter">
+                            Update Inventory Information
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Row>
+                            <Col sm={6}>
+                                <Form onSubmit={handleSubmit}>
+                 <Form.Group controlId="itemCode">
+                  <Form.Label>Item Code</Form.Label>
+                  <Form.Control type="text" name="itemCode" required defaultValue={props.inventory?.item_code || ''} placeholder="" />
+                </Form.Group>
+
+                <Form.Group controlId="tranTypeIR">
+                  <Form.Label>Tran Type I/R</Form.Label>
+                  <Form.Control type="text" name="tranTypeIR" required defaultValue={props.inventory?.tran_type_IR || ''} placeholder="" />
+                </Form.Group>
+
+                <Form.Group controlId="qnty">
+                  <Form.Label>Qnty</Form.Label>
+                  <Form.Control type="text" name="qnty" required defaultValue={props.inventory?.qnty || ''} placeholder="" />
+                </Form.Group>
+
+                <Form.Group controlId="refNumber">
+                  <Form.Label>Ref Number</Form.Label>
+                  <Form.Control type="text" name="refNumber" required defaultValue={props.inventory?.ref_number || ''} placeholder="" />
+                </Form.Group>
+
+                <Form.Group controlId="refType">
+                  <Form.Label>Ref Type</Form.Label>
+                  <Form.Control type="text" name="refType" required defaultValue={props.inventory?.ref_type || ''} placeholder="" />
+                </Form.Group>
+
+                <Form.Group controlId="batchNumber">
+                  <Form.Label>Batch Number</Form.Label>
+                  <Form.Control type="text" name="batchNumber" required defaultValue={props.inventory?.batch_number || ''} placeholder="" />
+                </Form.Group>
+
+                <Form.Group controlId="remarks">
+                  <Form.Label>Remarks</Form.Label>
+                  <Form.Control type="text" name="remarks" required defaultValue={props.inventory?.remarks || ''} placeholder="" />
+                </Form.Group>
+                <Form.Group controlId="createdOn">
+                  <Form.Label>Created On</Form.Label>
+                  <Form.Control type="text" name="createdOn" required defaultValue={props.inventory?.created_on || ''} placeholder="" />
+                </Form.Group>
+                <Form.Group controlId="createdBy">
+                  <Form.Label>Created By</Form.Label>
+                  <Form.Control type="text" name="createdBy" required defaultValue={props.inventory?.created_by || ''} placeholder="" />
+                </Form.Group>
+                <Form.Group controlId="modifiedOn">
+                  <Form.Label>Modified On</Form.Label>
+                  <Form.Control type="text" name="modifiedOn" required defaultValue={props.inventory?.modified_on || ''} placeholder="" />
+                </Form.Group>
+                <Form.Group controlId="modifiedBy">
+                  <Form.Label>Modified By</Form.Label>
+                  <Form.Control type="text" name="modifiedBy" required defaultValue={props.inventory?.modified_by || ''} placeholder="" />
+                </Form.Group>
+                <Form.Group controlId="devRemarks">
+                  <Form.Label>Dev Remarks</Form.Label>
+                  <Form.Control type="text" name="devRemarks" required defaultValue={props.inventory?.dev_remarks || ''} placeholder="" />
+                </Form.Group>
+                <Form.Group>
+                  <p></p>
+                  <Button variant="primary" type="submit" onClick={props.onHide}>
+                                    Submit
+                                </Button>
+                            </Form.Group>
+                            </Form>
+                        </Col>
+                    </Row>
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="danger" type="submit" onClick={props.onHide}>
+                        Close
+                </Button>
+
+                </Modal.Footer>
+            </Modal>
+        </div>
+    );
+};
+
+export default UpdateInventoryModal;
