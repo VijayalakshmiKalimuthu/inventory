@@ -51,63 +51,100 @@ const UpdateChemicalModal = (props) => {
                     </Modal.Header>
                     <Modal.Body>
                         <Row>
-                            <Col sm={6}>
+                            <Col sm={12}>
                                 <Form onSubmit={handleSubmit}>
-                 <Form.Group controlId="entryNo">
-                  <Form.Label>Entry No.</Form.Label>
-                  <Form.Control type="text" name="entryNo" required defaultValue={props.chemical?.entry_no || ''} placeholder="" />
-                </Form.Group>
+                                <Row>
+                                  <Col>
+                                   <Form.Group controlId="entryNo">
+                                    <Form.Label>Entry No.</Form.Label>
+                                    <Form.Control type="text" name="entryNo" required defaultValue={props.chemical?.entry_no || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                  </Form.Group>
+                                  </Col>
+                                  <Col>
+                                  <Form.Group controlId="itemCode">
+                                    <Form.Label>Item Code</Form.Label>
+                                    <Form.Control type="text" name="itemCode" required defaultValue={props.chemical?.item_code || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                  </Form.Group>
+                                  </Col>
+                                  <Col>
+                                  <Form.Group controlId="itemName">
+                                    <Form.Label>Item Name</Form.Label>
+                                    <Form.Control type="text" name="itemName" required defaultValue={props.chemical?.item_name || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                  </Form.Group>
+                                  </Col>
+                                </Row>
+                                <p></p>
 
-                <Form.Group controlId="itemCode">
-                  <Form.Label>Item Code</Form.Label>
-                  <Form.Control type="text" name="itemCode" required defaultValue={props.chemical?.item_code || ''} placeholder="" />
-                </Form.Group>
+                                <Row>
+                                  
+                                  <Col>
+                                  <Form.Group controlId="unit">
+                                    <Form.Label>Unit</Form.Label>
+                                    <Form.Control type="text" name="unit" required defaultValue={props.chemical?.unit || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                  </Form.Group>
+                                  </Col>
+                                  <Col>
+                                  <Form.Group controlId="projectCode">
+                                    <Form.Label>Project Code</Form.Label>
+                                    <Form.Control type="text" name="projectCode" required defaultValue={props.chemical?.project_code || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                  </Form.Group>
+                                  </Col>
+                                  <Col>
+                                  <Form.Group controlId="remarks">
+                                    <Form.Label>Remarks</Form.Label>
+                                    <Form.Control type="text" name="remarks" required defaultValue={props.chemical?.remarks || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                  </Form.Group>
+                                  </Col>
+                                </Row>
+                                <p></p>
 
-                <Form.Group controlId="itemName">
-                  <Form.Label>Item Name</Form.Label>
-                  <Form.Control type="text" name="itemName" required defaultValue={props.chemical?.item_name || ''} placeholder="" />
-                </Form.Group>
+                                <Row>
+                                  <Col>
+                                  <Form.Group controlId="createdOn">
+                                    <Form.Label>Created On</Form.Label>
+                                    <Form.Control type="text" name="createdOn" required defaultValue={props.chemical?.created_on || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                  </Form.Group>
+                                  </Col>
+                                  <Col>
+                                  <Form.Group controlId="createdBy">
+                                    <Form.Label>Created By</Form.Label>
+                                    <Form.Control type="text" name="createdBy" required defaultValue={props.chemical?.created_by || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                  </Form.Group>
+                                  </Col>
+                                  <Col>
+                                  <Form.Group controlId="modifiedOn">
+                                    <Form.Label>Modified On</Form.Label>
+                                    <Form.Control type="text" name="modifiedOn" required defaultValue={props.chemical?.modified_on || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                  </Form.Group>
+                                  </Col>
+                                </Row>
+                                <p></p>
 
-                <Form.Group controlId="unit">
-                  <Form.Label>Unit</Form.Label>
-                  <Form.Control type="text" name="unit" required defaultValue={props.chemical?.unit || ''} placeholder="" />
-                </Form.Group>
+                                <Row>                                  
+                                  <Col>
+                                  <Form.Group controlId="modifiedBy">
+                                    <Form.Label>Modified By</Form.Label>
+                                    <Form.Control type="text" name="modifiedBy" required defaultValue={props.chemical?.modified_by || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                  </Form.Group>
+                                  </Col>
+                                  <Col>
+                                  <Form.Group controlId="devRemarks">
+                                    <Form.Label>Dev Remarks</Form.Label>
+                                    <Form.Control type="text" name="devRemarks" required defaultValue={props.chemical?.dev_remarks || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                  </Form.Group>
+                                  </Col>
+                                  <Col></Col>
+                                </Row>
 
-                <Form.Group controlId="projectCode">
-                  <Form.Label>Project Code</Form.Label>
-                  <Form.Control type="text" name="projectCode" required defaultValue={props.chemical?.project_code || ''} placeholder="" />
-                </Form.Group>
-
-                <Form.Group controlId="remarks">
-                  <Form.Label>Remarks</Form.Label>
-                  <Form.Control type="text" name="remarks" required defaultValue={props.chemical?.remarks || ''} placeholder="" />
-                </Form.Group>
-                <Form.Group controlId="createdOn">
-                  <Form.Label>Created On</Form.Label>
-                  <Form.Control type="text" name="createdOn" required defaultValue={props.chemical?.created_on || ''} placeholder="" />
-                </Form.Group>
-                <Form.Group controlId="createdBy">
-                  <Form.Label>Created By</Form.Label>
-                  <Form.Control type="text" name="createdBy" required defaultValue={props.chemical?.created_by || ''} placeholder="" />
-                </Form.Group>
-                <Form.Group controlId="modifiedOn">
-                  <Form.Label>Modified On</Form.Label>
-                  <Form.Control type="text" name="modifiedOn" required defaultValue={props.chemical?.modified_on || ''} placeholder="" />
-                </Form.Group>
-                <Form.Group controlId="modifiedBy">
-                  <Form.Label>Modified By</Form.Label>
-                  <Form.Control type="text" name="modifiedBy" required defaultValue={props.chemical?.modified_by || ''} placeholder="" />
-                </Form.Group>
-                <Form.Group controlId="devRemarks">
-                  <Form.Label>Dev Remarks</Form.Label>
-                  <Form.Control type="text" name="devRemarks" required defaultValue={props.chemical?.dev_remarks || ''} placeholder="" />
-                </Form.Group>
-                <Form.Group>
-                  <p></p>
-                  <Button variant="primary" type="submit" onClick={props.onHide}>
+                                <Row>
+                                  
+                                </Row>
+                                <Form.Group>
+                                  <p></p>
+                                  <Button variant="primary" type="submit" onClick={props.onHide}>
                                     Submit
-                                </Button>
-                            </Form.Group>
+                                  </Button>
+                                </Form.Group>
                             </Form>
                         </Col>
                     </Row>

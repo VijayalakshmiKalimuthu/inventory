@@ -46,37 +46,63 @@ const UpdateAppinfoModal = (props) => {
                     </Modal.Header>
                     <Modal.Body>
                         <Row>
-                            <Col sm={6}>
+                            <Col sm={10}>
                                 <Form onSubmit={handleSubmit}>
-                        <Form.Group controlId="infovalue">
-                  <Form.Label>Info Value</Form.Label>
-                  <Form.Control type="text" name="infovalue" required defaultValue={props.appinfo?.infovalue || ''} placeholder="" />
-                </Form.Group>
+                                  
+                                  <Row>
+                                    <Col>
+                                    <Form.Group controlId="infovalue">
+                                      <Form.Label>Info Value</Form.Label>
+                                      <Form.Control type="text" name="infovalue" required defaultValue={props.appinfo?.infovalue || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="remarks">
+                                      <Form.Label>Remarks</Form.Label>
+                                      <Form.Control type="text" name="remarks" required defaultValue={props.appinfo?.remarks || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                    </Form.Group>
+                                    </Col>
+                                  </Row>
 
-                <Form.Group controlId="remarks">
-                  <Form.Label>Remarks</Form.Label>
-                  <Form.Control type="text" name="remarks" required defaultValue={props.appinfo?.remarks || ''} placeholder="" />
-                </Form.Group>
-                <Form.Group controlId="createdOn">
-                  <Form.Label>Created On</Form.Label>
-                  <Form.Control type="text" name="createdOn" required defaultValue={props.appinfo?.created_on || ''} placeholder="" />
-                </Form.Group>
-                <Form.Group controlId="createdBy">
-                  <Form.Label>Created By</Form.Label>
-                  <Form.Control type="text" name="createdBy" required defaultValue={props.appinfo?.created_by || ''} placeholder="" />
-                </Form.Group>
-                <Form.Group controlId="modifiedOn">
-                  <Form.Label>Modified On</Form.Label>
-                  <Form.Control type="text" name="modifiedOn" required defaultValue={props.appinfo?.modified_on || ''} placeholder="" />
-                </Form.Group>
-                <Form.Group controlId="modifiedBy">
-                  <Form.Label>Modified By</Form.Label>
-                  <Form.Control type="text" name="modifiedBy" required defaultValue={props.appinfo?.modified_by || ''} placeholder="" />
-                </Form.Group>
-                <Form.Group controlId="devRemarks">
-                  <Form.Label>Dev Remarks</Form.Label>
-                  <Form.Control type="text" name="devRemarks" required defaultValue={props.appinfo?.dev_remarks || ''} placeholder="" />
-                </Form.Group>
+                                  <Row>
+                                    <Col>
+                                    <Form.Group controlId="createdOn">
+                                      <Form.Label>Created On</Form.Label>
+                                      <Form.Control type="text" name="createdOn" required defaultValue={props.appinfo?.created_on || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="createdBy">
+                                      <Form.Label>Created By</Form.Label>
+                                      <Form.Control type="text" name="createdBy" required defaultValue={props.appinfo?.created_by || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                    </Form.Group>
+                                    </Col>
+                                  </Row>
+
+                                  <Row>
+                                    <Col>
+                                    <Form.Group controlId="modifiedOn">
+                                      <Form.Label>Modified On</Form.Label>
+                                      <Form.Control type="text" name="modifiedOn" required defaultValue={props.appinfo?.modified_on || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="modifiedBy">
+                                      <Form.Label>Modified By</Form.Label>
+                                      <Form.Control type="text" name="modifiedBy" required defaultValue={props.appinfo?.modified_by || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                    </Form.Group>
+                                    </Col>
+                                  </Row>
+
+                                  <Row>
+                                    <Col>
+                                    <Form.Group controlId="devRemarks">
+                                      <Form.Label>Dev Remarks</Form.Label>
+                                      <Form.Control type="text" name="devRemarks" required defaultValue={props.appinfo?.dev_remarks || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col></Col>
+                                  </Row>
                 <Form.Group>
                   <p></p>
                   <Button variant="primary" type="submit" onClick={props.onHide}>

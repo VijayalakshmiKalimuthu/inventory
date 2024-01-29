@@ -86,7 +86,7 @@ const InventoryManage = () => {
                   <th>Entry No</th>
                   <th>Item Code</th>
                   <th>Tran Type IR</th>
-                  <th>Qnty</th>
+                  <th>Quantity</th>
                   <th>Ref Number</th>
                   <th>Ref Type</th>
                   <th>Batch Number</th>
@@ -96,7 +96,7 @@ const InventoryManage = () => {
                   <th>Modified On</th>
                   <th>Modified By</th>
                   <th>Dev Remarks</th>
-                  <th>Action</th>
+                  <th colspan="2" style={{ textAlign: 'center' }}>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -119,7 +119,8 @@ const InventoryManage = () => {
                           <Button className="mr-2" variant="danger" onClick={(event) => handleDelete(event, inven.entry_no)}>
                               <RiDeleteBin5Line />
                           </Button>
-                          <span>&nbsp;&nbsp;&nbsp;</span>
+                      </td>
+                      <td>
                           <Button className="mr-2" onClick={(event) => handleUpdate(event, inven)}>
                               <FaEdit />
                           </Button>

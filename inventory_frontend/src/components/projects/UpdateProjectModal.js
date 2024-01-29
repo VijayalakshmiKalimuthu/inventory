@@ -45,7 +45,7 @@ const UpdateProjectModal = (props) => {
                                 <Form onSubmit={handleSubmit}>
                  <Form.Group controlId="projectName">
                   <Form.Label>Project Name.</Form.Label>
-                  <Form.Control type="text" name="projectName" required defaultValue={props.project?.project_name || ''} placeholder="" />
+                  <Form.Control type="text" name="projectName" required defaultValue={props.project?.project_name || ''} placeholder="" style={{ border: '1px solid black' }} />
                 </Form.Group>
                 <Form.Group>
                   <p></p>

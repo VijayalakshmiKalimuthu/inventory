@@ -2,7 +2,7 @@ import React from 'react';
 import {Modal, Col, Row, Form, Button} from 'react-bootstrap';
 // import {FormControl, FormGroup, FormLabel} from 'react-bootstrap';
 import { addInventoryApi } from '../../services/AppinfoService';
-
+import './formBorder.css'
 
 const AddInventoryModal = (props) => {
 
@@ -53,63 +53,99 @@ const AddInventoryModal = (props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Row>
-                        <Col sm={6}>
+                        <Col sm={11}>
                             <Form onSubmit={handleSubmit}>
-                                
-                            <Form.Group controlId="itemCode">
-                                    <Form.Label>Item Code</Form.Label>
-                                    <Form.Control type="text" name="itemCode" required placeholder="" />
-                            </Form.Group>
-                            
-                            <Form.Group controlId="tranTypeIR">
-                                    <Form.Label>Tran Type I/R</Form.Label>
-                                    <Form.Control type="text" name="tranTypeIR" required placeholder="" />
-                            </Form.Group>
-                            
-                            <Form.Group controlId="qnty">
-                                    <Form.Label>Qnty</Form.Label>
-                                    <Form.Control type="text" name="qnty" required placeholder="" />
-                            </Form.Group>
 
-                            <Form.Group controlId="refNumber">
-                                    <Form.Label>Ref Number</Form.Label>
-                                    <Form.Control type="text" name="refNumber" required placeholder="" />
-                            </Form.Group>
+                                <Row>
+                                    <Col>                          
+                                    <Form.Group controlId="itemCode">
+                                            <Form.Label>Item Code</Form.Label>
+                                            <Form.Control type="text" name="itemCode" required placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="tranTypeIR">
+                                        <Form.Label>Tran Type I/R</Form.Label>
+                                        <Form.Control as="select" name="tranTypeIR" required className="custom-border">
+                                            <option value="" disabled>Select I/R</option>
+                                            <option value="I">I</option>
+                                            <option value="R">R</option>
+                                        </Form.Control>
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="qnty">
+                                            <Form.Label>Qnty</Form.Label>
+                                            <Form.Control type="text" name="qnty" required placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>
+                                </Row>
+                                <p></p>
 
-                            <Form.Group controlId="refType">
-                                    <Form.Label>Ref type</Form.Label>
-                                    <Form.Control type="text" name="refType" required placeholder="" />
-                            </Form.Group>
+                                <Row>                                    
+                                    <Col>
+                                    <Form.Group controlId="refNumber">
+                                            <Form.Label>Ref Number</Form.Label>
+                                            <Form.Control type="text" name="refNumber" required placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="refType">
+                                            <Form.Label>Ref type</Form.Label>
+                                            <Form.Control type="text" name="refType" required placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="batchNumber">
+                                            <Form.Label>Batch Number</Form.Label>
+                                            <Form.Control type="text" name="batchNumber" required placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>
+                                </Row>
+                                <p></p>
 
-                            <Form.Group controlId="batchNumber">
-                                    <Form.Label>Batch Number</Form.Label>
-                                    <Form.Control type="text" name="batchNumber" required placeholder="" />
-                            </Form.Group>
+                                <Row>
+                                    <Col>
+                                    <Form.Group controlId="remarks">
+                                            <Form.Label>Remarks</Form.Label>
+                                            <Form.Control type="text" name="remarks" required placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="createdOn">
+                                            <Form.Label>Created On</Form.Label>
+                                            <Form.Control type="text" name="createdOn" required placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="createdBy">
+                                            <Form.Label>Created By</Form.Label>
+                                            <Form.Control type="text" name="createdBy" required placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>
+                                </Row>
+                                <p></p>
 
-                            <Form.Group controlId="remarks">
-                                    <Form.Label>Remarks</Form.Label>
-                                    <Form.Control type="text" name="remarks" required placeholder="" />
-                            </Form.Group>
-                            <Form.Group controlId="createdOn">
-                                    <Form.Label>Created On</Form.Label>
-                                    <Form.Control type="text" name="createdOn" required placeholder="" />
-                            </Form.Group>
-                            <Form.Group controlId="createdBy">
-                                    <Form.Label>Created By</Form.Label>
-                                    <Form.Control type="text" name="createdBy" required placeholder="" />
-                            </Form.Group>
-                            <Form.Group controlId="modifiedOn">
-                                    <Form.Label>Modified On</Form.Label>
-                                    <Form.Control type="text" name="modifiedOn" required placeholder="" />
-                            </Form.Group>
-                            <Form.Group controlId="modifiedBy">
-                                    <Form.Label>Modified By</Form.Label>
-                                    <Form.Control type="text" name="modifiedBy" required placeholder="" />
-                            </Form.Group>
-                            <Form.Group controlId="devRemarks">
-                                    <Form.Label>Dev Remarks</Form.Label>
-                                    <Form.Control type="text" name="devRemarks" required placeholder="" />
-                            </Form.Group>
+                                <Row>                                    
+                                    <Col>
+                                    <Form.Group controlId="modifiedOn">
+                                            <Form.Label>Modified On</Form.Label>
+                                            <Form.Control type="text" name="modifiedOn" required placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="modifiedBy">
+                                            <Form.Label>Modified By</Form.Label>
+                                            <Form.Control type="text" name="modifiedBy" required placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="devRemarks">
+                                            <Form.Label>Dev Remarks</Form.Label>
+                                            <Form.Control type="text" name="devRemarks" required placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>
+                                </Row>
                             <Form.Group>
                                 <p></p>
                                 <Button variant="primary" type="submit" onClick={props.onHide}>

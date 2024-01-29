@@ -53,58 +53,91 @@ const AddChemicalModal = (props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Row>
-                        <Col sm={6}>
+                        <Col sm={12}>
                             <Form onSubmit={handleSubmit}>
-                                
-                            <Form.Group controlId="entryNo">
-                                    <Form.Label>Entry No.</Form.Label>
-                                    <Form.Control type="text" name="entryNo" required placeholder="" />
-                            </Form.Group>
+
+                                <Row>
+                                    <Col>
+                                    <Form.Group controlId="entryNo">
+                                            <Form.Label>Entry No.</Form.Label>
+                                            <Form.Control type="text" name="entryNo" required placeholder="" style={{ border: '1px solid black' }} />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="itemCode">
+                                            <Form.Label>Item Code</Form.Label>
+                                            <Form.Control type="text" name="itemCode" required placeholder="" style={{ border: '1px solid black' }} />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="itemName">
+                                            <Form.Label>Item name</Form.Label>
+                                            <Form.Control type="text" name="itemName" required placeholder="" style={{ border: '1px solid black' }} />
+                                    </Form.Group>
+                                    </Col>
+                                </Row>
+                                <p></p>
                             
-                            <Form.Group controlId="itemCode">
-                                    <Form.Label>Item Code</Form.Label>
-                                    <Form.Control type="text" name="itemCode" required placeholder="" />
-                            </Form.Group>
-                            
-                            <Form.Group controlId="itemName">
-                                    <Form.Label>Item name</Form.Label>
-                                    <Form.Control type="text" name="itemName" required placeholder="" />
-                            </Form.Group>
+                                <Row>                                    
+                                    <Col>
+                                    <Form.Group controlId="unit">
+                                            <Form.Label>Unit</Form.Label>
+                                            <Form.Control type="text" name="unit" required placeholder="" style={{ border: '1px solid black' }} />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="projectCode">
+                                            <Form.Label>Project Code</Form.Label>
+                                            <Form.Control type="text" name="projectCode" required placeholder="" style={{ border: '1px solid black' }} />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="remarks">
+                                            <Form.Label>Remarks</Form.Label>
+                                            <Form.Control type="text" name="remarks" required placeholder="" style={{ border: '1px solid black' }} />
+                                    </Form.Group>
+                                    </Col>
+                                </Row>
+                                <p></p>
 
-                            <Form.Group controlId="unit">
-                                    <Form.Label>Unit</Form.Label>
-                                    <Form.Control type="text" name="unit" required placeholder="" />
-                            </Form.Group>
+                                <Row>
+                                    <Col>
+                                    <Form.Group controlId="createdOn">
+                                            <Form.Label>Created On</Form.Label>
+                                            <Form.Control type="text" name="createdOn" required placeholder="" style={{ border: '1px solid black' }} />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="createdBy">
+                                            <Form.Label>Created By</Form.Label>
+                                            <Form.Control type="text" name="createdBy" required placeholder="" style={{ border: '1px solid black' }} />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="modifiedOn">
+                                            <Form.Label>Modified On</Form.Label>
+                                            <Form.Control type="text" name="modifiedOn" required placeholder="" style={{ border: '1px solid black' }} />
+                                    </Form.Group>
+                                    </Col>
+                                </Row>
+                                <p></p>
 
-                            <Form.Group controlId="projectCode">
-                                    <Form.Label>Project Code</Form.Label>
-                                    <Form.Control type="text" name="projectCode" required placeholder="" />
-                            </Form.Group>
-
-                            <Form.Group controlId="remarks">
-                                    <Form.Label>Remarks</Form.Label>
-                                    <Form.Control type="text" name="remarks" required placeholder="" />
-                            </Form.Group>
-                            <Form.Group controlId="createdOn">
-                                    <Form.Label>Created On</Form.Label>
-                                    <Form.Control type="text" name="createdOn" required placeholder="" />
-                            </Form.Group>
-                            <Form.Group controlId="createdBy">
-                                    <Form.Label>Created By</Form.Label>
-                                    <Form.Control type="text" name="createdBy" required placeholder="" />
-                            </Form.Group>
-                            <Form.Group controlId="modifiedOn">
-                                    <Form.Label>Modified On</Form.Label>
-                                    <Form.Control type="text" name="modifiedOn" required placeholder="" />
-                            </Form.Group>
-                            <Form.Group controlId="modifiedBy">
-                                    <Form.Label>Modified By</Form.Label>
-                                    <Form.Control type="text" name="modifiedBy" required placeholder="" />
-                            </Form.Group>
-                            <Form.Group controlId="devRemarks">
-                                    <Form.Label>Dev Remarks</Form.Label>
-                                    <Form.Control type="text" name="devRemarks" required placeholder="" />
-                            </Form.Group>
+                                <Row>
+                                    
+                                    <Col>
+                                    <Form.Group controlId="modifiedBy">
+                                            <Form.Label>Modified By</Form.Label>
+                                            <Form.Control type="text" name="modifiedBy" required placeholder="" style={{ border: '1px solid black' }} />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="devRemarks">
+                                            <Form.Label>Dev Remarks</Form.Label>
+                                            <Form.Control type="text" name="devRemarks" required placeholder="" style={{ border: '1px solid black' }} />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col></Col>
+                                </Row>
                             <Form.Group>
                                 <p></p>
                                 <Button variant="primary" type="submit" onClick={props.onHide}>

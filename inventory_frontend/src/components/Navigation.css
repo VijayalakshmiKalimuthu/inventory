@@ -1,0 +1,9 @@
+.black-text {
+    color: black;
+    font-weight: bold;
+  }
+
+.narrow-sidebar {
+    width: 20px;
+    /* Additional styling if needed */
+  }

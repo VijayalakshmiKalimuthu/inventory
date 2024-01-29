@@ -47,7 +47,7 @@ const AddProjectModal = (props) => {
                                 
                             <Form.Group controlId="projectName">
                                     <Form.Label>Project Name.</Form.Label>
-                                    <Form.Control type="text" name="projectName" required placeholder="" />
+                                    <Form.Control type="text" name="projectName" required placeholder="" style={{ border: '1px solid black' }} />
                             </Form.Group>
                             
                             

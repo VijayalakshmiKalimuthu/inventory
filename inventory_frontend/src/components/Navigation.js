@@ -8,8 +8,9 @@ import {
 } from 'cdbreact';
 import { NavLink } from 'react-router-dom';
 import { Button, Navbar } from 'react-bootstrap';
-import logo from '../assets/logo.png';
+import TN_Transparent_Logo from '../assets/TN_Transparent_Logo.png';
 import '../App.css';
+import './Navigation.css'
 
 const Navigation = () => {
   return (
@@ -17,7 +18,7 @@ const Navigation = () => {
       <Navbar bg="dark" variant="dark" expand="lg" id="my-nav">
         <Navbar.Brand className="app-logo" href="/home">
           <img
-            src={logo}
+            src={TN_Transparent_Logo}
             width="40"
             height="50"
             className="d-inline-block align-center"
@@ -25,31 +26,31 @@ const Navigation = () => {
           />{' '}
           INVENTORY MANAGEMENT SYSTEM
         </Navbar.Brand>
-        <Button href="./Login" >Logout</Button>
+        <Button href="./Login" style={{ marginLeft: '800px' }} >Logout</Button>
       </Navbar>
       <div className='sidebar'>
-        <CDBSidebar textColor="#333" backgroundColor="#f0f0f0">
+        <CDBSidebar className="narrow-sidebar" textColor="black" backgroundColor="gray">
           <CDBSidebarHeader prefix={<i className="fa fa-bars" />}>
             Dashboard
           </CDBSidebarHeader>
           <CDBSidebarContent>
             <CDBSidebarMenu>
-              <NavLink exact to="/home" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="home">Home</CDBSidebarMenuItem>
+              <NavLink exact to="/" activeClassName="activeClicked">
+                <CDBSidebarMenuItem icon="home" className="black-text">Home</CDBSidebarMenuItem>
               </NavLink>
               <NavLink exact to="/appinfo" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="list">Appinfo </CDBSidebarMenuItem>
+                <CDBSidebarMenuItem icon="list" className="black-text">Appinfo </CDBSidebarMenuItem>
               </NavLink>
               <NavLink exact to="/chemical" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="list">Chemical Master</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem icon="list" className="black-text">Chemical Master</CDBSidebarMenuItem>
               </NavLink>
 
               <NavLink exact to="/project" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="list">Project Master</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem icon="list" className="black-text">Project Master</CDBSidebarMenuItem>
               </NavLink>
 
               <NavLink exact to="/inventory" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="list">Inventory Master</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem icon="list" className="black-text">Inventory Master</CDBSidebarMenuItem>
               </NavLink>
 
             </CDBSidebarMenu>

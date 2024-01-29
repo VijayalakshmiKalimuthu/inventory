@@ -95,7 +95,7 @@ const Manage = () => {
                   <th>Modified On</th>
                   <th>Modified By</th>
                   <th>Dev Remarks</th>
-                  <th>Action</th>
+                  <th colspan="2" style={{ textAlign: 'center' }}>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -117,7 +117,8 @@ const Manage = () => {
                           <Button className="mr-2" variant="danger" onClick={(event) => handleDelete(event, chem.c_id)}>
                               <RiDeleteBin5Line />
                           </Button>
-                          <span>&nbsp;&nbsp;&nbsp;</span>
+                      </td>
+                      <td>
                           <Button className="mr-2" onClick={(event) => handleUpdate(event, chem)}>
                               <FaEdit />
                           </Button>

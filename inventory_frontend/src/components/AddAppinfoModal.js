@@ -48,37 +48,63 @@ const AddAppinfoModal = (props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Row>
-                        <Col sm={6}>
+                        <Col sm={10}>
                             <Form onSubmit={handleSubmit}>
-                                
-                            <Form.Group controlId="infovalue">
+
+                            <Row>
+                                <Col>
+                                <Form.Group controlId="infovalue">
                                     <Form.Label>Info Vlaue</Form.Label>
-                                    <Form.Control type="text" name="infovalue" required placeholder="" />
-                            </Form.Group>
-                            <Form.Group controlId="remarks">
+                                    <Form.Control type="text" name="infovalue" required placeholder="" style={{ border: '1px solid black' }} />
+                                </Form.Group>
+                                </Col>
+                                <Col>
+                                <Form.Group controlId="remarks">
                                     <Form.Label>Remarks</Form.Label>
-                                    <Form.Control type="text" name="remarks" required placeholder="" />
-                            </Form.Group>
-                            <Form.Group controlId="createdOn">
+                                    <Form.Control type="text" name="remarks" required placeholder="" style={{ border: '1px solid black' }} />
+                                </Form.Group>
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col>
+                                <Form.Group controlId="createdOn">
                                     <Form.Label>Created On</Form.Label>
-                                    <Form.Control type="text" name="createdOn" required placeholder="" />
-                            </Form.Group>
-                            <Form.Group controlId="createdBy">
+                                    <Form.Control type="text" name="createdOn" required placeholder="" style={{ border: '1px solid black' }} />
+                                </Form.Group>
+                                </Col>
+                                <Col>
+                                <Form.Group controlId="createdBy">
                                     <Form.Label>Created By</Form.Label>
-                                    <Form.Control type="text" name="createdBy" required placeholder="" />
-                            </Form.Group>
-                            <Form.Group controlId="modifiedOn">
+                                    <Form.Control type="text" name="createdBy" required placeholder="" style={{ border: '1px solid black' }} />
+                                </Form.Group>
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col>
+                                <Form.Group controlId="modifiedOn">
                                     <Form.Label>Modified On</Form.Label>
-                                    <Form.Control type="text" name="modifiedOn" required placeholder="" />
-                            </Form.Group>
-                            <Form.Group controlId="modifiedBy">
+                                    <Form.Control type="text" name="modifiedOn" required placeholder="" style={{ border: '1px solid black' }} />
+                                </Form.Group>
+                                </Col>
+                                <Col>
+                                <Form.Group controlId="modifiedBy">
                                     <Form.Label>Modified By</Form.Label>
-                                    <Form.Control type="text" name="modifiedBy" required placeholder="" />
-                            </Form.Group>
-                            <Form.Group controlId="devRemarks">
+                                    <Form.Control type="text" name="modifiedBy" required placeholder="" style={{ border: '1px solid black' }} />
+                                </Form.Group>
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col>
+                                <Form.Group controlId="devRemarks">
                                     <Form.Label>Dev Remarks</Form.Label>
-                                    <Form.Control type="text" name="devRemarks" required placeholder="" />
-                            </Form.Group>
+                                    <Form.Control type="text" name="devRemarks" required placeholder="" style={{ border: '1px solid black' }} />
+                                </Form.Group>
+                                </Col>
+                                <Col></Col>
+                            </Row>
                             <Form.Group>
                                 <p></p>
                                 <Button variant="primary" type="submit" onClick={props.onHide}>
