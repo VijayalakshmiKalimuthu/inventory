@@ -10,6 +10,7 @@ const UpdateInventoryModal = (props) => {
     
         const inventoryData = {
             item_code: formData.get('itemCode'),
+            item_name: formData.get('itemName'),
             tran_type_IR: formData.get('tranTypeIR'),
             qnty: formData.get('qnty'),
             ref_number: formData.get('refNumber'),
@@ -20,6 +21,9 @@ const UpdateInventoryModal = (props) => {
             created_by: formData.get('createdBy'),
             modified_on: formData.get('modifiedOn'),
             modified_by: formData.get('modifiedBy'),
+            quantity_issued: formData.get('quantityIssued'),
+            quantity_recieved: formData.get('quantityRecieved'),
+            stock: formData.get('stock'),
             dev_remarks: formData.get('devRemarks'),
         };
 
@@ -41,7 +45,7 @@ const UpdateInventoryModal = (props) => {
     
                 <Modal
                     {...props}
-                    size="lg"
+                    size="xl"
                     aria-labelledby="contained-modal-title-vcenter"
                     centered >
     
@@ -52,7 +56,7 @@ const UpdateInventoryModal = (props) => {
                     </Modal.Header>
                     <Modal.Body>
                         <Row>
-                            <Col sm={11}>
+                            <Col sm={12}>
                                 <Form onSubmit={handleSubmit}>
 
                                   <Row>
@@ -62,6 +66,14 @@ const UpdateInventoryModal = (props) => {
                                       <Form.Control type="text" name="itemCode" required defaultValue={props.inventory?.item_code || ''} placeholder="" className="custom-border" />
                                     </Form.Group>
                                     </Col>
+
+                                    <Col>
+                                     <Form.Group controlId="itemName">
+                                      <Form.Label>Item Name</Form.Label>
+                                      <Form.Control type="text" name="itemName" required defaultValue={props.inventory?.item_name || ''} placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>
+
                                     <Col>                            
                                     <Form.Group controlId="tranTypeIR">
                                       <Form.Label>Tran Type I/R</Form.Label>
@@ -80,20 +92,20 @@ const UpdateInventoryModal = (props) => {
                                     </Col>
                                     <Col>                            
                                     <Form.Group controlId="qnty">
-                                      <Form.Label>Qnty</Form.Label>
+                                      <Form.Label>Quantity</Form.Label>
                                       <Form.Control type="text" name="qnty" required defaultValue={props.inventory?.qnty || ''} placeholder="" className="custom-border" />
                                     </Form.Group>
-                                    </Col>
-                                  </Row>
-                                  <p></p>
-
-                                  <Row>       
+                                    </Col>     
                                     <Col>                    
                                     <Form.Group controlId="refNumber">
                                       <Form.Label>Ref Number</Form.Label>
                                       <Form.Control type="text" name="refNumber" required defaultValue={props.inventory?.ref_number || ''} placeholder="" className="custom-border" />
                                     </Form.Group>
                                     </Col>
+                                  </Row>
+                                  <p></p>
+
+                                  <Row>  
                                     <Col>                            
                                     <Form.Group controlId="refType">
                                       <Form.Label>Ref Type</Form.Label>
@@ -105,11 +117,7 @@ const UpdateInventoryModal = (props) => {
                                       <Form.Label>Batch Number</Form.Label>
                                       <Form.Control type="text" name="batchNumber" required defaultValue={props.inventory?.batch_number || ''} placeholder="" className="custom-border" />
                                     </Form.Group>
-                                    </Col>
-                                  </Row>
-                                  <p></p>
-
-                                  <Row>         
+                                    </Col>        
                                     <Col>                   
                                     <Form.Group controlId="remarks">
                                       <Form.Label>Remarks</Form.Label>
@@ -131,7 +139,7 @@ const UpdateInventoryModal = (props) => {
                                   </Row>
                                   <p></p>
 
-                                  <Row>
+                                  <Row> 
                                     <Col>
                                     <Form.Group controlId="modifiedOn">
                                       <Form.Label>Modified On</Form.Label>
@@ -144,12 +152,40 @@ const UpdateInventoryModal = (props) => {
                                       <Form.Control type="text" name="modifiedBy" required defaultValue={props.inventory?.modified_by || ''} placeholder="" className="custom-border" />
                                     </Form.Group>
                                     </Col>
+
+                                    <Col>
+                                    <Form.Group controlId="quantityIssued">
+                                      <Form.Label>Quantity Issued</Form.Label>
+                                      <Form.Control type="text" name="quantityIssued" required defaultValue={props.inventory?.quantity_issued || ''} placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>
+                                    
+                                    <Col>
+                                    <Form.Group controlId="quantityRecieved">
+                                      <Form.Label>Quantity Received</Form.Label>
+                                      <Form.Control type="text" name="quantityRecieved" required defaultValue={props.inventory?.quantity_recieved || ''} placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>
+                                    <Col>
+                                    <Form.Group controlId="stock">
+                                      <Form.Label>Stock</Form.Label>
+                                      <Form.Control type="text" name="stock" required defaultValue={props.inventory?.stock || ''} placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>
+                                  </Row>
+                                  <p></p>
+
+                                  <Row>
                                     <Col>
                                     <Form.Group controlId="devRemarks">
                                       <Form.Label>Dev Remarks</Form.Label>
                                       <Form.Control type="text" name="devRemarks" required defaultValue={props.inventory?.dev_remarks || ''} placeholder="" className="custom-border" />
                                     </Form.Group>
                                     </Col>
+                                    <Col></Col>
+                                    <Col></Col>
+                                    <Col></Col>
+                                    <Col></Col>
                                   </Row>
                 <Form.Group>
                   <p></p>

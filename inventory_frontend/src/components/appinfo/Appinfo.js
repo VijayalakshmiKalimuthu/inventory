@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
-import { getAppinfo } from '../services/AppinfoService';
-import "../App.css";
+import { getAppinfo } from '../../services/AppinfoService';
+import "../../App.css";
 import { NavLink } from 'react-router-dom';
 
 const Appinfo = () => {
@@ -28,9 +28,9 @@ const Appinfo = () => {
       <h2 style={{ textAlign: 'center' }} className="appinfo-header">Appinfo</h2>
     </div>
       <div className="row side-row">
-        <NavLink exact to="/appinfo_manage" activeClassName="activeClicked" className="manage-button">
+        <NavLink exact to="/lab_assistant/appinfo_manage" activeClassName="activeClicked" className="manage-button">
           <Button variant="primary" size="sm">
-            Manage Appinfo
+            Manage 
           </Button>
         </NavLink>
     <p id="before-table"></p>
@@ -44,7 +44,7 @@ const Appinfo = () => {
             <th>Created By</th>
             <th>Modified On</th>
             <th>Modified By</th>
-            <th>MDev Remarks</th>
+            <th>Dev Remarks</th>
             </tr>
         </thead>
         <tbody>

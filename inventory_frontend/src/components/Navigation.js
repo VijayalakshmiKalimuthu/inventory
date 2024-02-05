@@ -15,7 +15,7 @@ import './Navigation.css'
 const Navigation = () => {
   return (
     <div>
-      <Navbar bg="dark" variant="dark" expand="lg" id="my-nav">
+      <Navbar bg="dark" variant="dark" id="my-nav" className="custom-navbar">
         <Navbar.Brand className="app-logo" href="/home">
           <img
             src={TN_Transparent_Logo}
@@ -51,6 +51,10 @@ const Navigation = () => {
 
               <NavLink exact to="/inventory" activeClassName="activeClicked">
                 <CDBSidebarMenuItem icon="list" className="black-text">Inventory Master</CDBSidebarMenuItem>
+              </NavLink>
+
+              <NavLink exact to="/settings" activeClassName="activeClicked">
+                <CDBSidebarMenuItem icon="list" className="black-text">Settings</CDBSidebarMenuItem>
               </NavLink>
 
             </CDBSidebarMenu>

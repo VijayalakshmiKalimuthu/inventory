@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
-import { getProjectApi } from '../../services/AppinfoService';
-import "../../App.css";
+import { getProjectApi } from '../../../services/AppinfoService';
+import "../../../App.css";
 import { NavLink } from 'react-router-dom';
 
 const Project = () => {
@@ -25,10 +25,10 @@ const Project = () => {
   return(
     <div className="container-fluid side-container">
     <div className="header-container">
-      <h2 style={{ textAlign: 'center' }} className="appinfo-header">Projects</h2>
+      <h2 style={{ textAlign: 'center' }} className="appinfo-header">Project Master</h2>
     </div>
       <div className="row side-row">
-        <NavLink exact to="/project_manage" activeClassName="activeClicked" className="manage-button">
+        <NavLink exact to="/admin/project_manage" activeClassName="activeClicked" className="manage-button">
           <Button variant="primary" size="sm">
             Manage
           </Button>

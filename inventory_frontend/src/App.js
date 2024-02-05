@@ -2,15 +2,17 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navigation from "./components/Navigation";
 import Home from "./components/Home";
-import Appinfo from "./components/Appinfo";
-import Manage from "./components/Manage";
+import Appinfo from "./components/appinfo/Appinfo";
+import Manage from "./components/appinfo/Manage";
 import Chemical from "./components/chemical/Chemical"
 import ChemicalManage from "./components/chemical/ChemicalManage"
-import Project from './components/projects/Project';
-import ProjectManage from './components/projects/ProjectManage'
+import Project from './components/admin/projects/Project';
+import ProjectManage from './components/admin/projects/ProjectManage'
 import Inventory from './components/inventory/Inventory'
 import InventoryManage from './components/inventory/InventoryManage';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import Register from './components/auth/Register';
+
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
          
          <Route path="/inventory" element={<Inventory/>} />
          <Route path="/inventory_manage" element={<InventoryManage/>} />
+
+         <Route path="/register" element={<Register/>} />
        </Routes>
     </BrowserRouter>
   );

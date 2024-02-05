@@ -25,14 +25,14 @@ const Chemical = () => {
   return(
     <div className="container-fluid side-container">
     <div className="header-container">
-      <h2 style={{ textAlign: 'center' }} className="appinfo-header">Chemicals</h2>
+      <h2 style={{ textAlign: 'center' }} className="appinfo-header">Chemical Master</h2>
     </div>
       <div className="row side-row">
-        <NavLink exact to="/chemical_manage" activeClassName="activeClicked" className="manage-button">
+        <NavLink exact to="/lab_assistant/chemical_manage" activeClassName="activeClicked" className="manage-button">
           <Button variant="primary" size="sm">
             Manage
           </Button>
-        </NavLink>
+        </NavLink>        
     <p id="before-table"></p>
         <Table striped bordered hover className="react-bootstrap-table" id="dataTable">
         <thead>
@@ -48,6 +48,12 @@ const Chemical = () => {
             <th>Created By</th>
             <th>Modified On</th>
             <th>Modified By</th>
+            <th>Batch/Lot Number</th>
+            <th>Issue Date</th>
+            <th>Issue To</th>
+            <th>Quantity Issued</th>
+            <th>Quantity Received</th>
+            <th>Stock </th>
             <th>Dev Remarks</th>
             </tr>
         </thead>
@@ -65,6 +71,12 @@ const Chemical = () => {
                 <td>{chem.created_by}</td>
                 <td>{chem.modified_on}</td>
                 <td>{chem.modified_by}</td>
+                <td>{chem.batch_number}</td>
+                <td>{chem.issue_date}</td>
+                <td>{chem.issue_to}</td>
+                <td>{chem.quantity_issued}</td>
+                <td>{chem.quantity_recieved}</td>
+                <td>{chem.stock}</td>
                 <td>{chem.dev_remarks}</td>
             </tr>)}
         </tbody>

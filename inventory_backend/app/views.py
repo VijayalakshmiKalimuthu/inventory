@@ -1,8 +1,9 @@
 
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from .serializers import AppinfoSerializer, ChemicalSerializer, ProjectSerializer, InventorySerializer, UserSerializer
+from .serializers import AppinfoSerializer, ChemicalSerializer, ProjectSerializer, InventorySerializer, UserSerializer, RequestCISerializer, IssuesSerializers
+from .serializers import LoginSerializer
 from django.http.response import JsonResponse
-from .models import Appinfo, Chemical_Master, Project_Master, Inventory_Tran
+from .models import Appinfo, Chemical_Master, Project_Master, Inventory_Tran, Request_CI, IssuesNote, LoginCre
 from django.http.response import Http404
 from rest_framework.response import Response
 from rest_framework import serializers
@@ -37,20 +38,9 @@ def add_appinfo(request):
     
 @api_view(['GET'])
 def view_appinfo(request):
-	
-	
-	# checking for the parameters from the URL
-	if request.query_params:
-		appinfo = Appinfo.objects.filter(**request.query_params.dict())
-	else:
-		appinfo = Appinfo.objects.all()
-
-	# if there is something in appinfo else raise error
-	if appinfo:
-		serializer = AppinfoSerializer(appinfo, many=True)
-		return Response(serializer.data)
-	else:
-		return Response(status=status.HTTP_404_NOT_FOUND)
+    appinfo = Appinfo.objects.all()
+    serializer = AppinfoSerializer(appinfo, many=True)
+    return Response(serializer.data)
 
 
 @api_view(['PUT'])
@@ -77,34 +67,35 @@ def delete_appinfo(request, pk=None):
 
 @api_view(['POST'])
 def add_chemical(request):
+    print("Request data:", request.data)
+
+    # Creating a serializer instance
     chemical = ChemicalSerializer(data=request.data)
- 
-    # validating for already existing data
-    if Chemical_Master.objects.filter(**request.data).exists():
-        raise serializers.ValidationError('This data already exists')
- 
-    if chemical.is_valid():
-        chemical.save()
-        return Response(chemical.data)
-    else:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        # Validating for already existing data
+        if Chemical_Master.objects.filter(**request.data).exists():
+            raise serializers.ValidationError('This data already exists')
+
+        # Checking if the serializer is valid
+        if chemical.is_valid():
+            # Saving the data
+            chemical.save()
+            print("Chemical data saved successfully")
+            return Response(chemical.data, status=status.HTTP_201_CREATED)
+        else:
+            print("Invalid data:", chemical.errors)
+            return Response(chemical.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 @api_view(['GET'])
 def view_chemical(request):
-	
-	
-	# checking for the parameters from the URL
-	if request.query_params:
-		chemical = Chemical_Master.objects.filter(**request.query_params.dict())
-	else:
-		chemical = Chemical_Master.objects.all()
-
-	# if there is something in appinfo else raise error
-	if chemical:
-		serializer = ChemicalSerializer(chemical, many=True)
-		return Response(serializer.data)
-	else:
-		return Response(status=status.HTTP_404_NOT_FOUND)
+	chemical = Chemical_Master.objects.all()
+	serializer = ChemicalSerializer(chemical, many=True)
+	return Response(serializer.data)
 
 
 @api_view(['PUT'])
@@ -142,21 +133,10 @@ def add_project(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
     
 @api_view(['GET'])
-def view_project(request):
-	
-	
-	# checking for the parameters from the URL
-	if request.query_params:
-		project = Project_Master.objects.filter(**request.query_params.dict())
-	else:
-		project = Project_Master.objects.all()
-
-	# if there is something in appinfo else raise error
-	if project:
-		serializer = ProjectSerializer(project, many=True)
-		return Response(serializer.data)
-	else:
-		return Response(status=status.HTTP_404_NOT_FOUND)
+def view_project(request):	
+	project = Project_Master.objects.all()
+	serializer = ProjectSerializer(project, many=True)
+	return Response(serializer.data)
 
 
 @api_view(['PUT'])
@@ -197,20 +177,9 @@ def add_inventory(request):
     
 @api_view(['GET'])
 def view_inventory(request):
-	
-	
-	# checking for the parameters from the URL
-	if request.query_params:
-		inventory = Inventory_Tran.objects.filter(**request.query_params.dict())
-	else:
-		inventory = Inventory_Tran.objects.all()
-
-	# if there is something in appinfo else raise error
-	if inventory:
-		serializer = InventorySerializer(inventory, many=True)
-		return Response(serializer.data)
-	else:
-		return Response(status=status.HTTP_404_NOT_FOUND)
+	inventory = Inventory_Tran.objects.all()
+	serializer = InventorySerializer(inventory, many=True)
+	return Response(serializer.data)
 
 
 @api_view(['PUT'])
@@ -228,6 +197,8 @@ def delete_inventory(request, pk):
 	inventory = get_object_or_404(Inventory_Tran, entry_no=pk)
 	inventory.delete()
 	return Response(status=status.HTTP_202_ACCEPTED)
+
+#----------------------------------Login---------------------------------------------------#
 
 
 @api_view(['POST'])
@@ -273,3 +244,125 @@ def login_user(request):
         return Response({'error': 'Invalid username or password'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
+#--------------------------------Waiting Approval------------------------------------------
+
+@api_view(['POST'])
+def add_request(request):
+    print("Request data:", request.data)
+
+    # Creating a serializer instance
+    req = RequestCISerializer(data=request.data)
+
+    try:
+        # Validating for already existing data
+        if Request_CI.objects.filter(**request.data).exists():
+            print("Data already exists")
+            raise serializers.ValidationError('This data already exists')
+
+        # Checking if the serializer is valid
+        if req.is_valid():
+            # Saving the data
+            req.save()
+            print("Request data saved successfully")
+            return Response(req.data, status=status.HTTP_201_CREATED)
+        else:
+            print("Invalid data:", req.errors)
+            return Response(req.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['GET'])
+def view_request(request):
+	req = Request_CI.objects.all()
+	serializer = RequestCISerializer(req, many=True)
+	return Response(serializer.data)
+
+
+@api_view(['PUT'])
+def update_request(request, pk=None):
+    req_to_update = Request_CI.objects.get(id=pk)
+    serializer = RequestCISerializer(instance=req_to_update, data=request.data, partial=True)
+    
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse("Request Updated Successfully", safe=False)
+    return JsonResponse("Failed to Update Request")
+
+@api_view(['DELETE'])
+def delete_request(request, pk):
+	req = get_object_or_404(Request_CI, id=pk)
+	req.delete()
+	return Response(status=status.HTTP_202_ACCEPTED)
+
+
+# -------------------------------------Issue Notes ------------------------------#
+
+@api_view(['POST'])
+def add_issue(request):
+    print("Request data:", request.data)
+
+    # Creating a serializer instance
+    issues = IssuesSerializers(data=request.data)
+
+    try:
+        # Validating for already existing data
+        if IssuesNote.objects.filter(**request.data).exists():
+            raise serializers.ValidationError('This data already exists')
+
+        # Checking if the serializer is valid
+        if issues.is_valid():
+            # Saving the data
+            issues.save()
+            print("Issue Task saved successfully")
+            return Response(issues.data, status=status.HTTP_201_CREATED)
+        else:
+            print("Invalid data:", issues.errors)
+            return Response(issues.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['GET'])
+def view_issue(request):
+	issues = IssuesNote.objects.all()
+	serializer = IssuesSerializers(issues, many=True)
+	return Response(serializer.data)
+
+
+#-----------------------------Login Authentications----------------------------------#
+
+
+@api_view(['POST'])
+def add_login(request):
+    login = LoginSerializer(data=request.data)
+ 
+    # validating for already existing data
+    if LoginCre.objects.filter(**request.data).exists():
+        raise serializers.ValidationError('This data already exists')
+ 
+    if login.is_valid():
+        login.save()
+        return Response(login.data)
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['GET'])
+def view_login(request):
+    login = LoginCre.objects.all()
+    serializer = LoginSerializer(login, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['PUT'])
+def update_login(request, user_name=None):
+    login_to_update = LoginCre.objects.get(user_name=user_name)
+    serializer = LoginSerializer(instance=login_to_update, data=request.data, partial=True)
+    
+    if serializer.is_valid():
+        serializer.save()
+        print("Updated.")
+        return JsonResponse("Login Updated Successfully", safe=False)
+    return JsonResponse("Failed to Update Login")

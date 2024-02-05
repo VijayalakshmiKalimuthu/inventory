@@ -6,7 +6,8 @@ import { FaEdit } from 'react-icons/fa';
 import { RiDeleteBin5Line } from 'react-icons/ri';
 import AddAppinfoModal from "./AddAppinfoModal";
 import UpdateAppinfoModal from "./UpdateAppinfoModal";
-import { getAppinfo, deleteAppinfo } from '../services/AppinfoService';
+import { getAppinfo, deleteAppinfo } from '../../services/AppinfoService';
+
 
 
 const Manage = () => {
@@ -46,8 +47,8 @@ const Manage = () => {
       };
     }, [isUpdated, appinfos]);
     
-    const handleUpdate = (e, stu) => {
-        e.preventDefault();
+    const handleUpdate = async (e, stu) => {
+      e.preventDefault();
         setEditModalShow(true);
         setEditAppinfos(stu);
     };

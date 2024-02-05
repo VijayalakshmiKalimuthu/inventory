@@ -6,7 +6,7 @@ import { FaEdit } from 'react-icons/fa';
 import { RiDeleteBin5Line } from 'react-icons/ri';
 import AddProjectModal from "./AddProjectModal";
 import UpdateProjectModal from "./UpdateProjectModal";
-import { getProjectApi, deleteProjectApi } from '../../services/AppinfoService';
+import { getProjectApi, deleteProjectApi } from '../../../services/AppinfoService';
 
 
 const ProjectManage = () => {

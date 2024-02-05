@@ -19,6 +19,12 @@ const UpdateChemicalModal = (props) => {
             created_by: formData.get('createdBy'),
             modified_on: formData.get('modifiedOn'),
             modified_by: formData.get('modifiedBy'),
+            batch_number: formData.get('batchNumber'),
+            issue_date: formData.get('issueDate'),
+            issue_to: formData.get('issueTo'),
+            quantity_issued: formData.get('quantityIsuued'),
+            quantity_recieved: formData.get('quantityRecieved'),
+            stock: formData.get('stock'),
             dev_remarks: formData.get('devRemarks'),
         };
       
@@ -72,11 +78,6 @@ const UpdateChemicalModal = (props) => {
                                     <Form.Control type="text" name="itemName" required defaultValue={props.chemical?.item_name || ''} placeholder="" style={{ border: '1px solid black' }} />
                                   </Form.Group>
                                   </Col>
-                                </Row>
-                                <p></p>
-
-                                <Row>
-                                  
                                   <Col>
                                   <Form.Group controlId="unit">
                                     <Form.Label>Unit</Form.Label>
@@ -89,16 +90,17 @@ const UpdateChemicalModal = (props) => {
                                     <Form.Control type="text" name="projectCode" required defaultValue={props.chemical?.project_code || ''} placeholder="" style={{ border: '1px solid black' }} />
                                   </Form.Group>
                                   </Col>
+                                </Row>
+                                <p></p>
+
+                                <Row>                                  
                                   <Col>
                                   <Form.Group controlId="remarks">
                                     <Form.Label>Remarks</Form.Label>
                                     <Form.Control type="text" name="remarks" required defaultValue={props.chemical?.remarks || ''} placeholder="" style={{ border: '1px solid black' }} />
                                   </Form.Group>
                                   </Col>
-                                </Row>
-                                <p></p>
-
-                                <Row>
+                                  
                                   <Col>
                                   <Form.Group controlId="createdOn">
                                     <Form.Label>Created On</Form.Label>
@@ -116,17 +118,60 @@ const UpdateChemicalModal = (props) => {
                                     <Form.Label>Modified On</Form.Label>
                                     <Form.Control type="text" name="modifiedOn" required defaultValue={props.chemical?.modified_on || ''} placeholder="" style={{ border: '1px solid black' }} />
                                   </Form.Group>
-                                  </Col>
-                                </Row>
-                                <p></p>
-
-                                <Row>                                  
+                                  </Col>                                 
                                   <Col>
                                   <Form.Group controlId="modifiedBy">
                                     <Form.Label>Modified By</Form.Label>
                                     <Form.Control type="text" name="modifiedBy" required defaultValue={props.chemical?.modified_by || ''} placeholder="" style={{ border: '1px solid black' }} />
                                   </Form.Group>
                                   </Col>
+                                </Row>
+                                <p></p>
+
+                                <Row>
+                                  <Col>
+                                  <Form.Group controlId="batchNumber">
+                                    <Form.Label>Batch Number</Form.Label>
+                                    <Form.Control type="text" name="batchNumber" required defaultValue={props.chemical?.batch_number || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                  </Form.Group>
+                                  </Col>
+
+                                  <Col>
+                                  <Form.Group controlId="issueDate">
+                                    <Form.Label>Issue Date</Form.Label>
+                                    <Form.Control type="text" name="issueDate" required defaultValue={props.chemical?.issue_date || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                  </Form.Group>
+                                  </Col>
+
+                                  <Col>
+                                  <Form.Group controlId="issueTo">
+                                    <Form.Label>Issue To</Form.Label>
+                                    <Form.Control type="text" name="issueTo" required defaultValue={props.chemical?.issue_to || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                  </Form.Group>
+                                  </Col>
+
+                                  <Col>
+                                  <Form.Group controlId="quantityIsuued">
+                                    <Form.Label>Quantity Issued</Form.Label>
+                                    <Form.Control type="text" name="quantityIsuued" required defaultValue={props.chemical?.quantity_issued || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                  </Form.Group>
+                                  </Col>
+                                <Col>
+                                  <Form.Group controlId="quantityRecieved">
+                                    <Form.Label>Quantity Recieved</Form.Label>
+                                    <Form.Control type="text" name="quantityRecieved" required defaultValue={props.chemical?.quantity_recieved || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                  </Form.Group>
+                                  </Col>
+                                </Row>
+                                <p></p>
+
+                                <Row>
+                                  <Col>
+                                  <Form.Group controlId="stock">
+                                    <Form.Label>Stock</Form.Label>
+                                    <Form.Control type="text" name="stock" required defaultValue={props.chemical?.dev_remarks || ''} placeholder="" style={{ border: '1px solid black' }} />
+                                  </Form.Group>
+                                  </Col> 
                                   <Col>
                                   <Form.Group controlId="devRemarks">
                                     <Form.Label>Dev Remarks</Form.Label>
@@ -134,9 +179,8 @@ const UpdateChemicalModal = (props) => {
                                   </Form.Group>
                                   </Col>
                                   <Col></Col>
-                                </Row>
-
-                                <Row>
+                                  <Col></Col>
+                                  <Col></Col>
                                   
                                 </Row>
                                 <Form.Group>

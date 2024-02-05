@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Col, Row, Form, Button } from 'react-bootstrap';
 //import { updateChemicalApi } from '../services/AppinfoService';
-import { updateProjectApi } from '../../services/AppinfoService'
+import { updateProjectApi } from '../../../services/AppinfoService'
 
 const UpdateProjectModal = (props) => {
     const handleSubmit = async (e) => {

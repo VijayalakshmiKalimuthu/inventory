@@ -25,10 +25,10 @@ const Inventory = () => {
   return(
     <div className="container-fluid side-container">
     <div className="header-container">
-      <h2 style={{ textAlign: 'center' }} className="appinfo-header">Inventory</h2>
+      <h2 style={{ textAlign: 'center' }} className="appinfo-header">Inventory Master</h2>
     </div>
       <div className="row side-row">
-        <NavLink exact to="/inventory_manage" activeClassName="activeClicked" className="manage-button">
+        <NavLink exact to="/lab_assistant/inventory_manage" activeClassName="activeClicked" className="manage-button">
           <Button variant="primary" size="sm">
             Manage
           </Button>
@@ -39,8 +39,9 @@ const Inventory = () => {
             <tr>
             <th>Entry No</th>
             <th>Item Code</th>
+            <th>Item Name</th>
             <th>Tran Type I/R</th>
-            <th>Qnnty</th>
+            <th>Quantity</th>
             <th>Ref Number</th>
             <th>Ref Type</th>
             <th>Batch Number</th>
@@ -49,6 +50,9 @@ const Inventory = () => {
             <th>Created By</th>
             <th>Modified On</th>
             <th>Modified By</th>
+            <th>Quantity Issued</th>
+            <th>Quantity Recieved</th>
+            <th>Stock</th>
             <th>Dev Remarks</th>
             </tr>
         </thead>
@@ -57,6 +61,7 @@ const Inventory = () => {
             <tr key={inven.id}>
                 <td>{inven.entry_no}</td>
                 <td>{inven.item_code}</td>
+                <td>{inven.item_name}</td>
                 <td>{inven.tran_type_IR}</td>
                 <td>{inven.qnty}</td>
                 <td>{inven.ref_number}</td>
@@ -67,6 +72,9 @@ const Inventory = () => {
                 <td>{inven.created_by}</td>
                 <td>{inven.modified_on}</td>
                 <td>{inven.modified_by}</td>
+                <td>{inven.quantity_issued}</td>
+                <td>{inven.quantity_recieved}</td>
+                <td>{inven.stock}</td>
                 <td>{inven.dev_remarks}</td>
             </tr>)}
         </tbody>

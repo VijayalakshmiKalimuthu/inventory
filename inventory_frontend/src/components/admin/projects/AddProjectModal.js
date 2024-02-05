@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal, Col, Row, Form, Button} from 'react-bootstrap';
 // import {FormControl, FormGroup, FormLabel} from 'react-bootstrap';
-import { addProjectApi } from '../../services/AppinfoService';
+import { addProjectApi } from '../../../services/AppinfoService';
 
 
 const AddProjectModal = (props) => {

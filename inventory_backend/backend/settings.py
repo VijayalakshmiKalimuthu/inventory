@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-1-fj9evzz8z2gnjt3vp&2oc58ag@c(+lt65d%s4j5ia3f%2t$%'
+SECRET_KEY = 'django-insecure-a73cac_2s&t%i_+t2xjo3cdy3trg$fm^=rism4ev+f_yk7o%s-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,14 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app.apps.AppConfig',
+    'app',
     'rest_framework',
     'corsheaders',
     'rest_framework.authtoken',
 ]
-
-
-#CORS_ORIGIN_ALLOW_ALL = True
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -132,6 +129,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+
 CORS_ALLOWED_ORIGINS = [
     'http://127:0:0:1:5173',
     'http://localhost:5173',
@@ -157,3 +155,5 @@ REST_FRAMEWORK = {
         # Other authentication classes...
     ],
 }
+
+

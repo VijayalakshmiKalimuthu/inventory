@@ -13,6 +13,7 @@ const AddInventoryModal = (props) => {
     
         const inventoryData = {
             item_code: formData.get('itemCode'),
+            item_name: formData.get('itemName'),
             tran_type_IR: formData.get('tranTypeIR'),
             qnty: formData.get('qnty'),
             ref_number: formData.get('refNumber'),
@@ -23,7 +24,11 @@ const AddInventoryModal = (props) => {
             created_by: formData.get('createdBy'),
             modified_on: formData.get('modifiedOn'),
             modified_by: formData.get('modifiedBy'),
+            quantity_issued: formData.get('quantityIssued'),
+            quantity_recieved: formData.get('quantityRecieved'),
+            stock: formData.get('stock'),
             dev_remarks: formData.get('devRemarks'),
+
         };
     
         addInventoryApi(inventoryData)
@@ -53,7 +58,7 @@ const AddInventoryModal = (props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Row>
-                        <Col sm={11}>
+                        <Col sm={12}>
                             <Form onSubmit={handleSubmit}>
 
                                 <Row>
@@ -63,6 +68,14 @@ const AddInventoryModal = (props) => {
                                             <Form.Control type="text" name="itemCode" required placeholder="" className="custom-border" />
                                     </Form.Group>
                                     </Col>
+
+                                    <Col>                          
+                                    <Form.Group controlId="itemName">
+                                            <Form.Label>Item Name</Form.Label>
+                                            <Form.Control type="text" name="itemName" required placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>
+
                                     <Col>
                                     <Form.Group controlId="tranTypeIR">
                                         <Form.Label>Tran Type I/R</Form.Label>
@@ -75,7 +88,7 @@ const AddInventoryModal = (props) => {
                                     </Col>
                                     <Col>
                                     <Form.Group controlId="qnty">
-                                            <Form.Label>Qnty</Form.Label>
+                                            <Form.Label>Quantity</Form.Label>
                                             <Form.Control type="text" name="qnty" required placeholder="" className="custom-border" />
                                     </Form.Group>
                                     </Col>
@@ -101,16 +114,17 @@ const AddInventoryModal = (props) => {
                                             <Form.Control type="text" name="batchNumber" required placeholder="" className="custom-border" />
                                     </Form.Group>
                                     </Col>
-                                </Row>
-                                <p></p>
 
-                                <Row>
                                     <Col>
                                     <Form.Group controlId="remarks">
                                             <Form.Label>Remarks</Form.Label>
                                             <Form.Control type="text" name="remarks" required placeholder="" className="custom-border" />
                                     </Form.Group>
                                     </Col>
+                                </Row>
+                                <p></p>
+
+                                <Row>
                                     <Col>
                                     <Form.Group controlId="createdOn">
                                             <Form.Label>Created On</Form.Label>
@@ -123,10 +137,7 @@ const AddInventoryModal = (props) => {
                                             <Form.Control type="text" name="createdBy" required placeholder="" className="custom-border" />
                                     </Form.Group>
                                     </Col>
-                                </Row>
-                                <p></p>
 
-                                <Row>                                    
                                     <Col>
                                     <Form.Group controlId="modifiedOn">
                                             <Form.Label>Modified On</Form.Label>
@@ -139,12 +150,37 @@ const AddInventoryModal = (props) => {
                                             <Form.Control type="text" name="modifiedBy" required placeholder="" className="custom-border" />
                                     </Form.Group>
                                     </Col>
+                                </Row>
+                                <p></p>
+
+                                <Row>
+                                    <Col>
+                                    <Form.Group controlId="quantityIssued">
+                                            <Form.Label>Quantity Issued</Form.Label>
+                                            <Form.Control type="text" name="quantityIssued" required placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>
+
+                                    <Col>
+                                    <Form.Group controlId="quantityRecieved">
+                                            <Form.Label>Quantity Recieved</Form.Label>
+                                            <Form.Control type="text" name="quantityRecieved" required placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>
+
+                                    <Col>
+                                    <Form.Group controlId="stock">
+                                            <Form.Label>Stock</Form.Label>
+                                            <Form.Control type="text" name="stock" required placeholder="" className="custom-border" />
+                                    </Form.Group>
+                                    </Col>  
+                                    
                                     <Col>
                                     <Form.Group controlId="devRemarks">
                                             <Form.Label>Dev Remarks</Form.Label>
                                             <Form.Control type="text" name="devRemarks" required placeholder="" className="custom-border" />
                                     </Form.Group>
-                                    </Col>
+                                    </Col> 
                                 </Row>
                             <Form.Group>
                                 <p></p>

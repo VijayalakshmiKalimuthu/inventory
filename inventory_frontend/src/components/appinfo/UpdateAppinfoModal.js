@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, Col, Row, Form, Button } from 'react-bootstrap';
-import { updateAppinfo } from '../services/AppinfoService';
+import { updateAppinfo } from '../../services/AppinfoService';
 
 const UpdateAppinfoModal = (props) => {
     const handleSubmit = async (e) => {

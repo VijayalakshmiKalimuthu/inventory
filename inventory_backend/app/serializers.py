@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Appinfo, Chemical_Master, Project_Master, Inventory_Tran
+from .models import Appinfo, Chemical_Master, Project_Master, Inventory_Tran, Request_CI, IssuesNote, LoginCre
 from django.contrib.auth.models import User
 from rest_framework.authtoken.views import Token
 
@@ -19,40 +19,40 @@ class ChemicalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chemical_Master
         fields = ('c_id',
-                  'entry_no',
-                  'item_code',
-                  'item_name',
-                  'unit',
-                  'project_code',
-                  'remarks',
+                  'entry_no',          
+                  'item_code',    
+                  'item_name',         
+                  'unit',            
+                  'project_code',      
+                  'remarks',         
                   'created_on',
                   'created_by',
                   'modified_on',
                   'modified_by',
-                  'dev_remarks')
+                  'batch_number',
+                  'issue_date',
+                  'issue_to',
+                  'quantity_issued',
+                  'quantity_recieved',
+                  'stock',
+                  'dev_remarks')      
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project_Master
-        fields = ('project_code',
-                  'project_name')
+        fields = '__all__'
         
 class InventorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Inventory_Tran
-        fields = ('entry_no',
-                 'item_code',
-                 'tran_type_IR',
-                 'qnty',
-                 'ref_number',
-                 'ref_type',
-                 'batch_number',
-                 'remarks',
-                 'created_on',
-                 'created_by',
-                 'modified_on',
-                 'modified_by',
-                 'dev_remarks')
+        fields = '__all__'
+
+class RequestCISerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Request_CI
+        fields = '__all__'
+    ApprovedBy = serializers.CharField(default=None, allow_null=True)
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -68,3 +68,13 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         Token.objects.create(user=user)
         return user    
+    
+class IssuesSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = IssuesNote
+        fields = '__all__'
+
+class LoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LoginCre
+        fields = '__all__'

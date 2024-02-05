@@ -83,6 +83,12 @@ export function addChemicalApi(chemical) {
     created_by: chemical.created_by,
     modified_on: chemical.modified_on,
     modified_by: chemical.modified_by,
+    batch_number: chemical.batch_number,
+    issue_date: chemical.issue_date,
+    issue_to: chemical.issue_to,
+    quantity_issued: chemical.quantity_issued,
+    quantity_recieved: chemical.quantity_recieved,
+    stock: chemical.stock,
     dev_remarks: chemical.dev_remarks
   })
   .then(response => response.data);
@@ -100,6 +106,12 @@ export async function updateChemicalApi(cid, chemical) {
     created_by: chemical.created_by,
     modified_on: chemical.modified_on,
     modified_by: chemical.modified_by,
+    batch_number: chemical.batch_number,
+    issue_date: chemical.issue_date,
+    issue_to: chemical.issue_to,
+    quantity_issued: chemical.quantity_issued,
+    quantity_recieved: chemical.quantity_recieved,
+    stock: chemical.stock,
     dev_remarks: chemical.dev_remarks
   })
   .then(response => response.data);
@@ -172,6 +184,7 @@ export function addInventoryApi(inventory) {
   return axios.post('http://127.0.0.1:8000/add_inventory', {
     entry_no: null,     
     item_code: inventory.item_code,   
+    item_name: inventory.item_name,
     tran_type_IR: inventory.tran_type_IR,
     qnty: inventory.qnty,
     ref_number: inventory.ref_number,
@@ -182,6 +195,9 @@ export function addInventoryApi(inventory) {
     created_by: inventory.created_by,
     modified_on: inventory.modified_on,
     modified_by: inventory.modified_by,
+    quantity_issued: inventory.quantity_issued,
+    quantity_recieved: inventory.quantity_recieved,
+    stock: inventory.stock,
     dev_remarks: inventory.dev_remarks
 
   })
@@ -191,6 +207,7 @@ export function addInventoryApi(inventory) {
 export async function updateInventoryApi(enNo, inventory) {
   return axios.put(`http://127.0.0.1:8000/update_inventory/${enNo}`, {
     item_code: inventory.item_code,   
+    item_name: inventory.item_name,
     tran_type_IR: inventory.tran_type_IR,
     qnty: inventory.qnty,
     ref_number: inventory.ref_number,
@@ -201,11 +218,16 @@ export async function updateInventoryApi(enNo, inventory) {
     created_by: inventory.created_by,
     modified_on: inventory.modified_on,
     modified_by: inventory.modified_by,
+    quantity_issued: inventory.quantity_issued,
+    quantity_recieved: inventory.quantity_recieved,
+    stock: inventory.stock,
     dev_remarks: inventory.dev_remarks
   })
   .then(response => response.data);
   
 }
+
+//------------------------------------Login system----------------------------
 
 const BASE_URL = 'http://127.0.0.1:8000';  // Replace with your actual base URL
 
@@ -230,3 +252,104 @@ export async function registerUserApi(userInfo) {
 }
 
 
+//---------------------------------Request Approval--------------------------------
+
+export function getRequestApi() {
+  return axios.get('http://127.0.0.1:8000/request')
+    .then(response => response.data)
+}
+
+export function deleteRequestApi(id) {
+  return axios.delete(`http://127.0.0.1:8000/delete_request/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
+  .then(response => response.data)
+  .catch(error => {
+    console.error('Error deleting appinfo:', error);
+    throw error;
+  });
+}
+
+export function addRequestApi(request) {
+  return axios.post('http://127.0.0.1:8000/add_request', {
+    id: null,
+    ItemCode: request.ItemCode,
+    ItemType: request.ItemType,
+    ItemName: request.ItemName,
+    RequestDate: request.RequestDate,
+    RequestStatus: request.RequestStatus,
+    RequestedBy: request.RequestedBy,
+    RequestDetails: request.RequestDetails,
+    ApprovedBy: null
+
+  })
+  .then(response => response.data);
+}
+
+export async function updateRequestApi(id, request) {
+  return axios.put(`http://127.0.0.1:8000/update_request/${id}`, {
+  ItemCode: request.ItemCode,
+  ItemType: request.ItemType,
+  ItemName: request.ItemName,
+  RequestDate: request.RequestDate,
+  RequestStatus: request.RequestStatus,
+  RequestedBy: request.RequestedBy,
+  RequestDetails: request.RequestDetails,
+  ApprovedBy: request.ApprovedBy
+  })
+  .then(response => response.data);
+  
+}
+
+//-----------------------Issue Task..------------------------------------------
+
+export function getIssueApi() {
+  return axios.get('http://127.0.0.1:8000/issues')
+    .then(response => response.data)
+}
+
+export function addIssueApi(researcher) {
+  return axios.post('http://127.0.0.1:8000/add_issue', {
+    id: null,
+    researcher_name: researcher.researcher_name,
+    issues_task: researcher.issues_task,
+    date_time: researcher.date_time,
+    issue_raised_by: researcher.issue_raised_by,
+    issue_status: researcher.issue_status,
+
+  })
+  .then(response => response.data);
+}
+
+
+//-----------------------------Login Add Role-----------------------
+
+
+export function getLoginApi() {
+  return axios.get('http://127.0.0.1:8000/view_login')
+    .then(response => response.data)
+}
+
+export function addLoginApi(log) {
+  return axios.post('http://127.0.0.1:8000/add_login', {
+    id: null,
+    user_name: log.user_name,
+    password: log.password,
+    role: log.role,
+  })
+  .then(response => response.data);
+}
+
+export async function updateLoginApi(id, log) {
+  return axios.put(`http://127.0.0.1:8000/update_login/${id}`, {
+    user_name: log.user_name,
+    password: log.password,
+    role: log.role,
+  })
+  .then(response => response.data);
+  
+}

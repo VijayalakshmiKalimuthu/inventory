@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal, Col, Row, Form, Button} from 'react-bootstrap';
 // import {FormControl, FormGroup, FormLabel} from 'react-bootstrap';
-import { addAppinfo } from '../services/AppinfoService';
+import { addAppinfo } from '../../services/AppinfoService';
 
 
 const AddAppinfoModal = (props) => {

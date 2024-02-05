@@ -1,42 +1,56 @@
 import React, { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
-import { loginUserApi, registerUserApi } from '../../services/AppinfoService'; 
-import App from '../../App';
-import AIWC_Transparent_Logo from '../../assets/AIWC_Transparent_Logo.png'
+import { getLoginApi, registerUserApi } from '../../services/AppinfoService';
+import AIWC_Transparent_Logo from '../../assets/AIWC_Transparent_Logo.png';
+import AdminApp from '../../AdminApp';
+import ManagerApp from '../../ManagerApp';
+import LabApp from '../../LabApp';
+import ResearcherApp from '../../ResearcherApp';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [token, setToken] = useCookies(['mytoken']);
   const [isLoggedIn, setLoggedIn] = useState(false);
-/*
-  useEffect(() => {
-    const userToken = token['mytoken'];
-    console.log('Login User token is', userToken);
+  const [userRole, setUserRole] = useState('');
 
-    if (userToken) {
-      setLoggedIn(true);
-    }
-  }, [token]);
-*/
   const handleLogin = async () => {
     try {
-      if (username.trim().length !== 0 && password.trim().length) {
-        console.log('Username And Password Are Set');
-        const resp = await loginUserApi({ username, password });
-        setToken('mytoken', resp.token);
-        setLoggedIn(true);
-        
-        alert("Login Successfully");
-      } else {
-        alert("Invalid Credentials");
-        console.log('Username And Password Are Not Set');
-      }
+      getLoginApi()
+        .then((response) => {
+          console.log('API Response:', response);
+
+          // Check if there is at least one request in the array
+          if (response.length > 0) {
+            let found = false;
+
+            for (let i = 0; i < response.length; i++) {
+              const user = response[i];
+
+              // Check if the current user meets all conditions
+              if (user.user_name === username && user.password === password) {
+                found = true;
+                setLoggedIn(true);
+                setUserRole(user.role);
+                break; // Exit the loop once a matching user is found
+              }
+            }
+
+            if (!found) {
+              alert('Invalid Credentials');
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          alert('Unauthorized..!');
+        });
     } catch (error) {
       console.log(error);
-      alert("Unauthorized..!")
+      alert('Unauthorized..!');
     }
   };
+
 
   const handleRegister = async () => {
     try {
@@ -53,19 +67,7 @@ function Login() {
       console.log(error);
     }
   };
-
-  // const loginStyle = {
-  //   backgroundImage: `url(${process.env.PUBLIC_URL}/assets/AIWC_Transparent_Logo.png)`,
-  //   backgroundRepeat: 'no-repeat',
-  //   backgroundSize: 'cover',
-  //   minHeight: '100%', // Fix here
-  //   height: '77vh',
-  //   backgroundPosition: 'center',
-  //   margin: 0,
-  // };
-
   
-   
   const loginStyle = {
     minHeight: '100%',
     height: '77vh',
@@ -101,100 +103,80 @@ function Login() {
 
   return (
     <div className="App">
-      <div className="container-fluid">
-        {isLoggedIn ? (
-          <App />
-        ) : (
-          <div className="row">
-            <div className="alert alert-danger"> 
-              <h1 style={{ marginLeft: '300px' }}>WELCOME TO INVENTORY CONTROL!</h1>
-            </div>
-            <br />
-            <br />
-            <div className="col-sm-8 full-img" style={loginStyle}>
-              <div style={leftSideStyle}>
-                <img src={AIWC_Transparent_Logo} alt="Logo" style={imageStyle} />
+      {isLoggedIn ? (
+        (() => {
+          console.log('Inside isLoggedIn block');
+          switch (userRole) {
+            case 'Admin':
+              console.log('Rendering AdminApp');
+              return <AdminApp />;
+            case 'Manager':
+              return <ManagerApp />;
+            case 'Lab':
+              return <LabApp />;
+            case 'Researcher':
+              return <ResearcherApp />;
+            default:
+              // Display an alert for unexpected userRole
+              alert('Something went wrong. Please contact support.');
+              setLoggedIn(false)
+              return <Login />; // or any other appropriate fallback
+          }
+        })()
+      ) : (
+        <>
+          <div className="container-fluid">
+            <div className="row">
+              <div className="alert alert-danger">
+                <h1 style={{ marginLeft: '300px' }}>WELCOME TO INVENTORY CONTROL!</h1>
               </div>
-            </div>
-
-            <div className="col-sm-4" style={rightSideStyle}>
-              {isLoggedIn ? <h3>Register Here</h3> : <h3 style={{ marginLeft: '100px' }}>Login Here</h3>}
-              <p></p>
-            <div className="form-group">
-              <label htmlFor="username">Username</label>
-              <p></p>
-              <input
-                type="text"
-                value={username}
-                className="form-control"
-                placeholder="Enter Username"
-                style={{ width: 350, 
-                  border: '1px solid lightgray', 
-                  backgroundColor: 'lightyellow', 
-                  padding: '8px', }}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
-            <p></p>
-
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <p></p>
-              <input
-                type="password"
-                value={password}
-                className="form-control"
-                placeholder="Enter Password"
-                style={{ width: 350, 
-                  border: '1px solid lightgray', // Border color
-                  backgroundColor: 'lightyellow', // Background color
-                  padding: '8px', }}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-
-            <br />
-
-            <div>
-              {isLoggedIn ? (
-                <div>
-                <button onClick={handleRegister} style={{ marginLeft: '100px' }} className="btn btn-primary">
-                  Register
-                </button>
-                <p>
-                  If You Have Account, Please Login Here..
-                  <p></p>
-                  <button className="btn btn-primary" style={{ marginLeft: '100px' }} onClick={() => setLoggedIn(true)}>
-                    Login
-                  </button>
-                  </p>
-              </div>
-                
-              ) : (
-                <div>
-                  <button onClick={handleLogin} className="btn btn-primary" style={{ marginLeft: '100px' }}>
-                    Login
-                  </button>
-                  <p></p>
-                  <p>
-                    If You Don't Have Account, Please Register Here..
-                    <p></p>
-                    <button onClick={handleRegister} className="btn btn-primary" style={{ marginLeft: '100px' }}>
-                      Register
-                    </button>
-                  </p>
+              <br />
+              <br />
+              <div className="col-sm-8 full-img" style={loginStyle}>
+                <div style={leftSideStyle}>
+                  <img src={AIWC_Transparent_Logo} alt="Logo" style={imageStyle} />
                 </div>
-              )}
+              </div>
+
+              <div className="col-sm-4" style={rightSideStyle}>
+                <h3 style={{ marginLeft: '100px' }}>Login Here</h3>
+                <div className="form-group">
+                  <label htmlFor="username">Username</label>
+                  <input
+                    type="text"
+                    value={username}
+                    className="form-control"
+                    placeholder="Enter Username"
+                    style={{ width: 350, border: '1px solid lightgray', backgroundColor: 'lightyellow', padding: '8px' }}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="password">Password</label>
+                  <input
+                    type="password"
+                    value={password}
+                    className="form-control"
+                    placeholder="Enter Password"
+                    style={{ width: 350, border: '1px solid lightgray', backgroundColor: 'lightyellow', padding: '8px' }}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <p></p>
+
+                <div>
+                  <button onClick={handleLogin} className="btn btn-primary" style={{ marginLeft: '270px' }}>
+                    Login
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-
-          
-          </div>
-        )}
-      </div>
+        </>
+      )}
     </div>
   );
 }
 
 export default Login;
-
