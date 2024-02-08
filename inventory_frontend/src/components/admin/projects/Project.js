@@ -34,21 +34,33 @@ const Project = () => {
           </Button>
         </NavLink>
     <p id="before-table"></p>
-        <Table striped bordered hover className="react-bootstrap-table" id="dataTable">
+    <Table striped bordered hover className="react-bootstrap-table" id="dataTable" style={{ margin: 'auto', width: '500px' }}>
         <thead>
             <tr>
-            <th>Project Code</th>
-            <th>Project Name</th>
+                <th style={{ backgroundColor: 'green',
+                             width: '250px', 
+                             color: 'white', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Project Code</th>
+                <th style={{ backgroundColor: 'green', 
+                             width: '250px', 
+                             color: 'white', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Project Name</th>
             </tr>
         </thead>
         <tbody>
-            {project.map((pro) =>
-            <tr key={pro.id}>
-                <td>{pro.project_code}</td>
-                <td>{pro.project_name}</td>
-            </tr>)}
+            {project.map((pro) => (
+                <tr key={pro.id}>
+                    <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{pro.project_code}</td>
+                    <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{pro.project_name}</td>
+                </tr>
+            ))}
         </tbody>
     </Table>
+
     </div>
   </div>
   );

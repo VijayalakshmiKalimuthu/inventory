@@ -38,6 +38,11 @@ urlpatterns = [
     re_path(r'^add_login/?$', views.add_login, name='add_login'),
     path('view_login', views.view_login, name='view_login'),
     path('update_login/<str:user_name>', views.update_login, name='update_login'),
+
+    re_path(r'^add_emp/?$', views.add_emp, name='add_emp'),
+    path('emp/', views.view_emp, name='view_emp'),
+    path('update_emp/<int:pk>', views.update_emp, name='update_emp'),
+    path('delete_emp/<int:pk>', views.delete_emp, name='delete_emp'),
     
     
 ]

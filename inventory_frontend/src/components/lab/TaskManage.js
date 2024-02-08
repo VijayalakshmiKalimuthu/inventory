@@ -67,7 +67,7 @@ const TaskManage = () => {
                   <th>Id</th>
                   <th>Researcher Name</th>
                   <th>Issue Task</th>
-                  <th>Date/Time</th>
+                  <th>Date</th>
                   <th>Issue Raised By</th>
                   <th>Issue Status</th>
                 </tr>

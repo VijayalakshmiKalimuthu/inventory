@@ -11,12 +11,18 @@ import { Button, Navbar } from 'react-bootstrap';
 import '../../App.css';
 import '../Navigation.css'
 import TN_Transparent_Logo from '../../assets/TN_Transparent_Logo.png';
+import { FcHome, FcRedo, FcNews } from 'react-icons/fc';
+import { FcBarChart } from 'react-icons/fc';
+import { FcServices } from 'react-icons/fc';
+import { FcBusinessman } from 'react-icons/fc';
+import { FcContacts } from 'react-icons/fc';
+
 
 
 const AdminNavigation = () => {
   return (
     <div>
-      <Navbar bg="dark" variant="dark" id="my-nav" className="custom-navbar">
+      <Navbar bg="dark" variant="dark" id="my-nav" className="custom-navbar" style={{ width: '120%' }}>
         <Navbar.Brand className="app-logo" href="/home">
           <img
             src={TN_Transparent_Logo}
@@ -37,23 +43,40 @@ const AdminNavigation = () => {
           </CDBSidebarHeader>
           <CDBSidebarContent>
             <CDBSidebarMenu>
-              <NavLink exact to="/admin/home" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="home" className="black-text">Home</CDBSidebarMenuItem>
+              <NavLink exact to="/" activeClassName="activeClicked">
+                <CDBSidebarMenuItem className="black-text">
+                  <FcHome style={{ marginRight: '10px', fontSize: '24px' }} />
+                  Home
+                </CDBSidebarMenuItem>
               </NavLink>
               <NavLink exact to="/admin/project" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="list" className="black-text">Project Master</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem className="black-text">
+                  <FcBarChart style={{ marginRight: '10px', fontSize: '24px' }} />
+                  Project Master
+                </CDBSidebarMenuItem>
               </NavLink>
               <NavLink exact to="/register" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="list" className="black-text">Settings</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem className="black-text">
+                  <FcBusinessman style={{ marginRight: '10px', fontSize: '24px' }} />
+                  New User
+                </CDBSidebarMenuItem>
               </NavLink>
 
               <NavLink exact to="/password_reset" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="list" className="black-text">Password Reset</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem className="black-text">
+                  <FcRedo style={{ marginRight: '10px', fontSize: '24px' }} />
+                  Password Reset
+                </CDBSidebarMenuItem>
               </NavLink>
 
-              <NavLink exact to="/notification" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="list" className="black-text">Notification</CDBSidebarMenuItem>
+              <NavLink exact to="/employee" activeClassName="activeClicked">
+                <CDBSidebarMenuItem className="black-text">
+                  <FcContacts style={{ marginRight: '10px', fontSize: '24px' }} />
+                  Employee Details
+                </CDBSidebarMenuItem>
               </NavLink>
+
+              
 
             </CDBSidebarMenu>
           </CDBSidebarContent>

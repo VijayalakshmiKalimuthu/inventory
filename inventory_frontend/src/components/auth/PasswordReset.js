@@ -46,7 +46,7 @@ function PasswordReset() {
   return (
     <div>
         <br/>
-        <div className='header' style={{ backgroundColor: 'lightpink', border: '1px solid darkred', height: '100px' }}>
+        <div className='header' style={{ backgroundColor: 'lightpink', border: '1px', height: '100px', width: '120%' }}>
             <h1 style={{ marginLeft: '650px', paddingTop: '20px' }}>Password Reset</h1>
         </div>
         <p></p>

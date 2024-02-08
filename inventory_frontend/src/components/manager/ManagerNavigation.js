@@ -11,11 +11,18 @@ import { Button, Navbar } from 'react-bootstrap';
 import TN_Transparent_Logo from '../../assets/TN_Transparent_Logo.png';
 import '../../App.css'
 import '../Navigation.css'
+import { FcAddDatabase } from "react-icons/fc";
+import { FcList } from 'react-icons/fc';
+import { FcBarChart } from 'react-icons/fc';
+import { FcHome } from 'react-icons/fc';
+import { FcNews } from 'react-icons/fc';
+
+
 
 const ManagerNavigation = () => {
   return (
     <div>
-      <Navbar bg="dark" variant="dark" id="my-nav" className="custom-navbar">
+      <Navbar bg="dark" variant="dark" id="my-nav" className="custom-navbar" style={{width : '120%'}}>
         <Navbar.Brand className="app-logo" href="/home">
           <img
             src={TN_Transparent_Logo}
@@ -36,17 +43,36 @@ const ManagerNavigation = () => {
           <CDBSidebarContent>
             <CDBSidebarMenu>
               <NavLink exact to="/" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="home" className="black-text">Home</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem className="black-text">
+                  <FcHome style={{ marginRight: '8px', fontSize: '24px' }} />
+                  Home
+                </CDBSidebarMenuItem>
               </NavLink>
               <NavLink exact to="/manager/appinfo" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="list" className="black-text">Appinfo </CDBSidebarMenuItem>
+                <CDBSidebarMenuItem className="black-text">
+                  <FcAddDatabase style={{ marginRight: '8px', fontSize: '24px' }} />
+                  Appinfo
+                </CDBSidebarMenuItem>
               </NavLink>
               <NavLink exact to="/manager/chemical" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="list" className="black-text">Chemical Master</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem className="black-text">
+                  <FcBarChart style={{ marginRight: '8px', fontSize: '24px' }} />
+                  Chemical Master
+                </CDBSidebarMenuItem>
               </NavLink>
 
               <NavLink exact to="/manager/inventory" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="list" className="black-text">Inventory Master</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem className="black-text">
+                  <FcList style={{ marginRight: '8px', fontSize: '24px' }} />
+                  Inventory Master
+                </CDBSidebarMenuItem>
+              </NavLink>
+
+              <NavLink exact to="/notification" activeClassName="activeClicked">
+                <CDBSidebarMenuItem className="black-text">
+                  <FcNews style={{ marginRight: '10px', fontSize: '24px' }} />
+                  Notification
+                </CDBSidebarMenuItem>
               </NavLink>
 
             </CDBSidebarMenu>

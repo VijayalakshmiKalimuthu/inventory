@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Appinfo, Chemical_Master, Project_Master, Inventory_Tran, Request_CI, IssuesNote, LoginCre
+from .models import Appinfo, Chemical_Master, Project_Master, Inventory_Tran, Request_CI, IssuesNote, LoginCre, EmpDet
 from django.contrib.auth.models import User
 from rest_framework.authtoken.views import Token
 
@@ -78,3 +78,11 @@ class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = LoginCre
         fields = '__all__'
+
+class EmpSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmpDet
+        fields = ['emp_id', 'emp_name', 'designation', 'project_code']
+
+    
+        

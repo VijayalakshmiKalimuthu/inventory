@@ -97,3 +97,9 @@ class LoginCre(models.Model):
     user_name = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
     role = models.CharField(max_length=100)
+
+class EmpDet(models.Model):
+    emp_id = models.AutoField(primary_key=True)
+    emp_name = models.CharField(max_length=100)
+    designation = models.CharField(max_length=100)
+    project_code = models.ForeignKey(Project_Master, on_delete=models.CASCADE, related_name='employees')

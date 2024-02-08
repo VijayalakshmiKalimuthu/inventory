@@ -157,7 +157,7 @@ const InventoryManage = () => {
                   <th>Quantity Recieved</th>
                   <th>Stock</th>
                   <th>Dev Remarks</th>
-                  <th colspan="3" style={{ textAlign: 'center' }}>Action</th>
+                  <th colspan="2" style={{ textAlign: 'center' }}>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -180,21 +180,21 @@ const InventoryManage = () => {
                       <td>{inven.quantity_recieved || ''}</td>
                       <td>{inven.stock || ''}</td>
                       <td>{inven.dev_remarks || ''}</td>
-                      <td>
+                      {/*<td>
                           <Button className="mr-2" variant="danger" onClick={(event) => handleDelete(event, inven.entry_no)}>
                               <RiDeleteBin5Line />
                           </Button>
-                      </td>
+                </td> */}
                       <td>
                           <Button className="mr-2" onClick={(event) => handleUpdate(event, inven, inven.item_code, inven.item_name)}>
-                              <FaEdit />
+                              <FaEdit style={{ fontSize: '24px' }}  />
                           </Button>
                           <UpdateInventoryModal show={editModalShow} inventory={editInventory} setUpdated={setIsUpdated} onHide={EditModelClose} />
 
                       </td>
                       <td>
-                        <Button className='mr-2' onClick={handleOpenApp}>
-                          <HiArrowCircleUp />
+                        <Button className='mr-2' onClick={handleOpenApp} style={{ backgroundColor: 'green', color: 'white' }}>
+                          <HiArrowCircleUp style={{ fontSize: '24px' }}  />
                           </Button>
                           <ApprovalInventoryModal
                             show={approvalModalShow}

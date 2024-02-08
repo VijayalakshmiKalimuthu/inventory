@@ -18,6 +18,8 @@ from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from .models import EmpDet
+from .serializers import EmpSerializer
 
 
 
@@ -337,17 +339,29 @@ def view_issue(request):
 
 @api_view(['POST'])
 def add_login(request):
+    print("Request data:", request.data)
+
+    # Creating a serializer instance
     login = LoginSerializer(data=request.data)
- 
-    # validating for already existing data
-    if LoginCre.objects.filter(**request.data).exists():
-        raise serializers.ValidationError('This data already exists')
- 
-    if login.is_valid():
-        login.save()
-        return Response(login.data)
-    else:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        # Validating for already existing data
+        if LoginCre.objects.filter(**request.data).exists():
+            raise serializers.ValidationError('This data already exists')
+
+        # Checking if the serializer is valid
+        if login.is_valid():
+            # Saving the data
+            login.save()
+            print("Chemical data saved successfully")
+            return Response(login.data, status=status.HTTP_201_CREATED)
+        else:
+            print("Invalid data:", login.errors)
+            return Response(login.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 @api_view(['GET'])
 def view_login(request):
@@ -366,3 +380,89 @@ def update_login(request, user_name=None):
         print("Updated.")
         return JsonResponse("Login Updated Successfully", safe=False)
     return JsonResponse("Failed to Update Login")
+
+#----------------------Emp Details------------------------------------------------------#
+
+@api_view(['POST'])
+def add_emp(request):
+    print("Request data:", request.data)
+
+    try:
+        project_code_value = request.data.get('project_code')  # Assuming project_code is passed as an integer
+        if project_code_value:
+            project_instance, _ = Project_Master.objects.get_or_create(project_code=project_code_value)
+        else:
+            raise serializers.ValidationError('Project code is required')
+
+        # Creating a serializer instance with modified data (including the fetched or created designation and project instances)
+        data = request.data.copy()
+        data['project_code'] = project_instance.project_code
+        emp_serializer = EmpSerializer(data=data)
+
+        # Validating and saving the serializer instance
+        if emp_serializer.is_valid():
+            emp_serializer.save()
+            print("Employee details saved successfully")
+            return Response(emp_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print("Invalid data:", emp_serializer.errors)
+            return Response(emp_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+@api_view(['GET'])
+def view_emp(request):
+    print("Request data:", request.data)
+    # Perform a join between EmpDet, Project_Master, and LoginCre
+    emp = EmpDet.objects.select_related('project_code').all()
+    
+    # Serialize the queryset
+    serialized_data = []
+    for employee in emp:
+        serialized_employee = {
+            'emp_id': employee.emp_id,
+            'emp_name': employee.emp_name,
+            'designation': employee.designation,  # Assuming 'role' is the field you want from LoginCre
+            'project_code': employee.project_code.project_code,
+            'project_name': employee.project_code.project_name
+        }
+        serialized_data.append(serialized_employee)
+    
+    # Print for debugging
+    print("Serialized data:", serialized_data)
+
+    return Response(serialized_data)
+
+
+@api_view(['PUT'])
+def update_emp(request, pk=None):
+    print("Request data:", request.data)
+
+    try:
+        emp_to_update = EmpDet.objects.get(emp_id=pk)
+        serializer = EmpSerializer(instance=emp_to_update, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            print("Employee Details are Updated.")
+            return JsonResponse("Employee details updated successfully", safe=False, status=status.HTTP_200_OK)
+        else:
+            print("Invalid data:", serializer.errors)
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except EmpDet.DoesNotExist:
+        return JsonResponse("Employee does not exist", status=status.HTTP_404_NOT_FOUND)
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return JsonResponse({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['DELETE'])
+def delete_emp(request, pk):
+    print("Request data:", request.data)
+    emp = get_object_or_404(EmpDet, emp_id=pk)
+    emp.delete()
+    return Response(status=status.HTTP_202_ACCEPTED)

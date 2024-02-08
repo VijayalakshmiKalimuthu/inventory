@@ -10,24 +10,30 @@ function Register() {
   const [token, setToken] = useCookies(['mytoken']);
   const [isLoggedIn, setLoggedIn] = useState(false);
 
-  const handleRegister = async () => {
-    try {
-      console.log(username, password, role)
-      if (username.trim().length !== 0 && password.trim().length !== 0 && role.trim().length !== 0) { 
-        await addLoginApi({ username, password, role });
-        alert("Register Successfully");
-        console.log('Username, password, and role are set');
-        setUsername('')
-        setPassword('')
-        setRole('')
-
-        // handleLogin(); // Log in the user after registration
-      } else {
-        alert("Username, password, and role are required");
-        console.log('Username, password, and role are not set');
-      }
-    } catch (error) {
-      console.log(error);
+  const handleRegister = () => {
+    console.log(username, password, role);
+    if (username.trim().length !== 0 && password.trim().length !== 0 && role.trim().length !== 0) {
+      const requestData = {
+        user_name: username,  // Change 'username' to 'user_name'
+        password,
+        role,
+      };
+  
+      addLoginApi(requestData)
+        .then(result => {
+          alert("Register Successfully");
+          console.log('Username, password, and role are set');
+          setUsername('');
+          setPassword('');
+          setRole('');
+        })
+        .catch(error => {
+          console.log("Failed to register", error);
+          alert("Failed to Register");
+          setUsername('');
+          setPassword('');
+          setRole('');
+        });
     }
   };
 
@@ -119,10 +125,9 @@ function Register() {
                 }}
               >
                 <option value="">Select Role</option>
-                <option value="admin">Admin</option>
-                <option value="manager">Manager</option>
-                <option value="lab">Lab</option>
-                <option value="researcher">Researcher</option>
+                <option value="Manager">Manager</option>
+                <option value="Lab Assistant">Lab Assistant</option>
+                <option value="Researcher">Researcher</option>
               </select>
             </div>
 

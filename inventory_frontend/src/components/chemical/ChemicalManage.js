@@ -157,7 +157,7 @@ const ChemicalManage = () => {
                   <th>Quantity Received</th>
                   <th>Stock </th>
                   <th>Dev Remarks</th> 
-                  <th colspan="3" style={{ textAlign: 'center' }}>Action</th>
+                  <th colspan="2" style={{ textAlign: 'center' }}>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -181,22 +181,21 @@ const ChemicalManage = () => {
                       <td>{chem.quantity_recieved}</td>
                       <td>{chem.stock || ''}</td>
                       <td>{chem.dev_remarks || ''}</td>
-                      <td></td>
-                      <td>
+                      {/*<td>
                           <Button className="mr-2" variant="danger" onClick={(event) => handleDelete(event, chem.c_id)}>
                               <RiDeleteBin5Line />
                           </Button>
-                      </td>
+                </td> */}
                       <td>
                           <Button className="mr-2" onClick={(event) => handleUpdate(event, chem, chem.item_code, chem.item_name)}>
-                              <FaEdit />
+                              <FaEdit style={{ fontSize: '24px' }} />
                           </Button>
                           <UpdateChemicalModal show={editModalShow} chemical={editChemicals} setUpdated={setIsUpdated} onHide={EditModelClose} />
 
                       </td>
                       <td>
-                        <Button className='mr-2' onClick={handleOpenApp}>
-                          <HiArrowCircleUp />
+                        <Button className='mr-2' onClick={handleOpenApp} style={{ backgroundColor: 'green', color: 'white' }}>
+                          <HiArrowCircleUp style={{ fontSize: '24px' }}/>
                           </Button>
                           <ApprovalChemicalModal
                             show={approvalModalShow}

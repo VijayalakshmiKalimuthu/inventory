@@ -46,7 +46,7 @@ const ChemicalManager = () => {
             <th>Issue Date</th>
             <th>Issue To</th>
             <th>Quantity Issued</th>
-            <th>QuantityReceived</th>
+            <th>Quantity Received</th>
             <th>Stock </th>
             <th>Dev Remarks</th>
             </tr>
@@ -69,6 +69,7 @@ const ChemicalManager = () => {
                 <td>{chem.issue_date}</td>
                 <td>{chem.issue_to}</td>
                 <td>{chem.quantity_issued}</td>
+                <td>{chem.quantity_recieved}</td>
                 <td>{chem.stock}</td>
                 <td>{chem.dev_remarks}</td>
             </tr>)}

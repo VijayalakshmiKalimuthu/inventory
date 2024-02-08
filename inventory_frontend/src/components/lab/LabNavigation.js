@@ -10,12 +10,19 @@ import { NavLink } from 'react-router-dom';
 import { Button, Navbar } from 'react-bootstrap';
 import TN_Transparent_Logo from '../../assets/TN_Transparent_Logo.png';
 import '../../App.css';
-import '../Navigation.css'
+import '../Navigation.css';
+import { FcAddDatabase } from "react-icons/fc";
+import { FcHighPriority } from "react-icons/fc";
+import { FcList } from 'react-icons/fc';
+import { FcBarChart } from 'react-icons/fc';
+import { FcHome } from 'react-icons/fc';
+
+
 
 const LabNavigation = () => {
   return (
     <div>
-      <Navbar bg="dark" variant="dark" id="my-nav" className="custom-navbar">
+      <Navbar bg="dark" variant="dark" id="my-nav" className="custom-navbar" style={{width : '140%'}}>
         <Navbar.Brand className="app-logo" href="/home">
           <img
             src={TN_Transparent_Logo}
@@ -36,21 +43,36 @@ const LabNavigation = () => {
           <CDBSidebarContent>
             <CDBSidebarMenu>
               <NavLink exact to="/" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="home" className="black-text">Home</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem className="black-text">
+                  <FcHome style={{ marginRight: '8px', fontSize: '24px' }} />
+                  Home
+                </CDBSidebarMenuItem>
               </NavLink>
               <NavLink exact to="/lab_assistant/appinfo" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="list" className="black-text">Appinfo </CDBSidebarMenuItem>
+                <CDBSidebarMenuItem className="black-text" >
+                  <FcAddDatabase style={{ marginRight: '8px', fontSize: '24px' }} />
+                  Appinfo
+                </CDBSidebarMenuItem>
               </NavLink>
               <NavLink exact to="/lab_assistant/chemical" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="list" className="black-text">Chemical Master</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem className="black-text">
+                  <FcBarChart style={{ marginRight: '8px', fontSize: '24px' }} />
+                  Chemical Master
+                </CDBSidebarMenuItem>
               </NavLink>
 
               <NavLink exact to="/lab_assistant/inventory" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="list" className="black-text">Inventory Master</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem className="black-text">
+                  <FcList style={{ marginRight: '8px', fontSize: '24px' }} />
+                  Inventory Master
+                </CDBSidebarMenuItem>
               </NavLink>
 
               <NavLink exact to="/lab_assistant/task_manage" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="list" className="black-text">Reasearcher Issue Task</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem className="black-text">
+                  <FcHighPriority style={{ marginRight: '8px', fontSize: '24px' }} />
+                  Reasearcher Issue Task
+                </CDBSidebarMenuItem>
               </NavLink>
 
             </CDBSidebarMenu>

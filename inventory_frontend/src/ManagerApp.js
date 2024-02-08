@@ -6,6 +6,7 @@ import AppinfoManager from './components/manager/AppinfoManager';
 import ChemicalManager from './components/manager/ChemicalManager';
 import InventoryManager from './components/manager/InventoryManager';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import Notification from './components/manager/Notification';
 
 
 function ManagerApp() {
@@ -20,6 +21,8 @@ function ManagerApp() {
          <Route path="/manager/chemical" element={<ChemicalManager/>} />
 
          <Route path="/manager/inventory" element={<InventoryManager/>} />
+
+         <Route path="/notification" element={<Notification/>} />
 
        </Routes>
     </BrowserRouter>

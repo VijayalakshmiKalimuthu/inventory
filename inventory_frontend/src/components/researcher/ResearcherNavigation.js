@@ -10,7 +10,9 @@ import { NavLink } from 'react-router-dom';
 import { Button, Navbar } from 'react-bootstrap';
 import TN_Transparent_Logo from '../../assets/TN_Transparent_Logo.png';
 import '../../App.css';
-import '../Navigation.css'
+import '../Navigation.css';
+import { FcHome } from 'react-icons/fc';
+import { FcHighPriority } from "react-icons/fc";
 
 const ResearcherNavigation = () => {
   return (
@@ -36,10 +38,16 @@ const ResearcherNavigation = () => {
           <CDBSidebarContent>
             <CDBSidebarMenu>
               <NavLink exact to="/" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="home" className="black-text">Home</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem  className="black-text">
+                  <FcHome style={{ marginRight: '8px', fontSize: '24px' }} />
+                  Home
+                </CDBSidebarMenuItem>
               </NavLink>
               <NavLink exact to="/re_notify" activeClassName="activeClicked">
-                <CDBSidebarMenuItem icon="list" className="black-text">Notification </CDBSidebarMenuItem>
+                <CDBSidebarMenuItem className="black-text">
+                  <FcHighPriority style={{ marginRight: '8px', fontSize: '24px' }} />
+                  Notification 
+                </CDBSidebarMenuItem>
               </NavLink>
 
             </CDBSidebarMenu>

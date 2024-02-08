@@ -353,3 +353,46 @@ export async function updateLoginApi(id, log) {
   .then(response => response.data);
   
 }
+
+
+//---------------------------Employee---------------------------//
+
+export function getEmployeeApi() {
+  return axios.get('http://127.0.0.1:8000/emp')
+    .then(response => response.data)
+}
+
+export function deleteEmployeeApi(emp_id) {
+  return axios.delete(`http://127.0.0.1:8000/delete_emp/${emp_id}`, {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
+  .then(response => response.data)
+  .catch(error => {
+    console.error('Error deleting appinfo:', error);
+    throw error;
+  });
+}
+
+export function addEmployeeApi(employee) {
+  return axios.post('http://127.0.0.1:8000/add_emp', {
+    emp_id: null,
+    emp_name: employee.emp_name,
+    designation: employee.designation,
+    project_code: employee.project_code
+  })
+  .then(response => response.data);
+}
+
+export async function updateEmployeeApi(emp_id, employee) {
+  return axios.put(`http://127.0.0.1:8000/update_emp/${emp_id}`, {
+    emp_name: employee.emp_name,
+    designation: employee.designation,
+    project_code: employee.project_code
+  })
+  .then(response => response.data);
+  
+}

@@ -112,7 +112,7 @@ function Login() {
               return <AdminApp />;
             case 'Manager':
               return <ManagerApp />;
-            case 'Lab':
+            case 'Lab Assistant':
               return <LabApp />;
             case 'Researcher':
               return <ResearcherApp />;
