@@ -13,6 +13,10 @@ import ApprovalChemicalModal from './components/chemical/ApprovalChemicalModal';
 import ApprovalInventoryModal from './components/inventory/ApprovalInventoryModal';
 import TaskManage from './components/lab/TaskManage';
 import AddResearcherIssueTask from './components/lab/AddResearcherIssueTask';
+import InventoryTrans from './components/inventory/InventoryTrans';
+import ReceivedItems from './components/inventory/ReceivedItems';
+import IssuedItems from './components/inventory/IssuedItems';
+import NoteStatus from './components/chemical/NoteStatus';
 
 
 function LabApp() {
@@ -20,14 +24,15 @@ function LabApp() {
     <BrowserRouter>
       <LabNavigation />
         <Routes>
-          <Route path="/" element={<Home/>} />
-          <Route exact path="/home" element={<Home/>} />
+          <Route path="/" element={<InventoryTrans/>} />
+          <Route exact path="/home" element={<InventoryTrans/>} />
           <Route path="/lab_assistant/appinfo" element={<Appinfo/>} />
           <Route path="/lab_assistant/appinfo_manage" element={<Manage/>} />
     
           <Route path="/lab_assistant/chemical" element={<Chemical/>} />
-          <Route path="/lab_assistant/chemical_manage" element={<ChemicalManage/>} />
+          <Route path="/lab_assistant/master_manage" element={<ChemicalManage/>} />
           <Route path="/lab_assistant/chemical_approval" element={<ApprovalChemicalModal/>} />
+          <Route path="/lab_assistant/approval_status" element={<NoteStatus/>} />
     
           <Route path="/lab_assistant/inventory" element={<Inventory/>} />
           <Route path="/lab_assistant/inventory_manage" element={<InventoryManage/>} />
@@ -35,6 +40,10 @@ function LabApp() {
 
           <Route path="/lab_assistant/task_manage" element={<TaskManage/>} />
           <Route path="/lab_assistant/add_task_modal" element={<AddResearcherIssueTask/>} />
+
+          <Route path="/lab_assistant/inventory_trans" element={<InventoryTrans/>} />
+          <Route path="/lab_assistant/received_items" element={<ReceivedItems/>} />
+          <Route path="/lab_assistant/issued_items" element={<IssuedItems/>} />
 
         </Routes>
     </BrowserRouter>

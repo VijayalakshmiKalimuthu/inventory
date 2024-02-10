@@ -50,8 +50,8 @@ export async function updateAppinfo(infoid, appinfo) {
 
 // ------------------------------Chemical---------------------------------------------------
 
-export function getChemicalApi() {
-  return axios.get('http://127.0.0.1:8000/chemical')
+export function getMasterApi() {
+  return axios.get('http://127.0.0.1:8000/master')
     .then(response => response.data)
 }
 
@@ -70,52 +70,67 @@ export function deleteChemicalApi(c_id) {
   });
 }
 
-export function addChemicalApi(chemical) {
-  return axios.post('http://127.0.0.1:8000/add_chemical', {
-    c_id: null,
-    entry_no: chemical.entry_no,
-    item_code: chemical.item_code,
-    item_name: chemical.item_name,
-    unit: chemical.unit,
-    project_code: chemical.project_code,
-    remarks: chemical.remarks,
-    created_on: chemical.created_on,
-    created_by: chemical.created_by,
-    modified_on: chemical.modified_on,
-    modified_by: chemical.modified_by,
-    batch_number: chemical.batch_number,
-    issue_date: chemical.issue_date,
-    issue_to: chemical.issue_to,
-    quantity_issued: chemical.quantity_issued,
-    quantity_recieved: chemical.quantity_recieved,
-    stock: chemical.stock,
-    dev_remarks: chemical.dev_remarks
+export function addMasterApi(master) {
+  const currentDate = new Date().toISOString().split('T')[0];
+
+  return axios.post('http://127.0.0.1:8000/add_master', {
+    entry_no: master.entry_no,
+    item_code: master.item_code,
+    item_name: master.item_name,
+    m_date: currentDate,
+    supplier: master.supplier,
+    master_type: master.master_type,
+    quantity: master.quantity,
+    units: master.units,
+    price: master.price,
+    project_code: master.project_code,
+    remarks: master.remarks,
+    issue_date: master.issue_date,
+    issue_to: master.issue_to,
+    quantity_issued: master.quantity_issued,
+    quantity_received: master.quantity_received,
+    stock: master.stock,
+    dev_remarks: master.dev_remarks,
+    created_on: master.created_on,
+    created_by: master.created_by,
+    modified_on: master.modified_on,
+    modified_by: master.modified_by,
+    batch_number: master.batch_number
   })
   .then(response => response.data);
 }
 
-export async function updateChemicalApi(cid, chemical) {
-  return axios.put(`http://127.0.0.1:8000/update_chemical/${cid}`, {
-    entry_no: chemical.entry_no,
-    item_code: chemical.item_code,
-    item_name: chemical.item_name,
-    unit: chemical.unit,
-    project_code: chemical.project_code,
-    remarks: chemical.remarks,
-    created_on: chemical.created_on,
-    created_by: chemical.created_by,
-    modified_on: chemical.modified_on,
-    modified_by: chemical.modified_by,
-    batch_number: chemical.batch_number,
-    issue_date: chemical.issue_date,
-    issue_to: chemical.issue_to,
-    quantity_issued: chemical.quantity_issued,
-    quantity_recieved: chemical.quantity_recieved,
-    stock: chemical.stock,
-    dev_remarks: chemical.dev_remarks
-  })
-  .then(response => response.data);
-  
+export async function updateChemicalApi(cid, master) {
+  try {
+    const response = await axios.put(`http://127.0.0.1:8000/update_master/${cid}`, {
+      entry_no: master.entry_no,
+      item_code: master.item_code,
+      item_name: master.item_name,
+      m_date: master.m_date,
+      supplier: master.supplier,
+      master_type: master.master_type,
+      quantity: master.quantity,
+      units: master.units,
+      price: master.price,
+      project_code: master.project_code,
+      remarks: master.remarks,
+      issue_date: master.issue_date,
+      issue_to: master.issue_to,
+      quantity_issued: master.quantity_issued,
+      quantity_received: master.quantity_received,
+      stock: master.stock,
+      dev_remarks: master.dev_remarks,
+      created_on: master.created_on,
+      created_by: master.created_by,
+      modified_on: master.modified_on,
+      modified_by: master.modified_by,
+      batch_number: master.batch_number
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating master:', error);
+    throw error; // Throw the error to handle it in the caller function
+  }
 }
 
 // --------------------------------Project Master------------------------------------------
@@ -182,11 +197,18 @@ export function deleteInventoryApi(enNo) {
 
 export function addInventoryApi(inventory) {
   return axios.post('http://127.0.0.1:8000/add_inventory', {
-    entry_no: null,     
-    item_code: inventory.item_code,   
+    entry_no: null,
+    item_code: inventory.item_code,
     item_name: inventory.item_name,
     tran_type_IR: inventory.tran_type_IR,
-    qnty: inventory.qnty,
+    i_date: inventory.i_date,
+    supplier: inventory.supplier,
+    units: inventory.units,
+    price: inventory.price,
+    quantity_issued: inventory.quantity_issued,
+    quantity_received: inventory.quantity_received,
+    stock: inventory.stock,
+    quantity: inventory.quantity,
     ref_number: inventory.ref_number,
     ref_type: inventory.ref_type,
     batch_number: inventory.batch_number,
@@ -195,14 +217,14 @@ export function addInventoryApi(inventory) {
     created_by: inventory.created_by,
     modified_on: inventory.modified_on,
     modified_by: inventory.modified_by,
-    quantity_issued: inventory.quantity_issued,
-    quantity_recieved: inventory.quantity_recieved,
-    stock: inventory.stock,
     dev_remarks: inventory.dev_remarks
-
   })
-  .then(response => response.data);
+  .then(response => response.data)
+  .catch(error => {
+    throw error;
+  });
 }
+
 
 export async function updateInventoryApi(enNo, inventory) {
   return axios.put(`http://127.0.0.1:8000/update_inventory/${enNo}`, {
@@ -396,3 +418,70 @@ export async function updateEmployeeApi(emp_id, employee) {
   .then(response => response.data);
   
 }
+
+
+//---------------------------ITEM RECEIVE---------------------------//
+
+
+export function getItemReceiveApi() {
+  return axios.get('http://127.0.0.1:8000/itemreceive')
+    .then(response => response.data)
+}
+
+
+export function addItemReceiveApi(receive) {
+  const currentDate = new Date().toISOString();
+  return axios.post('http://127.0.0.1:8000/add_itemreceive', {
+    entry_no: null,
+    c_id: receive.c_id,
+    receipt_date: currentDate,
+    quantity_received: receive.quantity_received,
+    po_number: receive.po_number,
+    batch_number: receive.batch_number,
+    remarks: receive.remarks
+  })
+  .then(response => response.data);
+}
+
+
+
+//---------------------------ITEM ISSUE---------------------------//
+
+export function getItemIssueApi() {
+  return axios.get('http://127.0.0.1:8000/itemissue')
+    .then(response => response.data)
+}
+
+
+export function addItemIssueApi(receive) {
+  const currentDate = new Date().toISOString();
+
+  return axios.post('http://127.0.0.1:8000/add_itemissue', {
+    entry_no: null,
+    c_id: receive.c_id,
+    issue_date: currentDate,
+    quantity_issued: receive.quantity_issued,
+    issued_to: receive.issued_to,
+    project_code: receive.project_code,
+    researcher_name: receive.researcher_name,
+    batch_number: receive.batch_number,
+    remarks: receive.remarks
+  })
+  .then(response => response.data);
+}
+
+
+//---------------------------Get Employee name-----------------//
+
+export function getResEmployeeApi() {
+  return axios.get('http://127.0.0.1:8000/researcherEmpName')
+    .then(response => response.data)
+}
+
+//-------------------View Status-------------------------------//
+
+export function getStatusApi() {
+  return axios.get('http://127.0.0.1:8000/view_status')
+    .then(response => response.data)
+}
+

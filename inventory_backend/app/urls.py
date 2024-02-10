@@ -9,10 +9,10 @@ urlpatterns = [
     path('update_appinfo/<int:pk>', views.update_appinfo, name='update_appinfo'),
     path('delete_appinfo/<int:pk>', views.delete_appinfo, name='delete_appinfo'),
 
-    re_path(r'^add_chemical/?$', views.add_chemical, name='add_chemical'),
-    path('chemical/', views.view_chemical, name='view_chemical'),
-    path('update_chemical/<int:pk>', views.update_chemical, name='update_chemical'),
-    path('delete_chemical/<int:pk>', views.delete_chemical, name='delete_chemical'),
+    re_path(r'^add_master/?$', views.add_master, name='add_master'),
+    path('master/', views.view_master, name='view_master'),
+    path('update_master/<int:pk>', views.update_master, name='update_master'),
+    path('delete_master/<int:pk>', views.delete_master, name='delete_master'),
 
     path('add_project', views.add_project, name='add_project'),
     path('project/', views.view_project, name='view_project'),
@@ -43,6 +43,17 @@ urlpatterns = [
     path('emp/', views.view_emp, name='view_emp'),
     path('update_emp/<int:pk>', views.update_emp, name='update_emp'),
     path('delete_emp/<int:pk>', views.delete_emp, name='delete_emp'),
+
+    re_path(r'^add_itemissue/?$', views.add_itemissue, name='add_itemissue'),
+    path('itemissue/', views.view_itemissue, name='view_itemissue'),
+
+    re_path(r'^add_itemreceive/?$', views.add_itemreceive, name='add_itemreceive'),
+    path('itemreceive/', views.view_itemreceive, name='view_itemreceive'),
+
+    path('researcherEmpName/', views.view_ResearcherEmpName,  name= 'view_ResearcherEmpName'),
+
+    path('view_status/', views.view_status, name="view_status"),
+    
     
     
 ]

@@ -6,10 +6,12 @@ import { FaEdit } from 'react-icons/fa';
 import { RiDeleteBin5Line } from 'react-icons/ri';
 import AddChemicalModal from "./AddChemicalModal";
 import UpdateChemicalModal from "./UpdateChemicalModal";
-import { getChemicalApi, deleteChemicalApi, getRequestApi } from '../../services/AppinfoService';
+import { getMasterApi, deleteChemicalApi, getRequestApi } from '../../services/AppinfoService';
 import { useNavigate } from 'react-router-dom';
 import { HiArrowCircleUp } from 'react-icons/hi';
 import ApprovalChemicalModal from './ApprovalChemicalModal';
+import { FaBell } from 'react-icons/fa';
+import NoteStatus from './NoteStatus';
 
 
 const ChemicalManage = () => {
@@ -21,8 +23,17 @@ const ChemicalManage = () => {
     const [approvalModalShow, setApprovalModalShow] = useState(false)
     const [itemCode, setItemCode] = useState('');
     const [itemName, setItemName] = useState('');
+    const [itemType, setItemType] = useState('');
 
-    const navigate = useNavigate();
+    const [modalShow, setModalShow] = useState(false);
+
+    const handleShowModal = () => {
+        setModalShow(true);
+    };
+
+    const handleCloseModal = () => {
+        setModalShow(false);
+    };
 
     useEffect(() => {
       let mounted = true;
@@ -36,7 +47,7 @@ const ChemicalManage = () => {
     
       console.log('Fetching new data...');
     
-      getChemicalApi()
+      getMasterApi()
         .then(data => {
           if (mounted) {
             console.log('Chemical Data received:', data);
@@ -71,7 +82,7 @@ const ChemicalManage = () => {
     
               // Check if the current request meets all conditions
               if (
-                request.ItemType === 'Chemical' &&
+                (request.ItemType === 'Chemical' || request.ItemType === 'Inventory') &&
                 request.ItemCode === item_code &&
                 request.ItemName === item_name &&
                 request.RequestStatus === 'Approved'
@@ -103,11 +114,12 @@ const ChemicalManage = () => {
         setAddModalShow(true);
     };
 
-    const handleOpenApp = (e, itemCode, itemName) => {
+    const handleOpenApp = (e, itemCode, itemName, itemType) => {
       e.preventDefault();
       setApprovalModalShow(true);
       setItemCode(itemCode); // assuming you have a state variable to store itemCode
-      setItemName(itemName); // assuming you have a state variable to store itemName
+      setItemName(itemName); 
+      setItemType(itemType);
     };
 
 
@@ -124,39 +136,44 @@ const ChemicalManage = () => {
             })
         }
     };
+    
 
     let AddModelClose=()=>setAddModalShow(false);
     let EditModelClose=()=>setEditModalShow(false);
     let ApprovalModalClose=()=>setApprovalModalShow(false);
 
     return(
-        <div className="container-fluid side-container">
-        <div className="header-container">
-          <h2 style={{ textAlign: 'center' }} className="appinfo-header">Chemicals</h2>
+      <div >
+        <div style={{ background: "#C5EA31", height: '70px' }} className="header">
+            <h2 style={{ textAlign: 'center', paddingTop: '15px', marginRight: '8px' }}>INVENTORY MASTER {' '}
+            <FaBell onClick={handleShowModal} />
+            <NoteStatus show={modalShow} setUpdated={setIsUpdated} onHide={handleCloseModal} />
+            </h2>
         </div>
-        <div className="row side-row" >
+        <div className="row side-row" style={{ textAlign: 'center' }}>
+            <ButtonToolbar>
+                <Button variant="primary" onClick={handleAdd}>
+                Add
+                </Button>
+                <AddChemicalModal show={addModalShow} setUpdated={setIsUpdated}
+                onHide={AddModelClose}></AddChemicalModal>
+            </ButtonToolbar>
         <p id="manage"></p>
             <Table striped bordered hover className="react-bootstrap-table" id="dataTable">
                 <thead>
                 <tr>
-                <th>Chemical Id</th>
+                <th>Id</th>
                   <th>Entry No</th>
                   <th>Item Code</th>
                   <th>Item Name</th>
-                  <th>Unit</th>
+                  <th>Date</th>
+                  <th>Supplier</th>
+                  <th>Master Type</th>
+                  <th>Quantity</th>
+                  <th>Units</th>
+                  <th>Price</th>
                   <th>Project Code</th>
                   <th>Remarks</th>
-                  <th>Created On</th>
-                  <th>Created By</th>
-                  <th>Modified On</th>
-                  <th>Modified By</th>
-                  <th>Batch/Lot Number</th>
-                  <th>Issue Date</th>
-                  <th>Issue To</th>
-                  <th>Quantity Issued</th>
-                  <th>Quantity Received</th>
-                  <th>Stock </th>
-                  <th>Dev Remarks</th> 
                   <th colspan="2" style={{ textAlign: 'center' }}>Action</th>
                 </tr>
                 </thead>
@@ -167,20 +184,14 @@ const ChemicalManage = () => {
                       <td>{chem.entry_no || ''}</td>
                       <td>{chem.item_code || ''}</td>
                       <td>{chem.item_name || ''}</td>
-                      <td>{chem.unit || ''}</td>
+                      <td>{chem.m_date || ''}</td>
+                      <td>{chem.supplier || ''}</td>
+                      <td>{chem.master_type || ''}</td>
+                      <td>{chem.quantity || ''}</td>
+                      <td>{chem.units || ''}</td>
+                      <td>{chem.price || ''}</td>
                       <td>{chem.project_code || ''}</td>
                       <td>{chem.remarks || ''}</td>
-                      <td>{chem.created_on || ''}</td>
-                      <td>{chem.created_by || ''}</td>
-                      <td>{chem.modified_on || ''}</td>
-                      <td>{chem.modified_by || ''}</td>
-                      <td>{chem.batch_number || ''}</td>
-                      <td>{chem.issue_date || ''}</td>
-                      <td>{chem.issue_to || ''}</td>
-                      <td>{chem.quantity_issued || ''}</td>
-                      <td>{chem.quantity_recieved}</td>
-                      <td>{chem.stock || ''}</td>
-                      <td>{chem.dev_remarks || ''}</td>
                       {/*<td>
                           <Button className="mr-2" variant="danger" onClick={(event) => handleDelete(event, chem.c_id)}>
                               <RiDeleteBin5Line />
@@ -194,28 +205,22 @@ const ChemicalManage = () => {
 
                       </td>
                       <td>
-                        <Button className='mr-2' onClick={handleOpenApp} style={{ backgroundColor: 'green', color: 'white' }}>
+                        <Button className='mr-2'onClick={(e) => handleOpenApp(e, chem.item_code, chem.item_name, chem.master_type)} style={{ backgroundColor: 'green', color: 'white' }}>
                           <HiArrowCircleUp style={{ fontSize: '24px' }}/>
                           </Button>
                           <ApprovalChemicalModal
                             show={approvalModalShow}
                             setUpdated={setIsUpdated}
                             onHide={ApprovalModalClose}
-                            itemCode={chem.item_code} // pass itemCode as a prop
-                            itemName={chem.item_name} // pass itemName as a prop
+                            itemCode={itemCode} 
+                            itemName={itemName} 
+                            itemType={itemType}
                           />
                       </td>
                   </tr>))}
 
               </tbody>
             </Table>
-            <ButtonToolbar>
-                <Button variant="primary" onClick={handleAdd}>
-                Add Chemical
-                </Button>
-                <AddChemicalModal show={addModalShow} setUpdated={setIsUpdated}
-                onHide={AddModelClose}></AddChemicalModal>
-            </ButtonToolbar>
         </div>
         </div>
     );

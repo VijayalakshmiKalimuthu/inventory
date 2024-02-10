@@ -1,7 +1,8 @@
 from rest_framework import serializers
-from .models import Appinfo, Chemical_Master, Project_Master, Inventory_Tran, Request_CI, IssuesNote, LoginCre, EmpDet
+from .models import Appinfo, Master, Project_Master, Inventory_Tran, Request_CI, IssuesNote, LoginCre, EmpDet
 from django.contrib.auth.models import User
 from rest_framework.authtoken.views import Token
+from .models import ItemReceive, ItemIssue
 
 class AppinfoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,27 +16,10 @@ class AppinfoSerializer(serializers.ModelSerializer):
                   'modified_by',
                   'dev_remarks')
         
-class ChemicalSerializer(serializers.ModelSerializer):
+class MasterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Chemical_Master
-        fields = ('c_id',
-                  'entry_no',          
-                  'item_code',    
-                  'item_name',         
-                  'unit',            
-                  'project_code',      
-                  'remarks',         
-                  'created_on',
-                  'created_by',
-                  'modified_on',
-                  'modified_by',
-                  'batch_number',
-                  'issue_date',
-                  'issue_to',
-                  'quantity_issued',
-                  'quantity_recieved',
-                  'stock',
-                  'dev_remarks')      
+        model = Master
+        fields = '__all__'  
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -84,5 +68,13 @@ class EmpSerializer(serializers.ModelSerializer):
         model = EmpDet
         fields = ['emp_id', 'emp_name', 'designation', 'project_code']
 
-    
-        
+
+class ItemReceiveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ItemReceive
+        fields = '__all__'
+
+class ItemIssueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ItemIssue
+        fields = '__all__'

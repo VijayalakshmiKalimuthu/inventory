@@ -1,9 +1,9 @@
 
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from .serializers import AppinfoSerializer, ChemicalSerializer, ProjectSerializer, InventorySerializer, UserSerializer, RequestCISerializer, IssuesSerializers
+from .serializers import AppinfoSerializer, MasterSerializer, ProjectSerializer, InventorySerializer, UserSerializer, RequestCISerializer, IssuesSerializers
 from .serializers import LoginSerializer
 from django.http.response import JsonResponse
-from .models import Appinfo, Chemical_Master, Project_Master, Inventory_Tran, Request_CI, IssuesNote, LoginCre
+from .models import Appinfo, Master, Project_Master, Inventory_Tran, Request_CI, IssuesNote, LoginCre
 from django.http.response import Http404
 from rest_framework.response import Response
 from rest_framework import serializers
@@ -18,9 +18,9 @@ from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
-from .models import EmpDet
-from .serializers import EmpSerializer
-
+from .models import EmpDet, ItemIssue, ItemReceive
+from .serializers import EmpSerializer, ItemReceiveSerializer, ItemIssueSerializer
+from django.db.models import F
 
 
 
@@ -65,56 +65,106 @@ def delete_appinfo(request, pk=None):
 
     return JsonResponse("Appinfo Deleted Successfully", safe=False)
 
-# -------------------------CHEMICAL MASTER-------------------------------------------------------
+# -------------------------master MASTER-------------------------------------------------------
 
 @api_view(['POST'])
-def add_chemical(request):
-    print("Request data:", request.data)
+def add_master(request):
+    # Extract data from the request
+    entry_no = request.data.get('entry_no')
+    item_code = request.data.get('item_code')
+    item_name = request.data.get('item_name')
+    m_date = request.data.get('m_date')
+    supplier = request.data.get('supplier')
+    master_type = request.data.get('master_type')
+    quantity = request.data.get('quantity')
+    units = request.data.get('units')
+    price = request.data.get('price')
+    project_code = request.data.get('project_code')
+    remarks = request.data.get('remarks')
 
-    # Creating a serializer instance
-    chemical = ChemicalSerializer(data=request.data)
+    # Create a dictionary with selective columns and their default values set to None
+    filtered_data = {
+        'issue_date': None,
+        'issue_to': None,
+        'quantity_issued': None,
+        'quantity_received': None,
+        'stock': None,
+        'created_on': None,
+        'created_by': None,
+        'modified_on': None,
+        'modified_by': None,
+        'batch_number': None,
+        'dev_remarks': None,
+        'entry_no': entry_no,
+        'item_code': item_code,
+        'item_name': item_name,
+        'm_date': m_date,
+        'supplier': supplier,
+        'master_type': master_type,
+        'quantity': quantity,
+        'units': units,
+        'price': price,
+        'project_code': project_code,
+        'remarks': remarks,
+    }
+
+    # Create a serializer instance with filtered data
+    master_serializer = MasterSerializer(data=filtered_data)
 
     try:
-        # Validating for already existing data
-        if Chemical_Master.objects.filter(**request.data).exists():
-            raise serializers.ValidationError('This data already exists')
-
-        # Checking if the serializer is valid
-        if chemical.is_valid():
-            # Saving the data
-            chemical.save()
-            print("Chemical data saved successfully")
-            return Response(chemical.data, status=status.HTTP_201_CREATED)
+        # Check if the serializer is valid
+        if master_serializer.is_valid():
+            # Save the data
+            master_serializer.save()
+            return Response(master_serializer.data, status=status.HTTP_201_CREATED)
         else:
-            print("Invalid data:", chemical.errors)
-            return Response(chemical.errors, status=status.HTTP_400_BAD_REQUEST)
-
+            return Response(master_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
-        print("An error occurred:", str(e))
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     
 @api_view(['GET'])
-def view_chemical(request):
-	chemical = Chemical_Master.objects.all()
-	serializer = ChemicalSerializer(chemical, many=True)
-	return Response(serializer.data)
+def view_master(request):
+    master = Master.objects.all()
+    # Define fields to be included in the response
+    fields = ['c_id', 'entry_no', 'item_code', 'item_name', 'm_date', 'supplier', 
+              'master_type', 'quantity', 'units', 'price', 'project_code', 'remarks']
+    # Serialize data with specified fields
+    serializer = MasterSerializer(master, many=True)
+    return Response(serializer.data)
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import Master
+from .serializers import MasterSerializer
 
 @api_view(['PUT'])
-def update_chemical(request, pk=None):
-    chemical_to_update = Chemical_Master.objects.get(c_id=pk)
-    serializer = ChemicalSerializer(instance=chemical_to_update, data=request.data, partial=True)
+def update_master(request, pk):
+    try:
+        # Retrieve the Master object to update
+        master_instance = Master.objects.get(c_id=pk)
+    except Master.DoesNotExist:
+        return Response({"error": "Master object does not exist"}, status=status.HTTP_404_NOT_FOUND)
     
-    if serializer.is_valid():
-        serializer.save()
-        print("Updtaed.")
-        return JsonResponse("Chemical Updated Successfully", safe=False)
-    return JsonResponse("Failed to Update Chemical")
+    # Initialize serializer instance with the retrieved Master object and provided data
+    master_serializer = MasterSerializer(instance=master_instance, data=request.data, partial=True)
+    
+    try:
+        # Check if serializer is valid
+        if master_serializer.is_valid():
+            # Save the updated data
+            master_serializer.save()
+            return Response({"message": "Master data updated successfully"}, status=status.HTTP_200_OK)
+        else:
+            return Response(master_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
 
 @api_view(['DELETE'])
-def delete_chemical(request, pk):
-	chemical = get_object_or_404(Chemical_Master, c_id=pk)
-	chemical.delete()
+def delete_master(request, pk):
+	master = get_object_or_404(Master, c_id=pk)
+	master.delete()
 	return Response(status=status.HTTP_202_ACCEPTED)
 
 #-----------------------PROJECT MASTER--------------------------------------------------------------
@@ -163,25 +213,93 @@ def delete_project(request, pk):
 
 # ---------------------------------------INVENTORY TRANS---------------------------------------------------
 
+
 @api_view(['POST'])
 def add_inventory(request):
-    inventory = InventorySerializer(data=request.data)
- 
-    # validating for already existing data
-    if Inventory_Tran.objects.filter(**request.data).exists():
-        raise serializers.ValidationError('This data already exists')
- 
-    if inventory.is_valid():
-        inventory.save()
-        return Response(inventory.data)
-    else:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    try:
+        # Extract data from the request
+        entry_no = request.data.get('entry_no')
+        item_code = request.data.get('item_code')
+        item_name = request.data.get('item_name')
+        tran_type_IR = request.data.get('tran_type_IR')
+        i_date = request.data.get('i_date')
+        supplier = request.data.get('supplier')
+        units = request.data.get('units')
+        price = request.data.get('price')
+        quantity_issued = request.data.get('quantity_issued')
+        quantity_received = request.data.get('quantity_received')
+        quantity = request.data.get('quantity')
+        remarks = request.data.get('remarks')
+
+        # Define common fields
+        common_fields = {
+            'stock': None,
+            'ref_number': None,
+            'ref_type': None,
+            'batch_number': None,
+            'remarks': None,
+            'created_on': None,
+            'created_by': None,
+            'modified_on': None,
+            'modified_by': None,
+            'dev_remarks': None,
+            'entry_no': entry_no,
+            'item_code': item_code,
+            'item_name': item_name,
+            'tran_type_IR': tran_type_IR,
+            'i_date': i_date,
+            'supplier': supplier,
+            'units': units,
+            'price': price,
+            'quantity': quantity,
+            'remarks': remarks
+        }
+
+        if tran_type_IR == 'I':
+            common_fields['quantity_issued'] = quantity_issued
+            common_fields['quantity_received'] = None
+        else:
+            common_fields['quantity_issued'] = None
+            common_fields['quantity_received'] = quantity_received
+
+        # Create a serializer instance with filtered data
+        tran_serializer = InventorySerializer(data=common_fields)
+
+        # Check if the serializer is valid
+        if tran_serializer.is_valid():
+            # Save the data
+            tran_serializer.save()
+            return Response(tran_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(tran_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 @api_view(['GET'])
 def view_inventory(request):
-	inventory = Inventory_Tran.objects.all()
-	serializer = InventorySerializer(inventory, many=True)
-	return Response(serializer.data)
+    print("Request data: ", request.data)
+    inv = Inventory_Tran.objects.select_related('item_code').all()
+    
+    serialized_data =[]
+    for inventory in inv:
+        serialized_inventory = {
+            'entry_no': inventory.entry_no,
+            'item_code': inventory.item_code.item_code,
+            'item_name': inventory.item_code.item_name,
+            'tran_type_IR': inventory.tran_type_IR,
+            'i_date': inventory.i_date,
+            'supplier': inventory.item_code.supplier,
+            'units': inventory.item_code.units,
+            'price': inventory.item_code.price,
+            'quantity_issued': inventory.quantity_issued,
+            'quantity_received': inventory.quantity_received,
+            'quantity': inventory.item_code.quantity
+        }
+        serialized_data.append(serialized_inventory)
+
+        print("Serialized data: ", serialized_data)
+
+        return Response(serialized_data)
 
 
 @api_view(['PUT'])
@@ -353,7 +471,7 @@ def add_login(request):
         if login.is_valid():
             # Saving the data
             login.save()
-            print("Chemical data saved successfully")
+            print("master data saved successfully")
             return Response(login.data, status=status.HTTP_201_CREATED)
         else:
             print("Invalid data:", login.errors)
@@ -466,3 +584,188 @@ def delete_emp(request, pk):
     emp = get_object_or_404(EmpDet, emp_id=pk)
     emp.delete()
     return Response(status=status.HTTP_202_ACCEPTED)
+
+#-----------------------Item Receive--------------------------#
+
+@api_view(['POST'])
+def add_itemreceive(request):
+    print("Request data:", request.data)
+
+    try:
+        c_id_value = request.data.get('c_id')
+        quantity_received = request.data.get('quantity_received')  # Get the quantity received
+
+        if c_id_value:
+            master_instance, _ = Master.objects.get_or_create(c_id=c_id_value)
+        else:
+            raise serializers.ValidationError('Item code is required')
+
+        # Get the c_id value from the master_instance
+        c_id_value = master_instance.c_id
+
+        # Modify the request data with the correct c_id value
+        data = request.data.copy()
+        data['c_id'] = c_id_value
+
+        rec_serializer = ItemReceiveSerializer(data=data)
+
+        if rec_serializer.is_valid():
+            rec_instance = rec_serializer.save()  # Save the ItemReceive instance
+            print("Item Received successfully")
+
+            # Update the Master instance with the quantity received
+            Master.objects.filter(c_id=c_id_value).update(quantity=F('quantity') + quantity_received)
+
+            return Response(rec_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print("Invalid data:", rec_serializer.errors)
+            return Response(rec_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+@api_view(['GET'])
+def view_itemreceive(request):
+    print("Request data:", request.data)
+    # Perform a join between EmpDet, Project_Master, and LoginCre
+    rec = ItemReceive.objects.select_related('c_id').all()
+    
+    # Serialize the queryset
+    serialized_data = []
+    for receive in rec:
+        serialized_receive = {
+            'item_code': receive.c_id.item_code,
+            'item_name': receive.c_id.item_name,
+            'units': receive.c_id.units,
+            'receipt_date': receive.receipt_date,
+            'quantity_received': receive.quantity_received,
+            'po_number': receive.po_number,
+            'batch_number': receive.batch_number,
+            'remarks': receive.remarks
+        }
+        serialized_data.append(serialized_receive)
+    
+    # Print for debugging
+    print("Serialized data:", serialized_data)
+
+    return Response(serialized_data)
+
+#------------------------Item Issue--------------------#
+
+@api_view(['POST'])
+def add_itemissue(request):
+    print("Request data:", request.data)
+
+    try:
+        project_code_value = request.data.get('project_code')
+        
+        quantity_issued = request.data.get('quantity_issued')
+
+        if project_code_value:
+            project_instance, _ = Project_Master.objects.get_or_create(project_code=project_code_value)
+        else:
+            raise serializers.ValidationError('Project code is required')
+
+        c_id_value = request.data.get('c_id')  # Assuming project_code is passed as an integer
+        if c_id_value:
+            master_instance, _ = Master.objects.get_or_create(c_id=c_id_value)
+        else:
+            raise serializers.ValidationError('Item code is required')
+
+        # Creating a serializer instance with modified data (including the fetched or created designation and project instances)
+        data = request.data.copy()
+        data['project_code'] = project_instance.project_code
+        data['c_id'] = master_instance.c_id
+        rec_serializer = ItemIssueSerializer(data=data)
+
+        # Validating and saving the serializer instance
+        if rec_serializer.is_valid():
+            rec_serializer.save()
+            print("Issue details saved successfully")
+
+            Master.objects.filter(c_id=c_id_value).update(quantity=F('quantity') - quantity_issued)
+
+            return Response(rec_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print("Invalid data:", rec_serializer.errors)
+            return Response(rec_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+@api_view(['GET'])
+def view_itemissue(request):
+    print("Request data:", request.data)
+    # Perform a join between EmpDet, Project_Master, and LoginCre
+    rec = ItemIssue.objects.select_related('c_id', 'project_code').all()
+    
+    # Serialize the queryset
+    serialized_data = []
+    for issue in rec:
+        serialized_employee = {
+            'entry_no': issue.entry_no,
+            'item_code': issue.c_id.item_code,
+            'item_name': issue.c_id.item_name,
+            'units': issue.c_id.units,
+            'issue_date': issue.issue_date,
+            'quantity_issued': issue.quantity_issued,
+            'issued_to': issue.issued_to,
+            'project_code': issue.project_code.project_code,
+            'project_name': issue.project_code.project_name,
+            'researcher_name': issue.researcher_name,
+            'batch_number': issue.batch_number,
+            'remarks': issue.remarks
+        }
+        serialized_data.append(serialized_employee)
+    
+    # Print for debugging
+    print("Serialized data:", serialized_data)
+
+    return Response(serialized_data)
+
+@api_view(['GET'])
+def view_ResearcherEmpName(request):
+    try:
+        # Filter EmpDet objects based on designation
+        researchers = EmpDet.objects.filter(designation='Researcher')
+        
+        # Extract emp_name from filtered objects
+        researcher_names = [researcher.emp_name for researcher in researchers]
+
+        # Print for debugging
+        print("Researcher names:", researcher_names)
+
+        return Response(researcher_names)
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+#--------------------------Notification in approval lab assistant--------------------------------#
+    
+@api_view(['GET'])
+def view_status(request):
+    print("Request data:", request.data)
+    status = Request_CI.objects.all()
+    
+    # Serialize the queryset
+    serialized_data = []
+    for st in status:
+        serialized_employee = {
+            'ItemCode': st.ItemCode,
+            'ItemType': st.ItemType,
+            'ItemName': st.ItemName,
+            'RequestStatus': st.RequestStatus
+        }
+        serialized_data.append(serialized_employee)
+    
+    # Print for debugging
+    print("Serialized data:", serialized_data)
+
+    return Response(serialized_data)

@@ -60,11 +60,11 @@ const Notification = () => {
     let AddModelClose=()=>setAddModalShow(false);
     let EditModelClose=()=>setEditModalShow(false);
     return(
-        <div className="container-fluid side-container">
-        <div className="header-container">
-          <h2 style={{ textAlign: 'center' }} className="appinfo-header">Notifications</h2>
+      <div >
+        <div style={{background: "#C5EA31", height: '70px'}} className="header">
+          <h2 style={{ textAlign: 'center', paddingTop: '15px' }} >NOTIFICATIONS</h2>
         </div>
-        <div className="row side-row" >
+        <div className="row side-row" style={{ textAlign: 'center' }}>
         <p id="manage"></p>
             <Table striped bordered hover className="react-bootstrap-table" id="dataTable">
                 <thead>

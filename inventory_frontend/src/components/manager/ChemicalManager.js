@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
-import { getChemicalApi } from '../../services/AppinfoService';
+import { getMasterApi } from '../../services/AppinfoService';
 import "../../App.css";
 
 const ChemicalManager = () => {
-  const [chemical, setChemical] = useState([]);
+  const [masters, setMasters] = useState([]);
 
   useEffect(() => {
     let mounted = true;
-    getChemicalApi()
+    getMasterApi()
       .then(data => {
         if (mounted) {
-          setChemical(data);
+          setMasters(data);
         }
       })
       .catch(error => {
@@ -22,59 +22,48 @@ const ChemicalManager = () => {
   }, []);
 
   return(
-    <div className="container-fluid side-container">
-    <div className="header-container">
-      <h2 style={{ textAlign: 'center' }} className="appinfo-header">Chemical Master</h2>
-    </div>
-      <div className="row side-row">
+    <div >
+      <div style={{background: "#C5EA31", height: '70px'}} className="header">
+        <h2 style={{ textAlign: 'center', paddingTop: '15px' }} >INVENTORY MASTER</h2>
+      </div>
+      <div className="row side-row" style={{ textAlign: 'center' }}>
     <p id="before-table"></p>
-        <Table striped bordered hover className="react-bootstrap-table" id="dataTable">
-        <thead>
+    <Table striped bordered hover className="react-bootstrap-table" id="dataTable">
+          <thead>
             <tr>
-            <th>Chemical Id</th>
-            <th>Entry No</th>
-            <th>Item Code</th>
-            <th>Item Name</th>
-            <th>Unit</th>
-            <th>Project Code</th>
-            <th>Remarks</th>
-            <th>Created On</th>
-            <th>Created By</th>
-            <th>Modified On</th>
-            <th>Modified By</th>
-            <th>Batch/Lot Number</th>
-            <th>Issue Date</th>
-            <th>Issue To</th>
-            <th>Quantity Issued</th>
-            <th>Quantity Received</th>
-            <th>Stock </th>
-            <th>Dev Remarks</th>
+              <th>Id</th>
+              <th>Entry No</th>
+              <th>Item Code</th>
+              <th>Item Name</th>
+              <th>Date</th>
+              <th>Supplier</th>
+              <th>Master Type</th>
+              <th>Quantity</th>
+              <th>Units</th>
+              <th>Price</th>
+              <th>Project Code</th>
+              <th>Remarks</th>
             </tr>
-        </thead>
-        <tbody>
-            {chemical.map((chem) =>
-            <tr key={chem.id}>
-                <td>{chem.c_id}</td>
-                <td>{chem.entry_no}</td>
-                <td>{chem.item_code}</td>
-                <td>{chem.item_name}</td>
-                <td>{chem.unit}</td>
-                <td>{chem.project_code}</td>
-                <td>{chem.remarks}</td>
-                <td>{chem.created_on}</td>
-                <td>{chem.created_by}</td>
-                <td>{chem.modified_on}</td>
-                <td>{chem.modified_by}</td>
-                <td>{chem.batch_number}</td>
-                <td>{chem.issue_date}</td>
-                <td>{chem.issue_to}</td>
-                <td>{chem.quantity_issued}</td>
-                <td>{chem.quantity_recieved}</td>
-                <td>{chem.stock}</td>
-                <td>{chem.dev_remarks}</td>
-            </tr>)}
-        </tbody>
-    </Table>
+          </thead>
+          <tbody>
+            {masters.map((master) =>
+              <tr key={master.c_id}>
+                <td>{master.c_id}</td>
+                <td>{master.entry_no}</td>
+                <td>{master.item_code}</td>
+                <td>{master.item_name}</td>
+                <td>{master.m_date}</td>
+                <td>{master.supplier}</td>
+                <td>{master.master_type}</td>
+                <td>{master.quantity}</td>
+                <td>{master.units}</td>
+                <td>{master.price}</td>
+                <td>{master.project_code}</td>
+                <td>{master.remarks}</td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
     </div>
   </div>
   );

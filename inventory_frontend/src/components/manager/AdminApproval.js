@@ -114,7 +114,7 @@ const AdminApprovalModal = (props) => {
                                   <Col>
                                   <Form.Group controlId="approvedBy">
                                     <Form.Label>Approved By</Form.Label>
-                                    <Form.Control type="text" name="approvedBy" required defaultValue={'Admin'} placeholder="" style={{ border: '1px solid black' }} />
+                                    <Form.Control type="text" name="approvedBy" required defaultValue={'Manager'} placeholder="" style={{ border: '1px solid black' }} />
                                   </Form.Group>
                                   </Col>
                                   <Col></Col>

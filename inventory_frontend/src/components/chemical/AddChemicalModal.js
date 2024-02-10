@@ -1,10 +1,18 @@
-import React from 'react';
-import {Modal, Col, Row, Form, Button} from 'react-bootstrap';
-// import {FormControl, FormGroup, FormLabel} from 'react-bootstrap';
-import { addChemicalApi } from '../../services/AppinfoService';
-
+import React, { useState, useEffect } from 'react';
+import { Modal, Col, Row, Form, Button } from 'react-bootstrap';
+import { addMasterApi, getProjectApi } from '../../services/AppinfoService';
 
 const AddChemicalModal = (props) => {
+    const [projectCodes, setProjectCodes] = useState([]);
+
+    useEffect(() => {
+        // Fetch project codes
+        getProjectApi()
+        .then(data => {
+            setProjectCodes(data.map(item => ({ value: item.project_code, label: item.project_name })));
+        })
+        .catch(error => console.error('Error fetching project codes:', error));
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -12,206 +20,129 @@ const AddChemicalModal = (props) => {
         // Extract values from the form
         const formData = new FormData(e.target);
     
-        const chemicalData = {
+        const masterData = {
             entry_no: formData.get('entryNo'),
             item_code: formData.get('itemCode'),
             item_name: formData.get('itemName'),
-            unit: formData.get('unit'),
+            supplier: formData.get('supplier'),
+            master_type: formData.get('masterType'),
+            quantity: formData.get('quantity'),
+            units: formData.get('units'),
+            price: formData.get('price'),
             project_code: formData.get('projectCode'),
             remarks: formData.get('remarks'),
-            created_on: formData.get('createdOn'),
-            created_by: formData.get('createdBy'),
-            modified_on: formData.get('modifiedOn'),
-            modified_by: formData.get('modifiedBy'),
-            batch_number: formData.get('batchNumber'),
-            issue_date: formData.get('issueDate'),
-            issue_to: formData.get('issueTo'),
-            quantity_issued: formData.get('quantityIssued'),
-            quantity_recieved: formData.get('quantityRecieved'),
-            stock: formData.get('stock'),
-            dev_remarks: formData.get('devRemarks'),
         };
     
-        // Pass the extracted data to addChemicalApi
-        addChemicalApi(chemicalData)
+        addMasterApi(masterData)
             .then((result) => {
-                window.alert("Data added successfully");
+                console.log(masterData)
+                window.alert('Data added successfully');
                 props.setUpdated(true);
+                props.onHide(); // Close the modal only if data is successfully added
             })
             .catch((error) => {
-                console.error("Failed to Add Chemical:", error);
-                alert("Failed to Add Chemical: " + error.message);
+                console.error('Failed to Add Master:', error);
+                alert('Failed to Add Master: ' + error.message);
             });
     };
 
-    return(
+    return (
         <div className="container">
-
-            <Modal
-                {...props}
-                size="lg"
-                aria-labelledby="contained-modal-title-vcenter"
-                centered >
-
+            <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title-vcenter">
-                        Fill In Chemical Information
-                    </Modal.Title>
+                    <Modal.Title id="contained-modal-title-vcenter">Add Inventory Form</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Row>
-                        <Col sm={12}>
-                            <Form onSubmit={handleSubmit}>
-
-                                <Row>
-                                    <Col>
-                                    <Form.Group controlId="entryNo">
-                                            <Form.Label>Entry No.</Form.Label>
-                                            <Form.Control type="text" name="entryNo" required placeholder="" style={{ border: '1px solid black' }} />
-                                    </Form.Group>
-                                    </Col>
-
-                                    <Col>
-                                    <Form.Group controlId="itemCode">
-                                            <Form.Label>Item Code</Form.Label>
-                                            <Form.Control type="text" name="itemCode" required placeholder="" style={{ border: '1px solid black' }} />
-                                    </Form.Group>
-                                    </Col>
-
-                                    <Col>
-                                    <Form.Group controlId="itemName">
-                                            <Form.Label>Item name</Form.Label>
-                                            <Form.Control type="text" name="itemName" required placeholder="" style={{ border: '1px solid black' }} />
-                                    </Form.Group>
-                                    </Col> 
-
-                                    <Col>
-                                    <Form.Group controlId="unit">
-                                            <Form.Label>Unit</Form.Label>
-                                            <Form.Control type="text" name="unit" required placeholder="" style={{ border: '1px solid black' }} />
-                                    </Form.Group>
-                                    </Col>
-                                </Row>
-                                <p></p>
-                            
-                                <Row> 
-                                    <Col>
-                                    <Form.Group controlId="projectCode">
-                                            <Form.Label>Project Code</Form.Label>
-                                            <Form.Control type="text" name="projectCode" required placeholder="" style={{ border: '1px solid black' }} />
-                                    </Form.Group>
-                                    </Col>
-
-                                    <Col>
-                                    <Form.Group controlId="remarks">
-                                            <Form.Label>Remarks</Form.Label>
-                                            <Form.Control type="text" name="remarks" required placeholder="" style={{ border: '1px solid black' }} />
-                                    </Form.Group>
-                                    </Col>
-
-                                    <Col>
-                                    <Form.Group controlId="createdOn">
-                                            <Form.Label>Created On</Form.Label>
-                                            <Form.Control type="text" name="createdOn" required placeholder="" style={{ border: '1px solid black' }} />
-                                    </Form.Group>
-                                    </Col>
-                                    
-                                    <Col>
-                                    <Form.Group controlId="createdBy">
-                                            <Form.Label>Created By</Form.Label>
-                                            <Form.Control type="text" name="createdBy" required placeholder="" style={{ border: '1px solid black' }} />
-                                    </Form.Group>
-                                    </Col>
-                                </Row>
-                                <p></p>
-
-                                <Row>
-                                    <Col>
-                                    <Form.Group controlId="modifiedOn">
-                                            <Form.Label>Modified On</Form.Label>
-                                            <Form.Control type="text" name="modifiedOn" required placeholder="" style={{ border: '1px solid black' }} />
-                                    </Form.Group>
-                                    </Col>
-                                    
-                                    <Col>
-                                    <Form.Group controlId="modifiedBy">
-                                            <Form.Label>Modified By</Form.Label>
-                                            <Form.Control type="text" name="modifiedBy" required placeholder="" style={{ border: '1px solid black' }} />
-                                    </Form.Group>
-                                    </Col>
-                                    <Col>
-                                    <Form.Group controlId="batchNumber">
-                                            <Form.Label>Batch Number</Form.Label>
-                                            <Form.Control type="text" name="batchNumber" required placeholder="" style={{ border: '1px solid black' }} />
-                                    </Form.Group>
-                                    </Col>
-                                    <Col>
-                                    <Form.Group controlId="issueDate">
-                                            <Form.Label>Issue Date</Form.Label>
-                                            <Form.Control type="text" name="issueDate" required placeholder="" style={{ border: '1px solid black' }} />
-                                    </Form.Group>
-                                    </Col>
-                                </Row>
-                                <p></p>
-
-                                <Row>                                    
-                                    <Col>
-                                    <Form.Group controlId="issueTo">
-                                            <Form.Label>Issue To</Form.Label>
-                                            <Form.Control type="text" name="issueTo" required placeholder="" style={{ border: '1px solid black' }} />
-                                    </Form.Group>
-                                    </Col>
-                                    <Col>
-                                    <Form.Group controlId="quantityIssued">
-                                            <Form.Label>Quantity Issued</Form.Label>
-                                            <Form.Control type="text" name="quantityIssued" required placeholder="" style={{ border: '1px solid black' }} />
-                                    </Form.Group>
-                                    </Col>
-                                    <Col>
-                                    <Form.Group controlId="quantityRecieved">
-                                            <Form.Label>Quantity Recieved</Form.Label>
-                                            <Form.Control type="text" name="quantityRecieved" required placeholder="" style={{ border: '1px solid black' }} />
-                                    </Form.Group>
-                                    </Col>                                
-                                    <Col>
-                                    <Form.Group controlId="stock">
-                                            <Form.Label>Stock</Form.Label>
-                                            <Form.Control type="text" name="stock" required placeholder="" style={{ border: '1px solid black' }} />
-                                    </Form.Group>
-                                    </Col>
-                                </Row>
-                                <p></p>
-
-                                <Row>   
-                                    <Col>
-                                    <Form.Group controlId="devRemarks">
-                                            <Form.Label>Dev Remarks</Form.Label>
-                                            <Form.Control type="text" name="devRemarks" required placeholder="" style={{ border: '1px solid black' }} />
-                                    </Form.Group>
-                                    </Col> 
-                                    <Col></Col>
-                                    <Col></Col>
-                                    <Col></Col>
-
-                                </Row>
-                                
-
-                            <Form.Group>
-                                <p></p>
-                                <Button variant="primary" type="submit" onClick={props.onHide}>
-                                    Add
-                                </Button>
-                            </Form.Group>
-                            </Form>
-                        </Col>
-                    </Row>
+                    <Form onSubmit={handleSubmit}>
+                        <Row>
+                            <Col>
+                                <Form.Group controlId="entryNo">
+                                    <Form.Label>Entry No.</Form.Label>
+                                    <Form.Control type="text" name="entryNo" required placeholder="" style={{ border: '1px solid black' }} />
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group controlId="itemCode">
+                                    <Form.Label>Item Code</Form.Label>
+                                    <Form.Control type="text" name="itemCode" required placeholder="" style={{ border: '1px solid black' }} />
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group controlId="itemName">
+                                    <Form.Label>Item name</Form.Label>
+                                    <Form.Control type="text" name="itemName" required placeholder="" style={{ border: '1px solid black' }} />
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group controlId="supplier">
+                                    <Form.Label>Supplier</Form.Label>
+                                    <Form.Control type="text" name="supplier" required placeholder="" style={{ border: '1px solid black' }} />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <p></p>
+                        <Row>
+                            <Col>
+                                <Form.Group controlId="masterType">
+                                    <Form.Label>Master Type</Form.Label>
+                                    {/* Provide options for Chemical and Inventory */}
+                                    <Form.Control as="select" name="masterType" required style={{ border: '1px solid black' }}>
+                                        <option value="">Select Master Type</option>
+                                        <option value="Chemical">Chemical</option>
+                                        <option value="Inventory">Inventory</option>
+                                    </Form.Control>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group controlId="quantity">
+                                    <Form.Label>Quantity</Form.Label>
+                                    <Form.Control type="text" name="quantity" required placeholder="Enter Numeric value" style={{ border: '1px solid black' }} />
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group controlId="units">
+                                    <Form.Label>Units</Form.Label>
+                                    <Form.Control type="text" name="units" required placeholder="Enter Numeric value" style={{ border: '1px solid black' }} />
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group controlId="price">
+                                    <Form.Label>Price</Form.Label>
+                                    <Form.Control type="text" name="price" required placeholder="Enter Numeric value" style={{ border: '1px solid black' }} />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <p></p>
+                        <Row>
+                            <Col>
+                                <Form.Group controlId="projectCode">
+                                    <Form.Label>Project Code</Form.Label>
+                                    <Form.Control as="select" name="projectCode" required style={{ border: '1px solid black' }}>
+                                        {projectCodes.map((projectCode, index) => (
+                                            <option key={index} value={projectCode.value}>{projectCode.label}</option>
+                                        ))}
+                                    </Form.Control>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group controlId="remarks">
+                                    <Form.Label>Remarks</Form.Label>
+                                    <Form.Control type="text" name="remarks" required placeholder="" style={{ border: '1px solid black' }} />
+                                </Form.Group>
+                            </Col>
+                            <Col></Col>
+                            <Col></Col>
+                        </Row>
+                        <p></p>
+                        <Button variant="primary" type="submit" onClick={props.onHide}  style={{ marginRight: '10px' }}>
+                            Add
+                        </Button>
+                        <Button variant="danger" type="submit" onClick={props.onHide}>
+                            Cancel
+                        </Button>
+                    </Form>
                 </Modal.Body>
-                <Modal.Footer>
-                <Button variant="danger" type="submit" onClick={props.onHide}>
-                        Close
-                </Button>
-
-                </Modal.Footer>
+                <Modal.Footer></Modal.Footer>
             </Modal>
         </div>
     );

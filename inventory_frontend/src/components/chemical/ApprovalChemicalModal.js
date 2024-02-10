@@ -66,7 +66,7 @@ const ApprovalChemicalModal = (props) => {
                         type="text"
                         name="itemType"
                         required
-                        defaultValue={'Chemical'}
+                        defaultValue={props.itemType}
                         placeholder=""
                         style={{ border: '1px solid black' }}
                         readOnly={readOnly}

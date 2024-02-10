@@ -18,7 +18,7 @@ function ManagerApp() {
          <Route exact path="/home" element={<Home/>} />
          <Route path="/manager/appinfo" element={<AppinfoManager/>} />
 
-         <Route path="/manager/chemical" element={<ChemicalManager/>} />
+         <Route path="/manager/master" element={<ChemicalManager/>} />
 
          <Route path="/manager/inventory" element={<InventoryManager/>} />
 

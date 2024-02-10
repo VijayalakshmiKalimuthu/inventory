@@ -42,7 +42,7 @@ const LabNavigation = () => {
           </CDBSidebarHeader>
           <CDBSidebarContent>
             <CDBSidebarMenu>
-              <NavLink exact to="/" activeClassName="activeClicked">
+              <NavLink exact to="/lab_assistant/inventory_trans" activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="black-text">
                   <FcHome style={{ marginRight: '8px', fontSize: '24px' }} />
                   Home
@@ -54,19 +54,33 @@ const LabNavigation = () => {
                   Appinfo
                 </CDBSidebarMenuItem>
               </NavLink>
-              <NavLink exact to="/lab_assistant/chemical" activeClassName="activeClicked">
+              <NavLink exact to="/lab_assistant/master_manage" activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="black-text">
                   <FcBarChart style={{ marginRight: '8px', fontSize: '24px' }} />
-                  Chemical Master
-                </CDBSidebarMenuItem>
-              </NavLink>
-
-              <NavLink exact to="/lab_assistant/inventory" activeClassName="activeClicked">
-                <CDBSidebarMenuItem className="black-text">
-                  <FcList style={{ marginRight: '8px', fontSize: '24px' }} />
                   Inventory Master
                 </CDBSidebarMenuItem>
               </NavLink>
+
+              <NavLink exact to="/lab_assistant/received_items" activeClassName="activeClicked">
+                <CDBSidebarMenuItem className="black-text">
+                  <FcBarChart style={{ marginRight: '8px', fontSize: '24px' }} />
+                  Receive
+                </CDBSidebarMenuItem>
+              </NavLink>
+              
+              <NavLink exact to="/lab_assistant/issued_items" activeClassName="activeClicked">
+                <CDBSidebarMenuItem className="black-text">
+                  <FcBarChart style={{ marginRight: '8px', fontSize: '24px' }} />
+                  Issue
+                </CDBSidebarMenuItem>
+              </NavLink>
+
+              {/*<NavLink exact to="/lab_assistant/inventory_trans" activeClassName="activeClicked">
+                <CDBSidebarMenuItem className="black-text">
+                  <FcList style={{ marginRight: '8px', fontSize: '24px' }} />
+                  Inventory Transactions
+                </CDBSidebarMenuItem>
+              </NavLink> */}
 
               <NavLink exact to="/lab_assistant/task_manage" activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="black-text">

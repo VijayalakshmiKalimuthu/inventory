@@ -54,24 +54,24 @@ const ManagerNavigation = () => {
                   Appinfo
                 </CDBSidebarMenuItem>
               </NavLink>
-              <NavLink exact to="/manager/chemical" activeClassName="activeClicked">
+              <NavLink exact to="/manager/master" activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="black-text">
                   <FcBarChart style={{ marginRight: '8px', fontSize: '24px' }} />
-                  Chemical Master
-                </CDBSidebarMenuItem>
-              </NavLink>
-
-              <NavLink exact to="/manager/inventory" activeClassName="activeClicked">
-                <CDBSidebarMenuItem className="black-text">
-                  <FcList style={{ marginRight: '8px', fontSize: '24px' }} />
                   Inventory Master
                 </CDBSidebarMenuItem>
               </NavLink>
 
+              { /* <NavLink exact to="/manager/inventory" activeClassName="activeClicked">
+                <CDBSidebarMenuItem className="black-text">
+                  <FcList style={{ marginRight: '8px', fontSize: '24px' }} />
+                  Inventory Transaction
+                </CDBSidebarMenuItem>
+              </NavLink> */ }
+
               <NavLink exact to="/notification" activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="black-text">
                   <FcNews style={{ marginRight: '10px', fontSize: '24px' }} />
-                  Notification
+                  Approval 
                 </CDBSidebarMenuItem>
               </NavLink>
 

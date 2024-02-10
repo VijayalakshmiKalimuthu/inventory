@@ -25,7 +25,7 @@ const Inventory = () => {
   return(
     <div className="container-fluid side-container">
     <div className="header-container">
-      <h2 style={{ textAlign: 'center' }} className="appinfo-header">Inventory Master</h2>
+      <h2 style={{ textAlign: 'center' }} className="appinfo-header">INVENTORY TRANSACTION</h2>
     </div>
       <div className="row side-row">
         <NavLink exact to="/lab_assistant/inventory_manage" activeClassName="activeClicked" className="manage-button">
@@ -41,19 +41,14 @@ const Inventory = () => {
             <th>Item Code</th>
             <th>Item Name</th>
             <th>Tran Type I/R</th>
-            <th>Quantity</th>
-            <th>Ref Number</th>
-            <th>Ref Type</th>
-            <th>Batch Number</th>
-            <th>Remarks</th>
-            <th>Created On</th>
-            <th>Created By</th>
-            <th>Modified On</th>
-            <th>Modified By</th>
+            <th>Date</th>
+            <th>Supplier</th>
+            <th>Units</th>
+            <th>Price</th>
             <th>Quantity Issued</th>
-            <th>Quantity Recieved</th>
-            <th>Stock</th>
-            <th>Dev Remarks</th>
+            <th>Quantity Received</th>
+            <th>Quantity</th>
+            <th>Remarks</th>
             </tr>
         </thead>
         <tbody>
@@ -63,19 +58,14 @@ const Inventory = () => {
                 <td>{inven.item_code}</td>
                 <td>{inven.item_name}</td>
                 <td>{inven.tran_type_IR}</td>
-                <td>{inven.qnty}</td>
-                <td>{inven.ref_number}</td>
-                <td>{inven.ref_type}</td>
-                <td>{inven.batch_number}</td>
-                <td>{inven.remarks}</td>
-                <td>{inven.created_on}</td>
-                <td>{inven.created_by}</td>
-                <td>{inven.modified_on}</td>
-                <td>{inven.modified_by}</td>
+                <td>{inven.i_date}</td>
+                <td>{inven.supplier}</td>
+                <td>{inven.units}</td>
+                <td>{inven.price}</td>
                 <td>{inven.quantity_issued}</td>
-                <td>{inven.quantity_recieved}</td>
-                <td>{inven.stock}</td>
-                <td>{inven.dev_remarks}</td>
+                <td>{inven.quantity_received}</td>
+                <td>{inven.quantity}</td>
+                <td>{inven.remarks}</td>
             </tr>)}
         </tbody>
     </Table>
