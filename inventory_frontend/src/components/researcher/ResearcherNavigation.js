@@ -17,7 +17,7 @@ import { FcHighPriority } from "react-icons/fc";
 const ResearcherNavigation = () => {
   return (
     <div>
-      <Navbar bg="dark" variant="dark" id="my-nav" className="custom-navbar">
+      <Navbar bg="dark" variant="dark" id="my-nav" className="custom-navbar" style={{ width: '100%' }}>
         <Navbar.Brand className="app-logo" href="/home">
           <img
             src={TN_Transparent_Logo}
@@ -30,10 +30,10 @@ const ResearcherNavigation = () => {
         </Navbar.Brand>
         <Button href="./Login" style={{ marginLeft: '800px' }} >Logout</Button>
       </Navbar>
-      <div className='sidebar'>
+      <div className='sidebar' style={{height: '530px'}}>
         <CDBSidebar className="narrow-sidebar" textColor="black" backgroundColor="gray">
           <CDBSidebarHeader prefix={<i className="fa fa-bars" />}>
-            Dashboard
+            Researcher 
           </CDBSidebarHeader>
           <CDBSidebarContent>
             <CDBSidebarMenu>
@@ -49,6 +49,14 @@ const ResearcherNavigation = () => {
                   Notification 
                 </CDBSidebarMenuItem>
               </NavLink>
+
+              <NavLink exact to="/addProductReq" activeClassName="activeClicked">
+                <CDBSidebarMenuItem className="black-text">
+                  <FcHighPriority style={{ marginRight: '8px', fontSize: '24px' }} />
+                  Request 
+                </CDBSidebarMenuItem>
+              </NavLink>
+
 
             </CDBSidebarMenu>
           </CDBSidebarContent>

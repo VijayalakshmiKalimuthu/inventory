@@ -23,28 +23,24 @@ const Project = () => {
   }, []);
 
   return(
-    <div className="container-fluid side-container">
-    <div className="header-container">
-      <h2 style={{ textAlign: 'center' }} className="appinfo-header">Project Master</h2>
-    </div>
-      <div className="row side-row">
-        <NavLink exact to="/admin/project_manage" activeClassName="activeClicked" className="manage-button">
-          <Button variant="primary" size="sm">
-            Manage
-          </Button>
-        </NavLink>
+    <div >
+      <div style={{background: "#C5EA31", height: '70px'}} className="header">
+        <h2 style={{ textAlign: 'center', paddingTop: '15px' }} >PROJECT MASTER</h2>
+      </div>
+        <div style={{ overflowY: 'scroll', maxHeight: 'calc(100vh - 100px)' }}>
+      <div className="row side-row" style={{ textAlign: 'center' }}>
     <p id="before-table"></p>
     <Table striped bordered hover className="react-bootstrap-table" id="dataTable" style={{ margin: 'auto', width: '500px' }}>
         <thead>
             <tr>
-                <th style={{ backgroundColor: 'green',
+                <th style={{ backgroundColor: '#C5EA31',
                              width: '250px', 
-                             color: 'white', 
+                             color: 'black', 
                              textAlign: 'center', 
                              border: '1px solid black' }}>Project Code</th>
-                <th style={{ backgroundColor: 'green', 
+                <th style={{ backgroundColor: '#C5EA31', 
                              width: '250px', 
-                             color: 'white', 
+                             color: 'black', 
                              textAlign: 'center', 
                              border: '1px solid black' }}>Project Name</th>
             </tr>
@@ -61,6 +57,7 @@ const Project = () => {
         </tbody>
     </Table>
 
+    </div>
     </div>
   </div>
   );

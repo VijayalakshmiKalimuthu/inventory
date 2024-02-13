@@ -62,14 +62,11 @@ function Register() {
   };
 
   return (
-    <div className="App">
-      <div className="container-fluid">
-        <div className="row">
-          <div className="alert alert-danger" style={{ marginLeft: '6px' }}>
-            <h1 style={{ marginLeft: '400px' }}>Sign Up!</h1>
-          </div>
-          <br />
-          <br />
+    <div >
+      <div style={{background: "lightpink", height: '70px'}} className="header">
+        <h2 style={{ textAlign: 'center', paddingTop: '15px' }} >SIGN UP!</h2>
+      </div>
+      <p></p>
 
           <div className="col-sm-4" style={rightSideStyle}>
             <h3>Register Here</h3>
@@ -138,8 +135,6 @@ function Register() {
                 Register
               </button>
             </div>
-          </div>
-        </div>
       </div>
     </div>
   );

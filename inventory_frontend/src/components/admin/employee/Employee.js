@@ -23,38 +23,60 @@ const Employee = () => {
   }, []);
 
   return(
-    <div className="container-fluid side-container">
-    <div className="header-container">
-      <h2 style={{ textAlign: 'center' }} className="appinfo-header">Employees</h2>
-    </div>
-      <div className="row side-row">
-        <NavLink exact to="/employee_manage" activeClassName="activeClicked" className="manage-button">
-          <Button variant="primary" size="sm">
-            Manage
-          </Button>
-        </NavLink>
+    <div >
+      <div style={{background: "#C5EA31", height: '70px'}} className="header">
+        <h2 style={{ textAlign: 'center', paddingTop: '15px' }} >Employees</h2>
+      </div>
+        <div style={{ overflowY: 'scroll', maxHeight: 'calc(100vh - 100px)' }}>
+      <div className="row side-row" style={{ textAlign: 'center' }}>
     <p id="before-table"></p>
-        <Table striped bordered hover className="react-bootstrap-table" id="dataTable">
+        <Table striped bordered hover className="react-bootstrap-table" id="dataTable" style={{ margin: 'auto', width: '1000px' }}>
         <thead>
             <tr>
-            <th>Employee Id</th>
-            <th>Employee Name</th>
-            <th>Designation</th>
-            <th>Project Code</th>
-            <th>Project Name</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Employee Id</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Employee Name</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Designation</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Project Code</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Project Name</th>
             </tr>
         </thead>
         <tbody>
             {employee.map((emp) =>
             <tr key={emp.id}>
-                <td>{emp.emp_id}</td>
-                <td>{emp.emp_name}</td>
-                <td>{emp.designation}</td>
-                <td>{emp.project_code}</td>
-                <td>{emp.project_name}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{emp.emp_id}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{emp.emp_name}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{emp.designation}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{emp.project_code}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{emp.project_name}</td>
             </tr>)}
         </tbody>
     </Table>
+    </div>
     </div>
   </div>
   );

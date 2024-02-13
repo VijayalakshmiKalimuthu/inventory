@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Appinfo, Master, Project_Master, Inventory_Tran, Request_CI, IssuesNote, LoginCre, EmpDet
 from django.contrib.auth.models import User
 from rest_framework.authtoken.views import Token
-from .models import ItemReceive, ItemIssue
+from .models import ItemReceive, ItemIssue, ItemReturn
 
 class AppinfoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -77,4 +77,9 @@ class ItemReceiveSerializer(serializers.ModelSerializer):
 class ItemIssueSerializer(serializers.ModelSerializer):
     class Meta:
         model = ItemIssue
+        fields = '__all__'
+
+class ItemReturnSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ItemReturn
         fields = '__all__'

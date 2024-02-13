@@ -74,35 +74,76 @@ const EmployeeManage = () => {
     let AddModelClose=()=>setAddModalShow(false);
     let EditModelClose=()=>setEditModalShow(false);
     return(
-        <div className="container-fluid side-container">
-        <div className="header-container">
-          <h2 style={{ textAlign: 'center' }} className="appinfo-header">EMPLOYEES</h2>
+      <div >
+        <div style={{background: "#C5EA31", height: '70px'}} className="header">
+          <h2 style={{ textAlign: 'center', paddingTop: '15px' }} >EMPLOYEES</h2>
         </div>
-        <div className="row side-row" >
+          <div style={{ overflowY: 'scroll', maxHeight: '500px' }}>
+        <div className="row side-row" style={{ textAlign: 'center' }}>
+            <ButtonToolbar>
+                <Button variant="primary" onClick={handleAdd}>
+                Add Employee
+                </Button>
+                <AddEmployeeModal show={addModalShow} setUpdated={setIsUpdated}
+                onHide={AddModelClose}></AddEmployeeModal>
+            </ButtonToolbar>
         <p id="manage"></p>
-            <Table striped bordered hover className="react-bootstrap-table" id="dataTable">
+            <Table striped bordered hover className="react-bootstrap-table" id="dataTable" style={{ margin: 'auto', width: '1000px' }}>
                 <thead>
                 <tr>
-                <th>Employee Id</th>
-                <th>Employee Name</th>
-                <th>Designation</th>
-                <th>Project Code</th>
-                <th>Project Name</th>
+                <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Employee Id</th>
+                <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Employee Name</th>
+                <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Designation</th>
+                <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Project Code</th>
+                <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Project Name</th>
+                <th colspan="2" style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 {employees.map((emp) => (
                   <tr key={emp.emp_id}>
-                      <td>{emp.emp_id}</td>
-                      <td>{emp.emp_name || ''}</td>
-                      <td>{emp.designation || ''}</td>
-                      <td>{emp.project_code || ''}</td>
-                      <td>{emp.project_name || ''}</td>
-                      <td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{emp.emp_id}</td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{emp.emp_name || ''}</td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{emp.designation || ''}</td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{emp.project_code || ''}</td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{emp.project_name || ''}</td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>
                           <Button className="mr-2" variant="danger" onClick={(event) => handleDelete(event, emp.emp_id)}>
                               <RiDeleteBin5Line />
                           </Button>
-                          <span>&nbsp;&nbsp;&nbsp;</span>
+                          </td>
+                          <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>
                           <Button className="mr-2" onClick={(event) => handleUpdate(event, emp)}>
                               <FaEdit />
                           </Button>
@@ -113,13 +154,7 @@ const EmployeeManage = () => {
 
               </tbody>
             </Table>
-            <ButtonToolbar>
-                <Button variant="primary" onClick={handleAdd}>
-                Add Employee
-                </Button>
-                <AddEmployeeModal show={addModalShow} setUpdated={setIsUpdated}
-                onHide={AddModelClose}></AddEmployeeModal>
-            </ButtonToolbar>
+        </div>
         </div>
         </div>
     );

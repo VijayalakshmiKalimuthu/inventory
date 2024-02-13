@@ -74,26 +74,49 @@ const ProjectManage = () => {
     let AddModelClose=()=>setAddModalShow(false);
     let EditModelClose=()=>setEditModalShow(false);
     return(
-        <div className="container-fluid side-container">
-        <div className="header-container">
-          <h2 style={{ textAlign: 'center' }} className="appinfo-header">Projects</h2>
+      <div >
+        <div style={{background: "#C5EA31", height: '70px'}} className="header">
+          <h2 style={{ textAlign: 'center', paddingTop: '15px' }} >PROJECT MASTER</h2>
         </div>
-        <div className="row side-row" >
+          <div style={{ overflowY: 'scroll', maxHeight: '500px' }}>
+        <div className="row side-row" style={{ textAlign: 'center' }}>
+            <ButtonToolbar>
+                <Button variant="primary" onClick={handleAdd}>
+                Add Project
+                </Button>
+                <AddProjectModal show={addModalShow} setUpdated={setIsUpdated}
+                onHide={AddModelClose}></AddProjectModal>
+            </ButtonToolbar>
         <p id="manage"></p>
-            <Table striped bordered hover className="react-bootstrap-table" id="dataTable">
+            <Table striped bordered hover className="react-bootstrap-table" id="dataTable" style={{ margin: 'auto', width: '500px' }}>
                 <thead>
                 <tr>
-                <th>Project Code</th>
-                  <th>Projects Name</th>
-                  <th>Action</th>
+                <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Project Code</th>
+                  <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Projects Name</th>
+                  <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 {projects.map((proj) => (
                   <tr key={proj.project_code}>
-                      <td>{proj.project_code}</td>
-                      <td>{proj.project_name || ''}</td>
-                      <td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{proj.project_code}</td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{proj.project_name || ''}</td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>
                           <Button className="mr-2" variant="danger" onClick={(event) => handleDelete(event, proj.project_code)}>
                               <RiDeleteBin5Line />
                           </Button>
@@ -108,13 +131,7 @@ const ProjectManage = () => {
 
               </tbody>
             </Table>
-            <ButtonToolbar>
-                <Button variant="primary" onClick={handleAdd}>
-                Add Project
-                </Button>
-                <AddProjectModal show={addModalShow} setUpdated={setIsUpdated}
-                onHide={AddModelClose}></AddProjectModal>
-            </ButtonToolbar>
+        </div>
         </div>
         </div>
     );

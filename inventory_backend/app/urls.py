@@ -53,7 +53,11 @@ urlpatterns = [
     path('researcherEmpName/', views.view_ResearcherEmpName,  name= 'view_ResearcherEmpName'),
 
     path('view_status/', views.view_status, name="view_status"),
-    
-    
-    
-]
+    re_path(r'^add_itemreturn/?$', views.add_itemreturn, name='add_itemreturn'),
+
+    re_path(r'^addProduct_request/?$', views.addProduct_request, name='addProduct_request'),
+    path('viewProduct_request/', views.viewProduct_request, name="viewProduct_request"),
+        
+    path('updateProduct_request/<int:pk>', views.updateProduct_request, name="updateProduct_request"),
+    path('view_entry', views.view_entry, name='view_entry'),       
+ ]

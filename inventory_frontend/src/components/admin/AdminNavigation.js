@@ -22,7 +22,7 @@ import { FcContacts } from 'react-icons/fc';
 const AdminNavigation = () => {
   return (
     <div>
-      <Navbar bg="dark" variant="dark" id="my-nav" className="custom-navbar" style={{ width: '120%' }}>
+      <Navbar bg="dark" variant="dark" id="my-nav" className="custom-navbar" style={{ width: '100%' }}>
         <Navbar.Brand className="app-logo" href="/home">
           <img
             src={TN_Transparent_Logo}
@@ -36,7 +36,7 @@ const AdminNavigation = () => {
         <Button href="./Login" style={{ marginLeft: '700px' }} >Logout</Button>
 
       </Navbar>
-      <div className='sidebar'>
+      <div className='sidebar' style={{height: '530px'}}>
         <CDBSidebar className="narrow-sidebar" textColor="black" backgroundColor="gray">
           <CDBSidebarHeader prefix={<i className="fa fa-bars" />}>
             Admin
@@ -49,7 +49,7 @@ const AdminNavigation = () => {
                   Home
                 </CDBSidebarMenuItem>
               </NavLink>
-              <NavLink exact to="/admin/project" activeClassName="activeClicked">
+              <NavLink exact to="/admin/project_manage" activeClassName="activeClicked">
               <CDBSidebarMenuItem className="black-text">
                   <FcBarChart style={{ marginRight: '10px', fontSize: '24px' }} />
                   Project Master
@@ -69,7 +69,7 @@ const AdminNavigation = () => {
                 </CDBSidebarMenuItem>
               </NavLink>
 
-              <NavLink exact to="/employee" activeClassName="activeClicked">
+              <NavLink exact to="/employee_manage" activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="black-text">
                   <FcContacts style={{ marginRight: '10px', fontSize: '24px' }} />
                   Employee Details

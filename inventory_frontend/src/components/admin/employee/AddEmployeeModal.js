@@ -45,7 +45,7 @@ const AddEmployeeModal = (props) => {
         <div className="container">
             <Modal
                 {...props}
-                size="lg"
+                size="md"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered>
                 <Modal.Header closeButton>
@@ -55,7 +55,7 @@ const AddEmployeeModal = (props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Row>
-                        <Col sm={11}>
+                        <Col sm={12}>
                             <Form onSubmit={handleSubmit}>
                                 <Row>
                                     <Col>
@@ -87,8 +87,11 @@ const AddEmployeeModal = (props) => {
                                 </Row>
                                 <Form.Group>
                                     <p></p>
-                                    <Button variant="primary" type="submit" onClick={props.onHide}>
+                                    <Button variant="primary" type="submit" onClick={props.onHide} style={{marginRight: '8px'}}>
                                         Add
+                                    </Button>
+                                    <Button variant="danger" type="submit" onClick={props.onHide}>
+                                        Cancel
                                     </Button>
                                 </Form.Group>
                             </Form>
@@ -96,9 +99,6 @@ const AddEmployeeModal = (props) => {
                     </Row>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="danger" type="submit" onClick={props.onHide}>
-                        Close
-                    </Button>
                 </Modal.Footer>
             </Modal>
         </div>

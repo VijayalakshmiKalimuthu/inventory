@@ -35,7 +35,7 @@ const AddResearcherIssueTask = (props) => {
 
             <Modal
                 {...props}
-                size="lg"
+                size="md"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered >
 
@@ -46,7 +46,7 @@ const AddResearcherIssueTask = (props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Row>
-                        <Col sm={10}>
+                        <Col sm={11}>
                             <Form onSubmit={handleSubmit}>
 
                             <Row>
@@ -105,8 +105,11 @@ const AddResearcherIssueTask = (props) => {
                             </Row>
                             <Form.Group>
                                 <p></p>
-                                <Button variant="primary" type="submit" onClick={props.onHide}>
+                                <Button variant="primary" type="submit" onClick={props.onHide} style={{marginRight: '8px'}}>
                                     Add
+                                </Button>
+                                <Button variant="danger" type="submit" onClick={props.onHide}>
+                                        Cancel
                                 </Button>
                             </Form.Group>
                             </Form>
@@ -114,9 +117,6 @@ const AddResearcherIssueTask = (props) => {
                     </Row>
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant="danger" type="submit" onClick={props.onHide}>
-                        Close
-                </Button>
 
                 </Modal.Footer>
             </Modal>

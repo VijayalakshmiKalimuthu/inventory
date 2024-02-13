@@ -485,3 +485,70 @@ export function getStatusApi() {
     .then(response => response.data)
 }
 
+
+//-------------------------------Item Return---------------------------------//
+
+export function addItemReturnApi(i_return) {
+  const currentDate = new Date();
+
+  // Format date to ISO string
+  const isoDate = currentDate.toISOString();
+
+  return axios.post('http://127.0.0.1:8000/add_itemreturn', {
+    entry_no: null,
+    c_id: i_return.c_id,
+    receipt_date: isoDate,
+    quantity_return: i_return.quantity_return
+  })
+  .then(response => response.data);
+}
+
+//-----------------------------Add Product Request----------------------------//
+
+export function addProductReqApi(product) {
+  const currentDate = new Date().toISOString().split('T')[0];
+
+  return axios.post('http://127.0.0.1:8000/addProduct_request', {
+    id: null,
+    ItemCode: null,
+    ItemType: null,
+    ItemName: null,
+    RequestStatus: null,
+    RequestDate: currentDate,
+    RequestedBy: product.RequestedBy,
+    RequestDetails: product.RequestDetails,
+    RequestedTo: product.RequestedTo
+
+
+  })
+  .then(response => response.data);
+}
+
+
+export function getProductReqApi() {
+  return axios.get('http://127.0.0.1:8000/viewProduct_request')
+    .then(response => response.data)
+}
+
+
+export async function updateProductApi(enNo, product) {
+  return axios.put(`http://127.0.0.1:8000/updateProduct_request/${enNo}`, {
+    ItemCode: product.ItemCode,   
+    ItemType: product.ItemType,
+    ItemName: product.ItemName,
+    RequestDate: product.RequestDate,
+    RequestStatus: product.RequestStatus,
+    RequestedBy: product.RequestedBy,
+    RequestDetails: product.RequestDetails,
+    RequestedTo: product.RequestedTo
+  })
+  .then(response => response.data);
+  
+}
+
+//-----------------------------View Entry-----------------//
+
+export function getViewEntryApi() {
+  return axios.get('http://127.0.0.1:8000/view_entry')
+    .then(response => response.data)
+}

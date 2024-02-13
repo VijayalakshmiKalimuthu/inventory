@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Button, ButtonToolbar } from 'react-bootstrap';
 import AddInventoryReceiveModal from "./AddInventoryReceiveModal";
 import AddIssueInventoryModal from './AddIssueInventoryModal';
+import AddReturnModal from './AddReturnModal';
 
 const InventoryTrans = () => {
     const [receiveModalShow, setReceiveModalShow] = useState(false);
     const [issueModalShow, setIssueModalShow] = useState(false);
+    const [returModalShow, setReturnModalShow] = useState(false);
 
     const handleReceive = (e) => {
         e.preventDefault();
@@ -17,8 +19,14 @@ const InventoryTrans = () => {
         setIssueModalShow(true);
     };
 
+    const handleReturn= (e) => {
+        e.preventDefault();
+        setReturnModalShow(true);
+    };
+
     const receiveModelClose = () => setReceiveModalShow(false);
     const issueModelClose = () => setIssueModalShow(false);
+    const returnModalClose = () => setReturnModalShow(false);
 
     return (
         <div>
@@ -44,10 +52,13 @@ const InventoryTrans = () => {
                     setUpdated={setIssueModalShow} 
                     onHide={issueModelClose}></AddIssueInventoryModal>
 
-                    <Button variant="primary" style={{ backgroundColor: '#C5EA31', 
+                    <Button variant="primary" onClick={handleReturn} style={{ backgroundColor: '#C5EA31', 
                     width: '200px', margin: '10px', borderRadius: '20px', color: "black", fontWeight: "bold" }}>
                         Return
                     </Button>
+                    <AddReturnModal show={returModalShow}
+                    setUpdated={setReturnModalShow}
+                    onHide={returnModalClose}></AddReturnModal>
                 </ButtonToolbar>
             </div>
         </div>

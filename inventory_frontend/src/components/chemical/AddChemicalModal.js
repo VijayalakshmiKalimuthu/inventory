@@ -1,18 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Col, Row, Form, Button } from 'react-bootstrap';
-import { addMasterApi, getProjectApi } from '../../services/AppinfoService';
+import { addMasterApi, getProjectApi, getMasterApi } from '../../services/AppinfoService';
 
 const AddChemicalModal = (props) => {
     const [projectCodes, setProjectCodes] = useState([]);
+    const [itemCodes, setItemCodes] = useState([]);
+    const [itemCodeInput, setItemCodeInput] = useState('');
+    const [filteredItemCodes, setFilteredItemCodes] = useState([]);
 
     useEffect(() => {
-        // Fetch project codes
+        getMasterApi()
+            .then(data => {
+                setItemCodes(data.map(item => ({ value: item.item_code, label: item.item_name })));
+            })
+            .catch(error => console.error('Error fetching master data:', error));
+
         getProjectApi()
-        .then(data => {
-            setProjectCodes(data.map(item => ({ value: item.project_code, label: item.project_name })));
-        })
-        .catch(error => console.error('Error fetching project codes:', error));
+            .then(data => {
+                setProjectCodes(data.map(item => ({ value: item.project_code, label: item.project_name })));
+            })
+            .catch(error => console.error('Error fetching project codes:', error));
     }, []);
+
+    useEffect(() => {
+        setFilteredItemCodes(
+            itemCodes.filter(itemCode =>
+                itemCode.label.toLowerCase().includes(itemCodeInput.toLowerCase())
+            )
+        );
+    }, [itemCodeInput, itemCodes]);
+
+    const handleItemCodeInputChange = (e) => {
+        setItemCodeInput(e.target.value);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -64,7 +84,20 @@ const AddChemicalModal = (props) => {
                             <Col>
                                 <Form.Group controlId="itemCode">
                                     <Form.Label>Item Code</Form.Label>
-                                    <Form.Control type="text" name="itemCode" required placeholder="" style={{ border: '1px solid black' }} />
+                                    <Form.Control
+                                        type="text"
+                                        name="itemCode"
+                                        value={itemCodeInput}
+                                        onChange={handleItemCodeInputChange}
+                                        required
+                                        style={{ border: '1px solid black' }}
+                                        placeholder="Type item code..."
+                                    />
+                                    <select name="itemCode" style={{ border: '1px solid black', width: '200px' }}>
+                                        {filteredItemCodes.map((itemCode, index) => (
+                                            <option key={index} value={itemCode.value}>{itemCode.label}</option>
+                                        ))}
+                                    </select>
                                 </Form.Group>
                             </Col>
                             <Col>

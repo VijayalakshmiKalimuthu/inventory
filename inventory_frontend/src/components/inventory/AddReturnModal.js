@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {Modal, Col, Row, Form, Button} from 'react-bootstrap';
 // import {FormControl, FormGroup, FormLabel} from 'react-bootstrap';
-import { addItemReceiveApi, getMasterApi } from '../../services/AppinfoService';
+import { addItemReturnApi, getMasterApi } from '../../services/AppinfoService';
 import './formBorder.css';
 import Select from 'react-select';
 
-const AddInventoryReceiveModal = (props) => {
+const AddReturnModal = (props) => {
     const [itemsCodes, setItemsCodes] = useState([]);
     const [selectedItem, setSelectedItem] = useState(null);
 
@@ -19,31 +19,26 @@ const AddInventoryReceiveModal = (props) => {
     }, []);
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-    
+        e.preventDefault(); // Prevent default form submission behavior
+        
         const formData = new FormData(e.target);
-    
-        const receiveData = {
+        
+        const returnData = {
             c_id: selectedItem.value,
-            quantity_received: formData.get('quantityReceived'),
-            po_number: formData.get('poNumber'),
-            batch_number: formData.get('batchNumber'),
-            remarks: formData.get('remarks'),
-
-
+            quantity_return: formData.get('quantityReturn'),
         };
-    
-        addItemReceiveApi(receiveData)
+        
+        addItemReturnApi(returnData)
         .then((result) => {
-            window.alert("Data added successfully");
+            window.alert("Data Return successfully");
             props.setUpdated(true);
             setSelectedItem(null); // Clear selected item
             props.onHide(); // Close the modal
-            })
-            .catch((error) => {
-            console.error("Failed to Add Inventory Data", error);  // Log the error to the console
-            alert("Failed to Add Inventory. Check console for details.");
-            });
+        })
+        .catch((error) => {
+            console.error("Failed to Retun Data", error);  // Log the error to the console
+            alert("Failed to Return.");
+        });
     };
 
     return(
@@ -57,7 +52,7 @@ const AddInventoryReceiveModal = (props) => {
 
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        Item Receive Form
+                        Item Return Form
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -84,46 +79,18 @@ const AddInventoryReceiveModal = (props) => {
                                     </Col>
 
                                     <Col>
-                                    <Form.Group controlId="quantityReceived">
-                                        <Form.Label>Quantity Received</Form.Label>
-                                        <Form.Control type="type" name="quantityReceived" required placeholder="" className="custom-border">
+                                    <Form.Group controlId="quantityReturn">
+                                        <Form.Label>Quantity Return</Form.Label>
+                                        <Form.Control type="type" name="quantityReturn" required placeholder="Enter Numeric Value" className="custom-border">
                                         </Form.Control>
                                     </Form.Group>
                                     </Col>
                                 </Row>
-                                <p></p>
-                                <Row>
-                                    <Col>
-                                    <Form.Group controlId="poNumber">
-                                            <Form.Label>PO Number</Form.Label>
-                                            <Form.Control type="text" name="poNumber" required placeholder="" className="custom-border" />
-                                    </Form.Group>
-                                    </Col>  
-                                    <Col>
-                                    <Form.Group controlId="batchNumber">
-                                            <Form.Label>Batch Number</Form.Label>
-                                            <Form.Control type="text" name="batchNumber" required placeholder="" className="custom-border" />
-                                    </Form.Group>
-                                    </Col>
-                                </Row>
-                                <p></p>
-
-                                <Row> 
-
-                                    <Col>
-                                    <Form.Group controlId="remarks">
-                                            <Form.Label>Remarks</Form.Label>
-                                            <Form.Control type="text" name="remarks" required placeholder="" className="custom-border" />
-                                    </Form.Group>
-                                    </Col>
-                                    <Col></Col>
-                                </Row>
-                                <p></p>
 
                             <Form.Group>
                                 <p></p>
                                 <Button variant="primary" type="submit" onClick={props.onHide} style={{ width: '70px' }}>
-                                    Add
+                                    Save
                                 </Button>
                                 <Button variant="danger" type="submit" onClick={props.onHide} style={{ marginLeft: '10px'}}>
                                     Cancel
@@ -138,4 +105,4 @@ const AddInventoryReceiveModal = (props) => {
     );
 };
 
-export default AddInventoryReceiveModal;
+export default AddReturnModal;

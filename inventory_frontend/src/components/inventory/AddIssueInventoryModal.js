@@ -60,8 +60,9 @@ const AddIssueInventoryModal = (props) => {
         addItemIssueApi(issueData)
         .then((result) => {
             window.alert("Issue added successfully");
-                props.setUpdated(true);
-                setSelectedItem('')
+            props.setUpdated(true);
+            setSelectedItem(null); // Clear selected item
+            props.onHide(); // Close the modal
             })
             .catch((error) => {
             console.error("Failed to Add Inventory Data", error);  // Log the error to the console

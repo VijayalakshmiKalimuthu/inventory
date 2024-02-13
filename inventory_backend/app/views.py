@@ -18,8 +18,8 @@ from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
-from .models import EmpDet, ItemIssue, ItemReceive
-from .serializers import EmpSerializer, ItemReceiveSerializer, ItemIssueSerializer
+from .models import EmpDet, ItemIssue, ItemReceive, ItemReturn
+from .serializers import EmpSerializer, ItemReceiveSerializer, ItemIssueSerializer, ItemReturnSerializer
 from django.db.models import F
 
 
@@ -395,9 +395,14 @@ def add_request(request):
     
 @api_view(['GET'])
 def view_request(request):
-	req = Request_CI.objects.all()
-	serializer = RequestCISerializer(req, many=True)
-	return Response(serializer.data)
+    # Filter requests where RequestedBy is 'Lab Assistant'
+    requests = Request_CI.objects.filter(RequestedBy='Lab Assistant')
+    
+    # Serialize the filtered requests
+    serializer = RequestCISerializer(requests, many=True)
+    
+    # Return the serialized data as response
+    return Response(serializer.data)
 
 
 @api_view(['PUT'])
@@ -636,11 +641,13 @@ def view_itemreceive(request):
     # Serialize the queryset
     serialized_data = []
     for receive in rec:
+        formatted_receipt_date = receive.receipt_date.strftime('%d-%m-%Y %I:%M %p')
+
         serialized_receive = {
             'item_code': receive.c_id.item_code,
             'item_name': receive.c_id.item_name,
             'units': receive.c_id.units,
-            'receipt_date': receive.receipt_date,
+            'receipt_date': formatted_receipt_date,
             'quantity_received': receive.quantity_received,
             'po_number': receive.po_number,
             'batch_number': receive.batch_number,
@@ -707,12 +714,14 @@ def view_itemissue(request):
     # Serialize the queryset
     serialized_data = []
     for issue in rec:
+        formatted_issue_date = issue.issue_date.strftime('%d-%m-%Y %I:%M %p')
+
         serialized_employee = {
             'entry_no': issue.entry_no,
             'item_code': issue.c_id.item_code,
             'item_name': issue.c_id.item_name,
             'units': issue.c_id.units,
-            'issue_date': issue.issue_date,
+            'issue_date': formatted_issue_date,
             'quantity_issued': issue.quantity_issued,
             'issued_to': issue.issued_to,
             'project_code': issue.project_code.project_code,
@@ -764,6 +773,155 @@ def view_status(request):
             'RequestStatus': st.RequestStatus
         }
         serialized_data.append(serialized_employee)
+    
+    # Print for debugging
+    print("Serialized data:", serialized_data)
+
+    return Response(serialized_data)
+
+#----------------------------------Item Return-------------------------------------#
+
+@api_view(['POST'])
+def add_itemreturn(request):
+    print("Request data:", request.data)
+
+    try:
+        c_id_value = request.data.get('c_id')
+        quantity_return = request.data.get('quantity_return')  # Get the quantity received
+
+        if c_id_value:
+            master_instance, _ = Master.objects.get_or_create(c_id=c_id_value)
+        else:
+            raise serializers.ValidationError('Item code is required')
+
+        # Get the c_id value from the master_instance
+        c_id_value = master_instance.c_id
+
+        # Modify the request data with the correct c_id value
+        data = request.data.copy()
+        data['c_id'] = c_id_value
+
+        rec_serializer = ItemReturnSerializer(data=data)
+
+        if rec_serializer.is_valid():
+            rec_instance = rec_serializer.save()  # Save the ItemReturn instance
+            print("Item Return successfully")
+
+            # Update the Master instance with the quantity received
+            Master.objects.filter(c_id=c_id_value).update(quantity=F('quantity') + quantity_return)
+
+            return Response(rec_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print("Invalid data:", rec_serializer.errors)
+            return Response(rec_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+#----------------------------Researcher Request For Add Product-----------------------------------#
+
+@api_view(['POST'])
+def addProduct_request(request):
+    print("Request data:", request.data)
+
+    # Creating a serializer instance
+    req = RequestCISerializer(data=request.data)
+
+    try:
+        # Validating for already existing data
+        if Request_CI.objects.filter(**request.data).exists():
+            print("Data already exists")
+            raise serializers.ValidationError('This data already exists')
+
+        # Checking if the serializer is valid
+        if req.is_valid():
+            # Saving the data
+            req.save()
+            print("Request data saved successfully")
+            return Response(req.data, status=status.HTTP_201_CREATED)
+        else:
+            print("Invalid data:", req.errors)
+            return Response(req.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+
+
+@api_view(['GET'])
+def viewProduct_request(request):
+    print("Request Data: ", request.data)
+
+    requestProd = Request_CI.objects.all()
+
+    serialized_data = []
+
+    for req in requestProd:
+        # Check if RequestedTo is 'Researcher'
+        if req.RequestedBy == 'Researcher':
+            serialized_request = {
+                'id': req.id,
+                'RequestDate': req.RequestDate,
+                'RequestedBy': req.RequestedBy,
+                'RequestedTo': req.RequestedTo,
+                'RequestDetails': req.RequestDetails,
+                'RequestStatus': req.RequestStatus
+            }
+
+            serialized_data.append(serialized_request)
+
+    # Check if any data was serialized
+    if serialized_data:
+        print("Serialized Data: ", serialized_data)
+        return Response(serialized_data)
+    else:
+        return Response({"message": "No data found for RequestedTo = 'Researcher'"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['PUT'])
+def updateProduct_request(request, pk):
+    print("Request Data: ", request.data)
+
+    req_to_update = Request_CI.objects.get(id=pk)
+    serializer = RequestCISerializer(instance=req_to_update, data=request.data, partial=True)
+    
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse("Request Updated Successfully", safe=False)
+    return JsonResponse("Failed to Update Request")
+
+
+#--------------------------View Entry------------------------------------------#
+
+
+@api_view(['GET'])
+def view_entry(request):
+    emp = EmpDet.objects.select_related('project_code').all()
+    mas = Master.objects.select_related('project_code').all()
+    
+    serialized_data = []
+    for data in mas:
+        for employee in emp:
+             if data.project_code == employee.project_code:
+                serialized_employee = {
+                    'c_id': data.c_id, 
+                    'entry_no': data.entry_no, 
+                    'item_code': data.item_code, 
+                    'item_name': data.item_name, 
+                    'm_date': data.m_date, 
+                    'supplier': data.supplier, 
+                    'master_type': data.master_type, 
+                    'quantity': data.quantity, 
+                    'units': data.units, 
+                    'price': data.price, 
+                    'project_code': data.project_code.project_code, 
+                    'remarks': data.remarks,
+                    'designation': employee.designation, 
+                }
+                serialized_data.append(serialized_employee)
     
     # Print for debugging
     print("Serialized data:", serialized_data)

@@ -31,18 +31,18 @@ const AddProjectModal = (props) => {
 
             <Modal
                 {...props}
-                size="lg"
+                size="sm"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered >
 
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        Fill In Appinfo Information
+                        Project Form
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Row>
-                        <Col sm={6}>
+                        <Col sm={11}>
                             <Form onSubmit={handleSubmit}>
                                 
                             <Form.Group controlId="projectName">
@@ -53,8 +53,11 @@ const AddProjectModal = (props) => {
                             
                             <Form.Group>
                                 <p></p>
-                                <Button variant="primary" type="submit" onClick={props.onHide}>
+                                <Button variant="primary" type="submit" onClick={props.onHide} style={{marginRight: '8px'}}>
                                     Add
+                                </Button>
+                                <Button variant="danger" type="submit" onClick={props.onHide}>
+                                    Cancel
                                 </Button>
                             </Form.Group>
                             </Form>
@@ -62,9 +65,6 @@ const AddProjectModal = (props) => {
                     </Row>
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant="danger" type="submit" onClick={props.onHide}>
-                        Close
-                </Button>
 
                 </Modal.Footer>
             </Modal>

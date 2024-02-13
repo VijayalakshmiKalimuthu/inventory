@@ -17,6 +17,7 @@ import InventoryTrans from './components/inventory/InventoryTrans';
 import ReceivedItems from './components/inventory/ReceivedItems';
 import IssuedItems from './components/inventory/IssuedItems';
 import NoteStatus from './components/chemical/NoteStatus';
+import RequestResearcher from './components/lab/RequestResearcher';
 
 
 function LabApp() {
@@ -44,6 +45,8 @@ function LabApp() {
           <Route path="/lab_assistant/inventory_trans" element={<InventoryTrans/>} />
           <Route path="/lab_assistant/received_items" element={<ReceivedItems/>} />
           <Route path="/lab_assistant/issued_items" element={<IssuedItems/>} />
+
+          <Route path="/lab_assistant/new_product" element={<RequestResearcher/>} />
 
         </Routes>
     </BrowserRouter>

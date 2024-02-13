@@ -7,6 +7,9 @@ import ChemicalManager from './components/manager/ChemicalManager';
 import InventoryManager from './components/manager/InventoryManager';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import Notification from './components/manager/Notification';
+import ViewEntry from './components/manager/viewEntry';
+import Dasboard from './components/manager/Dashboard';
+import Project from './components/admin/projects/Project';
 
 
 function ManagerApp() {
@@ -14,8 +17,9 @@ function ManagerApp() {
     <BrowserRouter>
       <ManagerNavigation />
       <Routes>
-         <Route path="/" element={<Home/>} />
-         <Route exact path="/home" element={<Home/>} />
+         <Route path="/" element={<Dasboard/>} />
+         <Route exact path="/dashboard" element={<Dasboard/>} />
+         <Route exact path="/project" element={<Project/>} />
          <Route path="/manager/appinfo" element={<AppinfoManager/>} />
 
          <Route path="/manager/master" element={<ChemicalManager/>} />
@@ -23,6 +27,7 @@ function ManagerApp() {
          <Route path="/manager/inventory" element={<InventoryManager/>} />
 
          <Route path="/notification" element={<Notification/>} />
+         <Route path="/view_entry" element={<ViewEntry/>} />
 
        </Routes>
     </BrowserRouter>

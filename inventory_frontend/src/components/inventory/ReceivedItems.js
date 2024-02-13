@@ -27,33 +27,77 @@ const ReceivedItems = () => {
       <div style={{background: "#C5EA31", height: '70px'}} className="header">
         <h2 style={{ textAlign: 'center', paddingTop: '15px' }} >RECEIVE</h2>
       </div>
+        <div style={{ overflowY: 'scroll', maxHeight: '500px' }}>
       <div className="row side-row" style={{ textAlign: 'center' }}>
         <p id="before-table"></p>
         <Table striped bordered hover className="react-bootstrap-table" id="dataTable">
         <thead>
             <tr>
-            <th>Item Code</th>
-            <th>Item Name</th>
-            <th>Units</th>
-            <th>Receipt Date</th>
-            <th>PO Number</th>
-            <th>Batch/Lot Number</th>
-            <th>Remarks</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Item Code</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Item Name</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Units</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Receipt Date</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Quantity Received</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>PO Number</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Batch/Lot Number</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Remarks</th>
             </tr>
         </thead>
         <tbody>
             {receive.map((inven) =>
             <tr key={inven.id}>
-                <td>{inven.item_code}</td>
-                <td>{inven.item_name}</td>
-                <td>{inven.units}</td>
-                <td>{inven.receipt_date}</td>
-                <td>{inven.po_number}</td>
-                <td>{inven.batch_number}</td>
-                <td>{inven.remarks}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{inven.item_code}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{inven.item_name}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{inven.units}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{inven.receipt_date}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{inven.quantity_received}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{inven.po_number}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{inven.batch_number}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{inven.remarks}</td>
             </tr>)}
         </tbody>
     </Table>
+    </div>
     </div>
   </div>
   );

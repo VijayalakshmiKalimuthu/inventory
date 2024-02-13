@@ -16,6 +16,15 @@ class Appinfo(models.Model):
 
     def __str__(self):
         return self.infocode
+    
+
+class Project_Master(models.Model):
+    project_code = models.AutoField(primary_key=True)
+    project_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.project_code
+    
 
 class Master(models.Model):
     c_id = models.AutoField(primary_key=True)
@@ -28,7 +37,7 @@ class Master(models.Model):
     quantity = models.IntegerField()
     units = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    project_code = models.IntegerField()
+    project_code = models.ForeignKey(Project_Master, on_delete=models.CASCADE, related_name='masters')
     issue_date = models.CharField(max_length=100, null=True)  
     issue_to = models.CharField(max_length=100, null=True)    
     quantity_issued = models.IntegerField(null=True)          
@@ -72,25 +81,20 @@ class Inventory_Tran(models.Model):
         return self.entry_no
 
 
-class Project_Master(models.Model):
-    project_code = models.AutoField(primary_key=True)
-    project_name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.project_code
     
 
 class Request_CI(models.Model):
     id = models.AutoField(primary_key=True)
-    ItemCode = models.CharField(max_length=100)
-    ItemType = models.CharField(max_length=100)
-    ItemName = models.CharField(max_length=100)
+    ItemCode = models.CharField(max_length=100, null=True, blank=True)
+    ItemType = models.CharField(max_length=100, null=True, blank=True)
+    ItemName = models.CharField(max_length=100, null=True, blank=True)
     RequestDate = models.DateField()
-    RequestStatus = models.CharField(max_length=100)
+    RequestStatus = models.CharField(max_length=100, null=True, blank=True)
     RequestedBy = models.CharField(max_length=100)
     RequestDetails = models.CharField(max_length=100)
     ApprovedBy = models.CharField(max_length=255, null=True, blank=True)
-
+    RequestedTo = models.CharField(max_length=100, default='')
+    
     def __str__(self):
         return self.id
     
@@ -136,3 +140,10 @@ class ItemIssue(models.Model):
     researcher_name = models.CharField(max_length=100)
     batch_number = models.CharField(max_length=100)
     remarks = models.CharField(max_length=200)
+
+
+class ItemReturn(models.Model):
+    entry_no = models.AutoField(primary_key=True)
+    c_id = models.ForeignKey(Master, on_delete=models.CASCADE, related_name='itemreturns')
+    receipt_date = models.DateTimeField()
+    quantity_return = models.IntegerField()

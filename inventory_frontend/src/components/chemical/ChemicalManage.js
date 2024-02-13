@@ -146,11 +146,12 @@ const ChemicalManage = () => {
       <div >
         <div style={{ background: "#C5EA31", height: '70px' }} className="header">
             <h2 style={{ textAlign: 'center', paddingTop: '15px', marginRight: '8px' }}>INVENTORY MASTER {' '}
-            <FaBell onClick={handleShowModal} />
+            <FaBell onClick={handleShowModal} style={{ float: 'right'}}/>
             <NoteStatus show={modalShow} setUpdated={setIsUpdated} onHide={handleCloseModal} />
             </h2>
         </div>
-        <div className="row side-row" style={{ textAlign: 'center' }}>
+        <div style={{ overflowY: 'scroll', maxHeight: '500px' }}>
+        <div className="row side-row" style={{ textAlign: 'center'}}>
             <ButtonToolbar>
                 <Button variant="primary" onClick={handleAdd}>
                 Add
@@ -159,52 +160,119 @@ const ChemicalManage = () => {
                 onHide={AddModelClose}></AddChemicalModal>
             </ButtonToolbar>
         <p id="manage"></p>
-            <Table striped bordered hover className="react-bootstrap-table" id="dataTable">
+            <Table striped bordered hover className="react-bootstrap-table" id="dataTable" style={{ margin: 'auto', width: '1000px' }}>
                 <thead>
                 <tr>
-                <th>Id</th>
-                  <th>Entry No</th>
-                  <th>Item Code</th>
-                  <th>Item Name</th>
-                  <th>Date</th>
-                  <th>Supplier</th>
-                  <th>Master Type</th>
-                  <th>Quantity</th>
-                  <th>Units</th>
-                  <th>Price</th>
-                  <th>Project Code</th>
-                  <th>Remarks</th>
-                  <th colspan="2" style={{ textAlign: 'center' }}>Action</th>
+                <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Id</th>
+                  <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Entry No</th>
+                  <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Item Code</th>
+                  <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Item Name</th>
+                  <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Date</th>
+                  <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Supplier</th>
+                  <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Master Type</th>
+                  <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Quantity</th>
+                  <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Units</th>
+                  <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Price</th>
+                  <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Project Code</th>
+                  <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Remarks</th>
+                  <th colspan="2" style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 {chemicals.map((chem) => (
                   <tr key={chem.c_id}>
-                      <td>{chem.c_id}</td>
-                      <td>{chem.entry_no || ''}</td>
-                      <td>{chem.item_code || ''}</td>
-                      <td>{chem.item_name || ''}</td>
-                      <td>{chem.m_date || ''}</td>
-                      <td>{chem.supplier || ''}</td>
-                      <td>{chem.master_type || ''}</td>
-                      <td>{chem.quantity || ''}</td>
-                      <td>{chem.units || ''}</td>
-                      <td>{chem.price || ''}</td>
-                      <td>{chem.project_code || ''}</td>
-                      <td>{chem.remarks || ''}</td>
-                      {/*<td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{chem.c_id}</td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{chem.entry_no || ''}</td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{chem.item_code || ''}</td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{chem.item_name || ''}</td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{chem.m_date || ''}</td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{chem.supplier || ''}</td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{chem.master_type || ''}</td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{chem.quantity || ''}</td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{chem.units || ''}</td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{chem.price || ''}</td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{chem.project_code || ''}</td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{chem.remarks || ''}</td>
+                      {/*<td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>
                           <Button className="mr-2" variant="danger" onClick={(event) => handleDelete(event, chem.c_id)}>
                               <RiDeleteBin5Line />
                           </Button>
                 </td> */}
-                      <td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>
                           <Button className="mr-2" onClick={(event) => handleUpdate(event, chem, chem.item_code, chem.item_name)}>
                               <FaEdit style={{ fontSize: '24px' }} />
                           </Button>
                           <UpdateChemicalModal show={editModalShow} chemical={editChemicals} setUpdated={setIsUpdated} onHide={EditModelClose} />
 
                       </td>
-                      <td>
+                      <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>
                         <Button className='mr-2'onClick={(e) => handleOpenApp(e, chem.item_code, chem.item_name, chem.master_type)} style={{ backgroundColor: 'green', color: 'white' }}>
                           <HiArrowCircleUp style={{ fontSize: '24px' }}/>
                           </Button>
@@ -221,6 +289,7 @@ const ChemicalManage = () => {
 
               </tbody>
             </Table>
+        </div>
         </div>
         </div>
     );

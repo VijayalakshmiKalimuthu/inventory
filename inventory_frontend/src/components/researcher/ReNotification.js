@@ -23,36 +23,68 @@ const ReNotification = () => {
   }, []);
 
   return(
-    <div className="container-fluid side-container">
-    <div className="header-container">
-      <h2 style={{ textAlign: 'center' }} className="appinfo-header">Task</h2>
-    </div>
-      <div className="row side-row">
+    <div >
+      <div style={{background: "#C5EA31", height: '70px'}} className="header">
+        <h2 style={{ textAlign: 'center', paddingTop: '15px' }} >TASK</h2>
+      </div>
+        <div style={{ overflowY: 'scroll', maxHeight: '500px' }}>
+      <div className="row side-row" style={{ textAlign: 'center' }}>
         
     <p id="before-table"></p>
         <Table striped bordered hover className="react-bootstrap-table" id="dataTable">
         <thead>
             <tr>
-            <th>Id</th>
-            <th>Reseacher Name</th>
-            <th>Issue Task</th>
-            <th>Date</th>
-            <th>Issue Raised By</th>
-            <th>Issue Status</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Id</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Reseacher Name</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Issue Task</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Date</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Issue Raised By</th>
+            <th style={{ backgroundColor: '#C5EA31',
+                             width: '250px', 
+                             color: 'black', 
+                             textAlign: 'center', 
+                             border: '1px solid black' }}>Issue Status</th>
             </tr>
         </thead>
         <tbody>
             {students.map((ainfo) =>
             <tr key={ainfo.id}>
-                <td>{ainfo.id}</td>
-                <td>{ainfo.researcher_name}</td>
-                <td>{ainfo.issues_task}</td>
-                <td>{ainfo.date_time}</td>
-                <td>{ainfo.issue_raised_by}</td>
-                <td>{ainfo.issue_status}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{ainfo.id}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{ainfo.researcher_name}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{ainfo.issues_task}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{ainfo.date_time}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{ainfo.issue_raised_by}</td>
+                <td style={{ textAlign: 'center', 
+                                 border: '1px solid black' }}>{ainfo.issue_status}</td>
             </tr>)}
         </tbody>
     </Table>
+    </div>
     </div>
   </div>
   );
