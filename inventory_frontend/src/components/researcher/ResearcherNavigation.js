@@ -37,12 +37,6 @@ const ResearcherNavigation = () => {
           </CDBSidebarHeader>
           <CDBSidebarContent>
             <CDBSidebarMenu>
-              <NavLink exact to="/" activeClassName="activeClicked">
-                <CDBSidebarMenuItem  className="black-text">
-                  <FcHome style={{ marginRight: '8px', fontSize: '24px' }} />
-                  Home
-                </CDBSidebarMenuItem>
-              </NavLink>
               <NavLink exact to="/re_notify" activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="black-text">
                   <FcHighPriority style={{ marginRight: '8px', fontSize: '24px' }} />

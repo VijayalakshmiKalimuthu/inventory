@@ -14,7 +14,6 @@ const AddResearcherIssueTask = (props) => {
         const IssueData = {
             researcher_name: formData.get('researcherName'),
             issues_task: formData.get('issuesTask'),
-            date_time: formData.get('dateTime'),
             issue_raised_by: formData.get('issueRaisedBy'),
             issue_status: formData.get('issueStatus'),
         };
@@ -72,13 +71,6 @@ const AddResearcherIssueTask = (props) => {
 
                             <Row>
                                 <Col>
-                                <Form.Group controlId="dateTime">
-                                    <Form.Label>Date/Time</Form.Label>
-                                    <Form.Control type="text" name="dateTime" required 
-                                        defaultValue={new Date().toISOString().slice(0, 10)}  placeholder="" style={{ border: '1px solid black' }} />
-                                </Form.Group>
-                                </Col>
-                                <Col>
                                 <Form.Group controlId="issueRaisedBy">
                                   <Form.Label>Issue Raised By</Form.Label>
                                   <Form.Control
@@ -92,16 +84,12 @@ const AddResearcherIssueTask = (props) => {
                                   </Form.Control>
                                 </Form.Group>
                                 </Col>
-                            </Row>
-
-                            <Row>
                                 <Col>
                                 <Form.Group controlId="issueStatus">
                                     <Form.Label>Issue Status</Form.Label>
                                     <Form.Control type="text" name="issueStatus" required placeholder="" style={{ border: '1px solid black' }} />
                                 </Form.Group>
                                 </Col>
-                                <Col></Col>
                             </Row>
                             <Form.Group>
                                 <p></p>

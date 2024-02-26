@@ -61,7 +61,7 @@ const RequestResearcher = () => {
     return(
       <div >
         <div style={{background: "#C5EA31", height: '70px'}} className="header">
-          <h2 style={{ textAlign: 'center', paddingTop: '15px' }} >New Product List</h2>
+          <h2 style={{ textAlign: 'center', paddingTop: '15px' }} >New Request</h2>
         </div>
         <div style={{ overflowY: 'scroll', maxHeight: '500px' }}>
         <div className="row side-row" style={{ textAlign: 'center' }}>

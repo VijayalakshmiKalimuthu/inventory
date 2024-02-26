@@ -42,7 +42,7 @@ const ManagerNavigation = () => {
           </CDBSidebarHeader>
           <CDBSidebarContent>
             <CDBSidebarMenu>
-              <NavLink exact to="/" activeClassName="activeClicked">
+            {/*  <NavLink exact to="/" activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="black-text">
                   <FcHome style={{ marginRight: '8px', fontSize: '24px' }} />
                   Dashboard
@@ -53,8 +53,8 @@ const ManagerNavigation = () => {
                   <FcAddDatabase style={{ marginRight: '8px', fontSize: '24px' }} />
                   Appinfo
                 </CDBSidebarMenuItem>
-              </NavLink>
-              <NavLink exact to="/manager/master" activeClassName="activeClicked">
+              </NavLink> */}
+              <NavLink exact to="/manager/master_filter" activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="black-text">
                   <FcBarChart style={{ marginRight: '8px', fontSize: '24px' }} />
                   Inventory Master
@@ -64,16 +64,16 @@ const ManagerNavigation = () => {
               <NavLink exact to="/notification" activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="black-text">
                   <FcNews style={{ marginRight: '10px', fontSize: '24px' }} />
-                  Approval 
+                  Notification
                 </CDBSidebarMenuItem>
               </NavLink>
 
-              <NavLink exact to="/view_entry" activeClassName="activeClicked">
+              { /*<NavLink exact to="/view_entry" activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="black-text">
                   <FcDataSheet style={{ marginRight: '10px', fontSize: '24px' }} />
                   View Entry 
                 </CDBSidebarMenuItem>
-              </NavLink>
+            </NavLink> */ }
 
             </CDBSidebarMenu>
           </CDBSidebarContent>

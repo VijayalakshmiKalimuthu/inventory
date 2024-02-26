@@ -64,7 +64,7 @@ const Notification = () => {
         <div style={{background: "#C5EA31", height: '70px'}} className="header">
           <h2 style={{ textAlign: 'center', paddingTop: '15px' }} >NOTIFICATION</h2>
         </div>
-          <div style={{ overflowY: 'scroll', maxHeight: '500px' }}>
+          <div style={{ overflowY: 'scroll', maxHeight: '480px' }}>
         <div className="row side-row" style={{ textAlign: 'center' }}>
         <p id="manage"></p>
             <Table striped bordered hover className="react-bootstrap-table" id="dataTable" style={{ margin: 'auto', width: '1500px' }}>

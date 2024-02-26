@@ -48,12 +48,12 @@ const LabNavigation = () => {
                   Home
                 </CDBSidebarMenuItem>
               </NavLink>
-              <NavLink exact to="/lab_assistant/appinfo" activeClassName="activeClicked">
+              { /* <NavLink exact to="/lab_assistant/appinfo" activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="black-text" >
                   <FcAddDatabase style={{ marginRight: '8px', fontSize: '24px' }} />
                   Appinfo
                 </CDBSidebarMenuItem>
-              </NavLink>
+              </NavLink> */}
               <NavLink exact to="/lab_assistant/master_manage" activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="black-text">
                   <FcBarChart style={{ marginRight: '8px', fontSize: '24px' }} />
@@ -82,17 +82,17 @@ const LabNavigation = () => {
                 </CDBSidebarMenuItem>
               </NavLink> */}
 
-              <NavLink exact to="/lab_assistant/task_manage" activeClassName="activeClicked">
+              { /* <NavLink exact to="/lab_assistant/task_manage" activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="black-text">
                   <FcHighPriority style={{ marginRight: '8px', fontSize: '24px' }} />
                   Reasearcher Issue Task
                 </CDBSidebarMenuItem>
-              </NavLink>
+            </NavLink> */}
               
               <NavLink exact to="/lab_assistant/new_product" activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="black-text">
                   <FcBarChart style={{ marginRight: '8px', fontSize: '24px' }} />
-                  New Product List
+                  New Request
                 </CDBSidebarMenuItem>
               </NavLink>
 

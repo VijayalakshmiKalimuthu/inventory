@@ -133,6 +133,20 @@ export async function updateChemicalApi(cid, master) {
   }
 }
 
+export function inactiveMasterApi(cid) {
+  return axios.patch(`http://127.0.0.1:8000/inactive_master/${cid}`)
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Error updating Master:', error);
+      throw error;
+    });
+}
+
+
+export const getStockLevelApi = () => {
+  return fetch('http://127.0.0.1:8000/master/stockLevel');
+};
+
 // --------------------------------Project Master------------------------------------------
 
 
@@ -171,6 +185,16 @@ export async function updateProjectApi(proCode, project) {
   .then(response => response.data);
   
 }
+
+export function inactiveProjectApi(project_code) {
+  return axios.patch(`http://127.0.0.1:8000/inactive_project/${project_code}`)
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Error updating project:', error);
+      throw error;
+    });
+}
+
 
 // ------------------------------------------Inventory-------------------------------------------
 
@@ -335,11 +359,12 @@ export function getIssueApi() {
 }
 
 export function addIssueApi(researcher) {
+  const currentDate = new Date().toISOString().slice(0, 10);
   return axios.post('http://127.0.0.1:8000/add_issue', {
     id: null,
     researcher_name: researcher.researcher_name,
     issues_task: researcher.issues_task,
-    date_time: researcher.date_time,
+    date_time: currentDate,
     issue_raised_by: researcher.issue_raised_by,
     issue_status: researcher.issue_status,
 
@@ -419,6 +444,22 @@ export async function updateEmployeeApi(emp_id, employee) {
   
 }
 
+export function inactiveEmployeeApi(emp_id) {
+  return axios.patch(`http://127.0.0.1:8000/inactive_emp/${emp_id}`)
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Error updating Master:', error);
+      throw error;
+    });
+}
+
+export function addEmpRegApi(emp) {
+  return axios.post('http://127.0.0.1:8000/add_empReg', {
+    emp_name: emp.user_name,
+    designation: emp.role
+  })
+  .then(response => response.data);
+}
 
 //---------------------------ITEM RECEIVE---------------------------//
 
@@ -431,8 +472,9 @@ export function getItemReceiveApi() {
 
 export function addItemReceiveApi(receive) {
   const currentDate = new Date().toISOString();
-  return axios.post('http://127.0.0.1:8000/add_itemreceive', {
+  return axios.post('http://127.0.0.1:8000/add_temp_receive_item', {
     entry_no: null,
+    bill: receive.bil,
     c_id: receive.c_id,
     receipt_date: currentDate,
     quantity_received: receive.quantity_received,
@@ -456,8 +498,9 @@ export function getItemIssueApi() {
 export function addItemIssueApi(receive) {
   const currentDate = new Date().toISOString();
 
-  return axios.post('http://127.0.0.1:8000/add_itemissue', {
+  return axios.post('http://127.0.0.1:8000/add_temp_issue_item', {
     entry_no: null,
+    bill: receive.bil,
     c_id: receive.c_id,
     issue_date: currentDate,
     quantity_issued: receive.quantity_issued,
@@ -551,4 +594,94 @@ export async function updateProductApi(enNo, product) {
 export function getViewEntryApi() {
   return axios.get('http://127.0.0.1:8000/view_entry')
     .then(response => response.data)
+}
+
+//----------------------Distinct Role---------------------------//
+
+export function getDistinctRoleApi() {
+  return axios.get('http://127.0.0.1:8000/view_distinct_role/')
+    .then(response => response.data)
+}
+
+//---------------------------------Newvwrsion Lab Assistant------------------//
+
+export function addLabMasterApi(lab) {
+
+  return axios.post('http://127.0.0.1:8000/master_inventory/create/', {
+    c_id: null,
+    master_type: lab.master_type,
+    item_code: lab.item_code,
+    item_name: lab.item_name,
+    location_code: lab.location_code,
+    units: lab.units,
+    price: lab.price,
+    make: lab.make,
+    instruction_specification: lab.instruction_specification,
+    min_req_stock: lab.min_req_stock,
+    remarks: lab.remarks
+
+  })
+  .then(response => response.data);
+}
+
+export async function updateLAbMasterApi(c_id, master) {
+  return axios.put(`http://127.0.0.1:8000/master_inventory/update/${c_id}/`, {
+  master_type: master.master_type,
+  item_code: master.item_code,
+  item_name: master.item_name,
+  location_code: master.location_code,
+  units: master.units,
+  price: master.price,
+  make: master.make,
+  instruction_specification: master.instruction_specification,
+  min_req_stock: master.min_req_stock,
+  remarks: master.remarks
+  })
+  .then(response => response.data);
+  
+}
+
+export function getLabMasterApi() {
+  return axios.get('http://127.0.0.1:8000/masters/')
+    .then(response => response.data)
+}
+
+export function getMasterChemicalApi() {
+  return axios.get('http://127.0.0.1:8000/masters/chemical')
+    .then(response => response.data)
+}
+
+export function getMasterLabwareApi() {
+  return axios.get('http://127.0.0.1:8000/masters/labware')
+    .then(response => response.data)
+}
+
+export function getChemicalDescApi() {
+  return axios.get('http://127.0.0.1:8000/master/chemical/desc/')
+    .then(response => response.data)
+}
+
+export function getLabwareDescApi() {
+  return axios.get('http://127.0.0.1:8000/master/labware/desc/')
+    .then(response => response.data)
+}
+
+
+//----------------------Temporary table----------------------------------//
+
+
+export function addTempToReceiveApi(data) {
+  return axios.post('http://127.0.0.1:8000/add_itemreceive', data)
+    .then(response => response.data)
+    .catch(error => {
+      throw error; // Rethrow the error to handle it in the caller function
+    });
+}
+
+export function addTempToIssueApi(data) {
+  return axios.post('http://127.0.0.1:8000/add_itemissue', data)
+    .then(response => response.data)
+    .catch(error => {
+      throw error; // Rethrow the error to handle it in the caller function
+    });
 }

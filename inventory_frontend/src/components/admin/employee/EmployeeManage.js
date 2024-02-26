@@ -3,10 +3,9 @@ import {Table} from 'react-bootstrap';
 
 import {Button,ButtonToolbar } from 'react-bootstrap';
 import { FaEdit } from 'react-icons/fa';
-import { RiDeleteBin5Line } from 'react-icons/ri';
 import AddEmployeeModal from "./AddEmployeeModal";
 import UpdateEmployeeModal from "./UpdateEmployeeModal";
-import { getEmployeeApi, deleteEmployeeApi } from '../../../services/AppinfoService';
+import { getEmployeeApi, inactiveEmployeeApi } from '../../../services/AppinfoService';
 
 
 const EmployeeManage = () => {
@@ -57,26 +56,26 @@ const EmployeeManage = () => {
         setAddModalShow(true);
     };
 
-    const handleDelete = (e, emp_id) => {
-        if(window.confirm('Are you sure ?')){
-            e.preventDefault();
-            deleteEmployeeApi(emp_id)
-            .then((result)=>{
-                alert("Deleted Successfully");
-                setIsUpdated(true);
-            },
-            (error)=>{
-                alert("Failed to Delete Employee");
-            })
-        }
-    };
+    const handleInactive = (e, emp_id) => {
+      e.preventDefault();
+      inactiveEmployeeApi(emp_id)
+          .then(data => {
+            alert('Employee Detail Inctived')
+              console.log('Employee Detail inactive:', data);
+              // Handle successful response, if needed
+          })
+          .catch(error => {
+              console.error('Failed to delete Employee:', error);
+              alert("Failed to Delete Employee Detail");
+          });
+  }; 
 
     let AddModelClose=()=>setAddModalShow(false);
     let EditModelClose=()=>setEditModalShow(false);
     return(
       <div >
         <div style={{background: "#C5EA31", height: '70px'}} className="header">
-          <h2 style={{ textAlign: 'center', paddingTop: '15px' }} >EMPLOYEES</h2>
+          <h2 style={{ textAlign: 'center', paddingTop: '15px' }} >EMPLOYEE MASTER</h2>
         </div>
           <div style={{ overflowY: 'scroll', maxHeight: '500px' }}>
         <div className="row side-row" style={{ textAlign: 'center' }}>
@@ -138,18 +137,17 @@ const EmployeeManage = () => {
                                  border: '1px solid black' }}>{emp.project_name || ''}</td>
                       <td style={{ textAlign: 'center', 
                                  border: '1px solid black' }}>
-                          <Button className="mr-2" variant="danger" onClick={(event) => handleDelete(event, emp.emp_id)}>
-                              <RiDeleteBin5Line />
+                          <Button className="mr-2" variant="secondary" onClick={(event) => handleInactive(event, emp.emp_id)}>
+                              Inactive
                           </Button>
                           </td>
-                          <td style={{ textAlign: 'center', 
+                        {/*  <td style={{ textAlign: 'center', 
                                  border: '1px solid black' }}>
                           <Button className="mr-2" onClick={(event) => handleUpdate(event, emp)}>
                               <FaEdit />
                           </Button>
-                          <UpdateEmployeeModal show={editModalShow} employee={editEmployees} setUpdated={setIsUpdated} onHide={EditModelClose} />
-
-                      </td>
+                          <UpdateEmployeeModal show={editModalShow} employee={editEmployees} setUpdated={setIsUpdated} onHide={EditModelClose} />                       
+                      </td> */ }
                   </tr>))}
 
               </tbody>

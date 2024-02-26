@@ -38,7 +38,6 @@ const MasterComponent = () => {
           <thead>
             <tr>
               <th>Id</th>
-              <th>Entry No</th>
               <th>Item Code</th>
               <th>Item Name</th>
               <th>Date</th>
@@ -47,7 +46,6 @@ const MasterComponent = () => {
               <th>Quantity</th>
               <th>Units</th>
               <th>Price</th>
-              <th>Project Code</th>
               <th>Remarks</th>
             </tr>
           </thead>
@@ -55,7 +53,6 @@ const MasterComponent = () => {
             {masters.map((master) =>
               <tr key={master.c_id}>
                 <td>{master.c_id}</td>
-                <td>{master.entry_no}</td>
                 <td>{master.item_code}</td>
                 <td>{master.item_name}</td>
                 <td>{master.m_date}</td>
@@ -64,7 +61,6 @@ const MasterComponent = () => {
                 <td>{master.quantity}</td>
                 <td>{master.units}</td>
                 <td>{master.price}</td>
-                <td>{master.project_code}</td>
                 <td>{master.remarks}</td>
               </tr>
             )}

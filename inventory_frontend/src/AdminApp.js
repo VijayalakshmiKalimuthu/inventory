@@ -18,7 +18,7 @@ function AdminApp() {
     <BrowserRouter>
       <AdminNavigation />
         <Routes>
-          <Route path="/" element={<AdminHome/>} />
+          <Route path="/" element={<ProjectManage/>} />
           <Route exact path="/home" element={<AdminHome/>} />
           <Route path="/admin/appinfo" element={<Appinfo/>} />
           <Route path="/admin/project" element={<Project/>} />

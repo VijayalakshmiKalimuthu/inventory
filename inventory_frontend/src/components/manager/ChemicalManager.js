@@ -26,7 +26,7 @@ const ChemicalManager = () => {
       <div style={{background: "#C5EA31", height: '70px'}} className="header">
         <h2 style={{ textAlign: 'center', paddingTop: '15px' }} >INVENTORY MASTER</h2>
       </div>
-        <div style={{ overflowY: 'scroll', maxHeight: '500px' }}>
+        <div style={{ overflowY: 'scroll', maxHeight: '450px' }}>
       <div className="row side-row" style={{ textAlign: 'center' }}>
     <p id="before-table"></p>
     <Table striped bordered hover className="react-bootstrap-table" id="dataTable" style={{ margin: 'auto', width: '1200px' }}>
@@ -36,7 +36,7 @@ const ChemicalManager = () => {
                              width: '250px', 
                              color: 'black', 
                              textAlign: 'center', 
-                             border: '1px solid black' }}>Id</th>
+                             border: '1px solid black' }}>Entry No.</th>
               <th style={{ backgroundColor: '#C5EA31',
                              width: '250px', 
                              color: 'black', 

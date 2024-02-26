@@ -18,10 +18,12 @@ from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
-from .models import EmpDet, ItemIssue, ItemReceive, ItemReturn
-from .serializers import EmpSerializer, ItemReceiveSerializer, ItemIssueSerializer, ItemReturnSerializer
-from django.db.models import F
-
+from .models import EmpDet, ItemIssue, ItemReceive, ItemReturn, TempReceiveItem, TempIssueItem
+from .serializers import EmpSerializer, ItemReceiveSerializer, ItemIssueSerializer, ItemReturnSerializer, RoleSerializer, MasterSerializer1, MasterSerializerCreate, TempReceiveSerializer, TempIssueSerializer
+from django.db.models import F, Case, When, Value, IntegerField
+from django.shortcuts import render
+from rest_framework import generics
+from django.db import transaction
 
 
 @api_view(['POST'])
@@ -69,23 +71,22 @@ def delete_appinfo(request, pk=None):
 
 @api_view(['POST'])
 def add_master(request):
+    print("Request Data", request.data)
     # Extract data from the request
-    entry_no = request.data.get('entry_no')
     item_code = request.data.get('item_code')
     item_name = request.data.get('item_name')
     m_date = request.data.get('m_date')
     supplier = request.data.get('supplier')
     master_type = request.data.get('master_type')
-    quantity = request.data.get('quantity')
     units = request.data.get('units')
     price = request.data.get('price')
-    project_code = request.data.get('project_code')
     remarks = request.data.get('remarks')
 
     # Create a dictionary with selective columns and their default values set to None
     filtered_data = {
         'issue_date': None,
         'issue_to': None,
+        'quantity': 0,
         'quantity_issued': None,
         'quantity_received': None,
         'stock': None,
@@ -94,17 +95,16 @@ def add_master(request):
         'modified_on': None,
         'modified_by': None,
         'batch_number': None,
+        'project_code': None,
         'dev_remarks': None,
-        'entry_no': entry_no,
+        'entry_no': None,
         'item_code': item_code,
         'item_name': item_name,
         'm_date': m_date,
         'supplier': supplier,
         'master_type': master_type,
-        'quantity': quantity,
         'units': units,
         'price': price,
-        'project_code': project_code,
         'remarks': remarks,
     }
 
@@ -125,7 +125,7 @@ def add_master(request):
     
 @api_view(['GET'])
 def view_master(request):
-    master = Master.objects.all()
+    master = Master.objects.filter(deleted=0)
     # Define fields to be included in the response
     fields = ['c_id', 'entry_no', 'item_code', 'item_name', 'm_date', 'supplier', 
               'master_type', 'quantity', 'units', 'price', 'project_code', 'remarks']
@@ -161,11 +161,19 @@ def update_master(request, pk):
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
-@api_view(['DELETE'])
-def delete_master(request, pk):
-	master = get_object_or_404(Master, c_id=pk)
-	master.delete()
-	return Response(status=status.HTTP_202_ACCEPTED)
+@api_view(['PUT', 'PATCH'])
+def inactive_master(request, pk):
+    try:
+        master1 = Master.objects.get(c_id=pk)
+    except Project_Master.DoesNotExist:
+        return JsonResponse("Master not found", status=404)
+    
+    master1.deleted = 1
+    master1.save()
+
+    return JsonResponse("Master 'deleted' field updated value in 1 successfully", safe=False)
+
+
 
 #-----------------------PROJECT MASTER--------------------------------------------------------------
 
@@ -185,10 +193,10 @@ def add_project(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
     
 @api_view(['GET'])
-def view_project(request):	
-	project = Project_Master.objects.all()
-	serializer = ProjectSerializer(project, many=True)
-	return Response(serializer.data)
+def view_project(request): 
+    projects = Project_Master.objects.filter(deleted=0)
+    serializer = ProjectSerializer(projects, many=True)
+    return Response(serializer.data)
 
 
 @api_view(['PUT'])
@@ -202,14 +210,18 @@ def update_project(request, pk=None):
         return JsonResponse("Project Updated Successfully", safe=False)
     return JsonResponse("Failed to Update Project")
 
-@api_view(['DELETE'])
-def delete_project(request, pk):
-    project_to_delete = get_object_or_404(Project_Master, project_code=pk)
+@api_view(['PUT', 'PATCH'])
+def inactive_project(request, pk):
+    try:
+        project = Project_Master.objects.get(project_code=pk)
+    except Project_Master.DoesNotExist:
+        return JsonResponse("Project not found", status=404)
 
-    # No need for a serializer in DELETE requests, just delete the object
-    project_to_delete.delete()
+    # Update the 'deleted' field to 1 instead of deleting the object
+    project.deleted = 1
+    project.save()
 
-    return JsonResponse("Project Deleted Successfully", safe=False)
+    return JsonResponse("Project 'deleted' field updated successfully", safe=False)
 
 # ---------------------------------------INVENTORY TRANS---------------------------------------------------
 
@@ -534,31 +546,58 @@ def add_emp(request):
     except Exception as e:
         print("An error occurred:", str(e))
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
 
+
+class EmpSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmpDet
+        fields = ['emp_name', 'designation']  # Specify only emp_name and designation
+
+@api_view(['POST'])
+def add_empReg(request):
+    print("Request data:", request.data)
+
+    # Creating a serializer instance
+    emp = EmpSerializer(data=request.data)
+
+    try:
+        # Validating for already existing data
+        if EmpDet.objects.filter(emp_name=request.data.get('emp_name')).exists():
+            raise serializers.ValidationError('This data already exists')
+
+        # Checking if the serializer is valid
+        if emp.is_valid():
+            # Saving the data
+            emp.save()
+            print("Employee data saved successfully")
+            return Response(emp.data, status=status.HTTP_201_CREATED)
+        else:
+            print("Invalid data:", emp.errors)
+            return Response(emp.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    
 @api_view(['GET'])
 def view_emp(request):
-    print("Request data:", request.data)
-    # Perform a join between EmpDet, Project_Master, and LoginCre
-    emp = EmpDet.objects.select_related('project_code').all()
-    
-    # Serialize the queryset
-    serialized_data = []
-    for employee in emp:
-        serialized_employee = {
+    employees = EmpDet.objects.all()
+    emp_data = []
+    for employee in employees:
+        project_code = None
+        project_name = None
+        if employee.project_code:
+            project_code = employee.project_code.project_code
+            project_name = employee.project_code.project_name
+        emp_data.append({
             'emp_id': employee.emp_id,
             'emp_name': employee.emp_name,
-            'designation': employee.designation,  # Assuming 'role' is the field you want from LoginCre
-            'project_code': employee.project_code.project_code,
-            'project_name': employee.project_code.project_name
-        }
-        serialized_data.append(serialized_employee)
-    
-    # Print for debugging
-    print("Serialized data:", serialized_data)
-
-    return Response(serialized_data)
-
+            'designation': employee.designation,
+            'project_code': project_code,
+            'project_name': project_name
+        })
+    return Response(emp_data)
 
 @api_view(['PUT'])
 def update_emp(request, pk=None):
@@ -583,17 +622,23 @@ def update_emp(request, pk=None):
         print("An error occurred:", str(e))
         return JsonResponse({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-@api_view(['DELETE'])
-def delete_emp(request, pk):
-    print("Request data:", request.data)
-    emp = get_object_or_404(EmpDet, emp_id=pk)
-    emp.delete()
-    return Response(status=status.HTTP_202_ACCEPTED)
+@api_view(['PUT', 'PATCH'])
+def inactive_emp(request, pk):
+    try:
+        employee = EmpDet.objects.get(emp_id=pk)
+    except EmpDet.DoesNotExist:
+        return JsonResponse("Emp details not found", status=404)
+
+    # Update the 'deleted' field to 1 instead of deleting the object
+    employee.deleted = 1
+    employee.save()
+
+    return JsonResponse("Employee 'deleted' field value 1 to be updated successfully", safe=False)
 
 #-----------------------Item Receive--------------------------#
 
 @api_view(['POST'])
-def add_itemreceive(request):
+def add_itemreceive1(request):
     print("Request data:", request.data)
 
     try:
@@ -620,6 +665,9 @@ def add_itemreceive(request):
 
             # Update the Master instance with the quantity received
             Master.objects.filter(c_id=c_id_value).update(quantity=F('quantity') + quantity_received)
+            Master.objects.filter(c_id=c_id_value).update(
+                quantity_received=quantity_received
+            )
 
             return Response(rec_serializer.data, status=status.HTTP_201_CREATED)
         else:
@@ -630,6 +678,50 @@ def add_itemreceive(request):
         print("An error occurred:", str(e))
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+@api_view(['POST'])
+def add_itemreceive(request):
+    print("Request data:", request.data)
+
+    try:
+        with transaction.atomic():
+            # Fetch data from TempReceiveItem where deleted = 0
+            temp_items = TempReceiveItem.objects.filter(deleted=0)
+
+            for temp_item in temp_items:
+                # Create an instance of ItemReceiveSerializer with the data from TempReceiveItem
+                rec_serializer = ItemReceiveSerializer(data={
+                    'bill_no': temp_item.bill_no,
+                    'c_id': temp_item.c_id,
+                    'receipt_date': temp_item.receipt_date,
+                    'quantity_received': temp_item.quantity_received,
+                    'po_number': temp_item.po_number,
+                    'batch_number': temp_item.batch_number,
+                    'remarks': temp_item.remarks
+                })
+
+                if rec_serializer.is_valid():
+                    rec_instance = rec_serializer.save()  # Save the ItemReceive instance
+                    print("Item Received successfully")
+
+                    # Update the Master instance with the quantity received
+                    Master.objects.filter(c_id=temp_item.c_id).update(quantity=F('quantity') + temp_item.quantity_received)
+                    Master.objects.filter(c_id=temp_item.c_id).update(
+                        quantity_received=temp_item.quantity_received
+                    )
+
+                else:
+                    print("Invalid data:", rec_serializer.errors)
+                    return Response(rec_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            # Update deleted field to 1 for the processed entries
+            temp_items.update(deleted=1)
+
+        return Response("Item received and processed successfully", status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['GET'])
@@ -663,7 +755,7 @@ def view_itemreceive(request):
 #------------------------Item Issue--------------------#
 
 @api_view(['POST'])
-def add_itemissue(request):
+def add_itemissue1(request):
     print("Request data:", request.data)
 
     try:
@@ -692,9 +784,21 @@ def add_itemissue(request):
         if rec_serializer.is_valid():
             rec_serializer.save()
             print("Issue details saved successfully")
-
-            Master.objects.filter(c_id=c_id_value).update(quantity=F('quantity') - quantity_issued)
-
+            condition = Case(
+                When(
+                    quantity__gt=0,
+                    then=F('quantity') - Value(quantity_issued)
+                ),
+                default=Value(0),  # If quantity is not greater than 0, set it to 0
+                output_field=IntegerField()  # Ensure the output field matches the data type of quantity
+            )
+        
+            # Update the quantity field based on the condition
+            Master.objects.filter(c_id=c_id_value).update(quantity=condition)
+            Master.objects.filter(c_id=c_id_value).update(quantity=F('quantity'))
+            Master.objects.filter(c_id=c_id_value).update(
+                quantity_issued=quantity_issued
+            )
             return Response(rec_serializer.data, status=status.HTTP_201_CREATED)
         else:
             print("Invalid data:", rec_serializer.errors)
@@ -704,6 +808,60 @@ def add_itemissue(request):
         print("An error occurred:", str(e))
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
+
+@api_view(['POST'])
+def add_itemissue(request):
+    print("Request data:", request.data)
+
+    try:
+        # Fetch data from TempIssueItem where deleted = 0
+        temp_items = TempIssueItem.objects.filter(deleted=0)
+
+        for temp_item in temp_items:
+            # Create an instance of ItemIssueSerializer with the data from TempIssueItem
+            rec_serializer = ItemIssueSerializer(data={
+                'bill_no': temp_item.bill_no,
+                'c_id': temp_item.c_id,
+                'issue_date': temp_item.issue_date,
+                'quantity_issued': temp_item.quantity_issued,
+                'issued_to': temp_item.issued_to,
+                'project_code': temp_item.project_code,
+                'researcher_name': temp_item.researcher_name,
+                'batch_number': temp_item.batch_number,
+                'remarks': temp_item.remarks
+            })
+
+            if rec_serializer.is_valid():
+                rec_instance = rec_serializer.save()  # Save the ItemIssue instance
+                print("Issue details saved successfully")
+
+                # Update the quantity field in Master based on the condition
+                condition = Case(
+                    When(
+                        quantity__gt=0,
+                        then=F('quantity') - Value(temp_item.quantity_issued)
+                    ),
+                    default=Value(0),  # If quantity is not greater than 0, set it to 0
+                    output_field=IntegerField()  # Ensure the output field matches the data type of quantity
+                )
+                Master.objects.filter(c_id=temp_item.c_id).update(quantity=condition)
+
+                # Update quantity_issued field in Master
+                Master.objects.filter(c_id=temp_item.c_id).update(quantity_issued=temp_item.quantity_issued)
+
+            else:
+                print("Invalid data:", rec_serializer.errors)
+                return Response(rec_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # Update deleted field to 1 for the processed entries
+        temp_items.update(deleted=1)
+
+        return Response("Item issue added and processed successfully", status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 @api_view(['GET'])
 def view_itemissue(request):
@@ -922,6 +1080,235 @@ def view_entry(request):
                     'designation': employee.designation, 
                 }
                 serialized_data.append(serialized_employee)
+    
+    # Print for debugging
+    print("Serialized data:", serialized_data)
+
+    return Response(serialized_data)
+
+#-----------------Get Distinct Role--------------------------------------#
+
+@api_view(['GET'])
+def view_role(request):
+    # Retrieve distinct roles using distinct() and values()
+    distinct_roles = LoginCre.objects.values('role').distinct()
+
+    # Serialize the data
+    serializer = RoleSerializer(distinct_roles, many=True)  # Assuming RoleSerializer is defined correctly
+
+    # Return the serialized data as a response
+    return Response(serializer.data)
+
+#------------------------New Master Table-----------------------------------#
+
+class MasterList(generics.ListCreateAPIView):
+    queryset = Master.objects.all()
+    serializer_class = MasterSerializer1
+
+#-----------------Master Create  and Updte  --------------------------------#
+    
+class MasterListCreate(generics.ListCreateAPIView):
+    queryset = Master.objects.all()
+    serializer_class = MasterSerializerCreate
+
+class MasterUpdate(generics.RetrieveUpdateAPIView):
+    queryset = Master.objects.all()
+    serializer_class = MasterSerializerCreate
+
+#----------------------------------------------------------------------------#
+class MasterRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Master.objects.all()
+    serializer_class = MasterSerializer1
+
+
+@api_view(['GET'])
+def master_list_chemical(request):
+    if request.method == 'GET':
+        queryset = Master.objects.filter(master_type="Chemical")
+        serializer = MasterSerializer1(queryset, many=True)
+        return Response(serializer.data)
+    
+@api_view(['GET'])
+def master_list_labware(request):
+    if request.method == 'GET':
+        queryset = Master.objects.filter(master_type="Labware")
+        serializer = MasterSerializer1(queryset, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def master_chemical_itemcode_desc(request):
+    if request.method == 'GET':
+        queryset = Master.objects.filter(master_type="Chemical").order_by('-c_id')
+        serializer = MasterSerializer1(queryset, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def master_labware_itemcode_desc(request):
+    if request.method == 'GET':
+        queryset = Master.objects.filter(master_type="Labware").order_by('-c_id')
+        serializer = MasterSerializer1(queryset, many=True)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+def master_stockLevel(request):
+
+    if request.method == 'GET':
+        print("Inside Master Stocklevel")
+        queryset = Master.objects.all()
+        serializer = MasterSerializer1(queryset, many=True)
+        stock_level = 'Stock is Sufficient'
+        
+        for obj in serializer.data:
+            if obj['quantity'] < obj['min_req_stock']:
+                stock_level = "Stock has to be Reorder"
+                print("Inside If condition")
+                print("Stock has to be Reorder")
+                break  # Exit loop as soon as one item requires reorder
+        
+        # Append stock level to the response
+        response_data = {
+            'stock_level': stock_level
+        }
+        print("Response Data: ", response_data)
+        
+        return Response(response_data)
+
+#-----------------------Temporary Table for store in Receive and issue-----------------------------------#
+
+
+
+@api_view(['POST'])
+def add_temp_receive_item(request):
+    print("Request data:", request.data)
+
+    try:
+        c_id_value = request.data.get('c_id')
+
+        if c_id_value:
+            master_instance, _ = Master.objects.get_or_create(c_id=c_id_value)
+        else:
+            raise serializers.ValidationError('Item code is required')
+
+        # Get the c_id value from the master_instance
+        c_id_value = master_instance.c_id
+
+        # Modify the request data with the correct c_id value
+        data = request.data.copy()
+        data['c_id'] = c_id_value
+
+        rec_serializer = TempReceiveSerializer(data=data)
+
+        if rec_serializer.is_valid():
+            rec_instance = rec_serializer.save()  # Save the ItemReceive instance
+            print("Temp Item Received successfully")
+
+            return Response(rec_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print("Invalid data:", rec_serializer.errors)
+            return Response(rec_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+@api_view(['POST'])
+def add_temp_issue_item(request):
+    print("Request data:", request.data)
+
+    try:
+        project_code_value = request.data.get('project_code')
+
+        if project_code_value:
+            project_instance, _ = Project_Master.objects.get_or_create(project_code=project_code_value)
+        else:
+            raise serializers.ValidationError('Project code is required')
+
+        c_id_value = request.data.get('c_id')  # Assuming project_code is passed as an integer
+        if c_id_value:
+            master_instance, _ = Master.objects.get_or_create(c_id=c_id_value)
+        else:
+            raise serializers.ValidationError('Item code is required')
+
+        # Creating a serializer instance with modified data (including the fetched or created designation and project instances)
+        data = request.data.copy()
+        data['project_code'] = project_instance.project_code
+        data['c_id'] = master_instance.c_id
+        rec_serializer = TempIssueSerializer(data=data)
+
+        # Validating and saving the serializer instance
+        if rec_serializer.is_valid():
+            rec_serializer.save()
+            print("Issue details saved successfully")
+
+            return Response(rec_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print("Invalid data:", rec_serializer.errors)
+            return Response(rec_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+   
+
+
+@api_view(['GET'])
+def view_temp_receive(request):
+    print("Request data:", request.data)
+    # Perform a join between EmpDet, Project_Master, and LoginCre
+    rec = TempReceiveItem.objects.select_related('c_id').all()
+    
+    # Serialize the queryset
+    serialized_data = []
+    for receive in rec:
+        formatted_receipt_date = receive.receipt_date.strftime('%d-%m-%Y %I:%M %p')
+
+        serialized_receive = {
+            'item_code': receive.c_id.item_code,
+            'item_name': receive.c_id.item_name,
+            'units': receive.c_id.units,
+            'receipt_date': formatted_receipt_date,
+            'quantity_received': receive.quantity_received,
+            'po_number': receive.po_number,
+            'batch_number': receive.batch_number,
+            'remarks': receive.remarks
+        }
+        serialized_data.append(serialized_receive)
+    
+    # Print for debugging
+    print("Serialized data:", serialized_data)
+
+    return Response(serialized_data)
+
+
+@api_view(['GET'])
+def view_temp_issue(request):
+    print("Request data:", request.data)
+    # Perform a join between EmpDet, Project_Master, and LoginCre
+    rec = TempIssueItem.objects.select_related('c_id', 'project_code').all()
+    
+    # Serialize the queryset
+    serialized_data = []
+    for issue in rec:
+        formatted_issue_date = issue.issue_date.strftime('%d-%m-%Y %I:%M %p')
+
+        serialized_employee = {
+            'entry_no': issue.entry_no,
+            'item_code': issue.c_id.item_code,
+            'item_name': issue.c_id.item_name,
+            'units': issue.c_id.units,
+            'issue_date': formatted_issue_date,
+            'quantity_issued': issue.quantity_issued,
+            'issued_to': issue.issued_to,
+            'project_code': issue.project_code.project_code,
+            'project_name': issue.project_code.project_name,
+            'researcher_name': issue.researcher_name,
+            'batch_number': issue.batch_number,
+            'remarks': issue.remarks
+        }
+        serialized_data.append(serialized_employee)
     
     # Print for debugging
     print("Serialized data:", serialized_data)

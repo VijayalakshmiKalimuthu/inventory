@@ -21,6 +21,7 @@ class Appinfo(models.Model):
 class Project_Master(models.Model):
     project_code = models.AutoField(primary_key=True)
     project_name = models.CharField(max_length=100)
+    deleted = models.IntegerField(default=0, null=True)
 
     def __str__(self):
         return self.project_code
@@ -28,28 +29,33 @@ class Project_Master(models.Model):
 
 class Master(models.Model):
     c_id = models.AutoField(primary_key=True)
-    entry_no = models.CharField(max_length=100)
+    location_code = models.CharField(max_length=100, default='')
+    entry_no = models.CharField(max_length=100, null=True)
     item_code = models.CharField(max_length=100, unique=True)
     item_name = models.CharField(max_length=100)
-    m_date = models.DateField()
+    units = models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    make = models.CharField(max_length=100, default='')
+    instruction_specification = models.CharField(max_length=500, default='')
+    min_req_stock = models.IntegerField(default=0)
+    m_date = models.DateField(null=True)
     supplier = models.CharField(max_length=100)
     master_type = models.CharField(max_length=100)
-    quantity = models.IntegerField()
-    units = models.IntegerField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    project_code = models.ForeignKey(Project_Master, on_delete=models.CASCADE, related_name='masters')
+    quantity = models.IntegerField(default=0)
+    project_code = models.IntegerField(null=True)
     issue_date = models.CharField(max_length=100, null=True)  
-    issue_to = models.CharField(max_length=100, null=True)    
+    issue_to = models.CharField(max_length=100, null=True)
     quantity_issued = models.IntegerField(null=True)          
     quantity_received = models.IntegerField(null=True)        
-    stock = models.IntegerField(null=True)                    
+    stock = models.IntegerField(null=True)
     remarks = models.CharField(max_length=100)
     created_on = models.CharField(max_length=100, null=True)   
     created_by = models.CharField(max_length=100, null=True)   
     modified_on = models.CharField(max_length=100, null=True)  
     modified_by = models.CharField(max_length=100, null=True)  
     batch_number = models.CharField(max_length=100, null=True) 
-    dev_remarks = models.CharField(max_length=100, null=True)  
+    dev_remarks = models.CharField(max_length=100, null=True) 
+    deleted = models.IntegerField(default=0, null=True) 
 
     def __str__(self):
         return str(self.c_id) 
@@ -117,12 +123,14 @@ class EmpDet(models.Model):
     emp_id = models.AutoField(primary_key=True)
     emp_name = models.CharField(max_length=100)
     designation = models.CharField(max_length=100)
-    project_code = models.ForeignKey(Project_Master, on_delete=models.CASCADE, related_name='employees')
+    project_code = models.ForeignKey(Project_Master, on_delete=models.CASCADE, related_name='employees', null=True)
+    deleted = models.IntegerField(default=0, null=True)
 
 
 
 class ItemReceive(models.Model):
     entry_no = models.AutoField(primary_key=True)
+    bill_no = models.CharField(max_length=100, default='')
     c_id = models.ForeignKey(Master, on_delete=models.CASCADE, related_name='receive')
     receipt_date = models.DateTimeField()
     quantity_received = models.IntegerField()
@@ -132,6 +140,7 @@ class ItemReceive(models.Model):
 
 class ItemIssue(models.Model):
     entry_no = models.AutoField(primary_key=True)
+    bill_no = models.CharField(max_length=100, default='')
     c_id = models.ForeignKey(Master, on_delete=models.CASCADE, related_name='issue')
     issue_date = models.DateTimeField()
     quantity_issued = models.IntegerField()
@@ -144,6 +153,33 @@ class ItemIssue(models.Model):
 
 class ItemReturn(models.Model):
     entry_no = models.AutoField(primary_key=True)
+    bill_no = models.CharField(max_length=100, default='')
     c_id = models.ForeignKey(Master, on_delete=models.CASCADE, related_name='itemreturns')
     receipt_date = models.DateTimeField()
     quantity_return = models.IntegerField()
+
+
+class TempReceiveItem(models.Model):
+    entry_no = models.AutoField(primary_key=True)
+    bill_no = models.CharField(max_length=100, default='')
+    c_id = models.ForeignKey(Master, on_delete=models.CASCADE, related_name='receivetemp')
+    receipt_date = models.DateTimeField()
+    quantity_received = models.IntegerField()
+    po_number = models.CharField(max_length=100)
+    batch_number = models.CharField(max_length=100)
+    remarks = models.CharField(max_length=200)
+    deleted = models.IntegerField(default=0, null=True)
+
+
+class TempIssueItem(models.Model):
+    entry_no = models.AutoField(primary_key=True)
+    bill_no = models.CharField(max_length=100, default='')
+    c_id = models.ForeignKey(Master, on_delete=models.CASCADE, related_name='issuetemp')
+    issue_date = models.DateTimeField()
+    quantity_issued = models.IntegerField()
+    issued_to = models.CharField(max_length=100)
+    project_code = models.ForeignKey(Project_Master, on_delete=models.CASCADE, related_name='issuetemp')
+    researcher_name = models.CharField(max_length=100)
+    batch_number = models.CharField(max_length=100)
+    remarks = models.CharField(max_length=200)
+    deleted = models.IntegerField(default=0, null=True)

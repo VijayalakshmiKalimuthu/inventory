@@ -6,7 +6,7 @@ import { FaEdit } from 'react-icons/fa';
 import { RiDeleteBin5Line } from 'react-icons/ri';
 import AddProjectModal from "./AddProjectModal";
 import UpdateProjectModal from "./UpdateProjectModal";
-import { getProjectApi, deleteProjectApi } from '../../../services/AppinfoService';
+import { getProjectApi, inactiveProjectApi } from '../../../services/AppinfoService';
 
 
 const ProjectManage = () => {
@@ -57,19 +57,19 @@ const ProjectManage = () => {
         setAddModalShow(true);
     };
 
-    const handleDelete = (e, project_code) => {
-        if(window.confirm('Are you sure ?')){
-            e.preventDefault();
-            deleteProjectApi(project_code)
-            .then((result)=>{
-                alert("Deleted Successfully");
-                setIsUpdated(true);
-            },
-            (error)=>{
-                alert("Failed to Delete App Info");
-            })
-        }
-    };
+    const handleInactive = (e, project_code) => {
+      e.preventDefault();
+      inactiveProjectApi(project_code)
+          .then(data => {
+            alert('Project Inctived')
+              console.log('Project inactive:', data);
+              // Handle successful response, if needed
+          })
+          .catch(error => {
+              console.error('Failed to delete project:', error);
+              alert("Failed to Delete App Info");
+          });
+  }; 
 
     let AddModelClose=()=>setAddModalShow(false);
     let EditModelClose=()=>setEditModalShow(false);
@@ -115,17 +115,16 @@ const ProjectManage = () => {
                                  border: '1px solid black' }}>{proj.project_code}</td>
                       <td style={{ textAlign: 'center', 
                                  border: '1px solid black' }}>{proj.project_name || ''}</td>
-                      <td style={{ textAlign: 'center', 
-                                 border: '1px solid black' }}>
-                          <Button className="mr-2" variant="danger" onClick={(event) => handleDelete(event, proj.project_code)}>
-                              <RiDeleteBin5Line />
+                      <td style={{ textAlign: 'center', border: '1px solid black' }}>
+                          <Button className="mr-2" variant='secondary' onClick={(event) => handleInactive(event, proj.project_code)} style={{ backgroundColor: 'thickgray'}}>
+                              Inactive
                           </Button>
-                          <span>&nbsp;&nbsp;&nbsp;</span>
+                          { /* <span>&nbsp;&nbsp;&nbsp;</span>
                           <Button className="mr-2" onClick={(event) => handleUpdate(event, proj)}>
                               <FaEdit />
                           </Button>
                           <UpdateProjectModal show={editModalShow} project={editProjects} setUpdated={setIsUpdated} onHide={EditModelClose} />
-
+                */ }
                       </td>
                   </tr>))}
 

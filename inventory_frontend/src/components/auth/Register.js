@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { addLoginApi } from '../../services/AppinfoService';
+import { addLoginApi, addEmpRegApi } from '../../services/AppinfoService';
 import App from '../../App';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -9,6 +10,8 @@ function Register() {
   const [role, setRole] = useState(''); // State to manage the role selection
   const [token, setToken] = useCookies(['mytoken']);
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+
 
   const handleRegister = () => {
     console.log(username, password, role);
@@ -18,6 +21,18 @@ function Register() {
         password,
         role,
       };
+        
+      const empData = {
+        user_name: username,
+        role
+      }
+      addEmpRegApi(empData)
+      .then(result => {
+        console.log('Emp Details Addes');
+      })
+      .catch(error => {
+        console.log("Failed to Add Employee", error);
+      });
   
       addLoginApi(requestData)
         .then(result => {
@@ -36,6 +51,11 @@ function Register() {
         });
     }
   };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
 
   const loginStyle = {
     minHeight: '100%',
@@ -89,22 +109,40 @@ function Register() {
             </div>
             <p></p>
 
+           
             <div className="form-group">
               <label htmlFor="password">Password</label>
-              <p></p>
-              <input
-                type="password"
-                value={password}
-                className="form-control"
-                placeholder="Enter Password"
-                style={{
-                  width: 350,
-                  border: '1px solid lightgray', // Border color
-                  backgroundColor: 'lightyellow', // Background color
-                  padding: '8px',
-                }}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <div style={{ position: 'relative', width: 350 }}>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  className="form-control"
+                  placeholder="Enter Password"
+                  style={{
+                    width: '100%',
+                    border: '1px solid lightgray',
+                    backgroundColor: 'lightyellow',
+                    padding: '8px',
+                    paddingRight: '30px', // Adjust for the width of the eye icon button
+                  }}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                  className="btn btn-outline-secondary"
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  style={{
+                    position: 'absolute',
+                    right: 0,
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    cursor: 'pointer',
+                    border: 'none',
+                  }}
+                >
+                  {showPassword ? <FaEye /> : <FaEyeSlash />}
+                </button>
+              </div>
             </div>
 
             <p></p>

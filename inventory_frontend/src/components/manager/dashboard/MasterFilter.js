@@ -42,7 +42,6 @@ const MasterFilter = () => {
     {
       dataField: 'entry_no',
       text: 'Entry No',
-      filter: textFilter(),
       sort: false,
       headerStyle: { backgroundColor: '#C5EA31',
       width: '50px', 
@@ -133,7 +132,6 @@ const MasterFilter = () => {
     {
       dataField: 'units',
       text: 'Units',
-      filter: textFilter(),
       sort: false,
       headerStyle: { backgroundColor: '#C5EA31',
       width: '50px', 
@@ -146,7 +144,6 @@ const MasterFilter = () => {
     {
       dataField: 'price',
       text: 'Price',
-      filter: textFilter(),
       sort: false,
       headerStyle: { backgroundColor: '#C5EA31',
       width: '50px', 
@@ -186,9 +183,9 @@ const MasterFilter = () => {
   return (
     <div>
         <div style={{ background: "#C5EA31", height: '50px' }} className="header">
-            <h2 style={{ textAlign: 'center', paddingTop: '5px' }}>VIEW ENTRY</h2>
+            <h2 style={{ textAlign: 'center', paddingTop: '5px' }}>INVENTORY MASTER</h2>
         </div>
-        <div style={{ overflowY: 'scroll', maxHeight: '280px' }}>
+        <div style={{ overflowY: 'scroll', maxHeight: '480px' }}>
             <div className="row side-row" style={{ textAlign: 'center' }}>
                 <BootstrapTable
                     keyField={(row, index) => `${row.c_id}-${index}`}

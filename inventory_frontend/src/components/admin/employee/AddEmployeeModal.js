@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Col, Row, Form, Button } from 'react-bootstrap';
-import { addEmployeeApi, getLoginApi, getProjectApi } from '../../../services/AppinfoService';
+import { addEmployeeApi, getDistinctRoleApi, getProjectApi } from '../../../services/AppinfoService';
 
 const AddEmployeeModal = (props) => {
     const [designations, setDesignations] = useState([]);
@@ -8,7 +8,7 @@ const AddEmployeeModal = (props) => {
 
     useEffect(() => {
         // Fetch designations
-        getLoginApi()
+        getDistinctRoleApi()
             .then(data => {
                 setDesignations(data.map(item => ({ value: item.role, label: item.role })));
             })

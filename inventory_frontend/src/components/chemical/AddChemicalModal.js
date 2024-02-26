@@ -11,7 +11,7 @@ const AddChemicalModal = (props) => {
     useEffect(() => {
         getMasterApi()
             .then(data => {
-                setItemCodes(data.map(item => ({ value: item.item_code, label: item.item_name })));
+                setItemCodes(data.map(item => ({ value: item.item_code, label: item.item_code })));
             })
             .catch(error => console.error('Error fetching master data:', error));
 
@@ -41,15 +41,12 @@ const AddChemicalModal = (props) => {
         const formData = new FormData(e.target);
     
         const masterData = {
-            entry_no: formData.get('entryNo'),
+            master_type: formData.get('masterType'),
             item_code: formData.get('itemCode'),
             item_name: formData.get('itemName'),
             supplier: formData.get('supplier'),
-            master_type: formData.get('masterType'),
-            quantity: formData.get('quantity'),
             units: formData.get('units'),
             price: formData.get('price'),
-            project_code: formData.get('projectCode'),
             remarks: formData.get('remarks'),
         };
     
@@ -59,8 +56,10 @@ const AddChemicalModal = (props) => {
                 window.alert('Data added successfully');
                 props.setUpdated(true);
                 props.onHide(); // Close the modal only if data is successfully added
+                setItemCodeInput('')
             })
             .catch((error) => {
+                console.log("MAster Data: ", masterData)
                 console.error('Failed to Add Master:', error);
                 alert('Failed to Add Master: ' + error.message);
             });
@@ -68,7 +67,7 @@ const AddChemicalModal = (props) => {
 
     return (
         <div className="container">
-            <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+            <Modal {...props} size="md" aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">Add Inventory Form</Modal.Title>
                 </Modal.Header>
@@ -76,9 +75,14 @@ const AddChemicalModal = (props) => {
                     <Form onSubmit={handleSubmit}>
                         <Row>
                             <Col>
-                                <Form.Group controlId="entryNo">
-                                    <Form.Label>Entry No.</Form.Label>
-                                    <Form.Control type="text" name="entryNo" required placeholder="" style={{ border: '1px solid black' }} />
+                                <Form.Group controlId="masterType">
+                                    <Form.Label>Master Type</Form.Label>
+                                    {/* Provide options for Chemical and Inventory */}
+                                    <Form.Control as="select" name="masterType" required style={{ border: '1px solid black' }}>
+                                        <option value="">Select Master Type</option>
+                                        <option value="Chemical">Chemical</option>
+                                        <option value="Labware">Labware</option>
+                                    </Form.Control>
                                 </Form.Group>
                             </Col>
                             <Col>
@@ -100,6 +104,10 @@ const AddChemicalModal = (props) => {
                                     </select>
                                 </Form.Group>
                             </Col>
+                            </Row>
+                            <p></p>
+
+                            <Row>
                             <Col>
                                 <Form.Group controlId="itemName">
                                     <Form.Label>Item name</Form.Label>
@@ -116,26 +124,9 @@ const AddChemicalModal = (props) => {
                         <p></p>
                         <Row>
                             <Col>
-                                <Form.Group controlId="masterType">
-                                    <Form.Label>Master Type</Form.Label>
-                                    {/* Provide options for Chemical and Inventory */}
-                                    <Form.Control as="select" name="masterType" required style={{ border: '1px solid black' }}>
-                                        <option value="">Select Master Type</option>
-                                        <option value="Chemical">Chemical</option>
-                                        <option value="Inventory">Inventory</option>
-                                    </Form.Control>
-                                </Form.Group>
-                            </Col>
-                            <Col>
-                                <Form.Group controlId="quantity">
-                                    <Form.Label>Quantity</Form.Label>
-                                    <Form.Control type="text" name="quantity" required placeholder="Enter Numeric value" style={{ border: '1px solid black' }} />
-                                </Form.Group>
-                            </Col>
-                            <Col>
                                 <Form.Group controlId="units">
                                     <Form.Label>Units</Form.Label>
-                                    <Form.Control type="text" name="units" required placeholder="Enter Numeric value" style={{ border: '1px solid black' }} />
+                                    <Form.Control type="text" name="units" required placeholder="" style={{ border: '1px solid black' }} />
                                 </Form.Group>
                             </Col>
                             <Col>
@@ -147,16 +138,6 @@ const AddChemicalModal = (props) => {
                         </Row>
                         <p></p>
                         <Row>
-                            <Col>
-                                <Form.Group controlId="projectCode">
-                                    <Form.Label>Project Code</Form.Label>
-                                    <Form.Control as="select" name="projectCode" required style={{ border: '1px solid black' }}>
-                                        {projectCodes.map((projectCode, index) => (
-                                            <option key={index} value={projectCode.value}>{projectCode.label}</option>
-                                        ))}
-                                    </Form.Control>
-                                </Form.Group>
-                            </Col>
                             <Col>
                                 <Form.Group controlId="remarks">
                                     <Form.Label>Remarks</Form.Label>

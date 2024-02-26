@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Appinfo, Master, Project_Master, Inventory_Tran, Request_CI, IssuesNote, LoginCre, EmpDet
 from django.contrib.auth.models import User
 from rest_framework.authtoken.views import Token
-from .models import ItemReceive, ItemIssue, ItemReturn
+from .models import ItemReceive, ItemIssue, ItemReturn, TempReceiveItem, TempIssueItem
 
 class AppinfoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -67,6 +67,9 @@ class EmpSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmpDet
         fields = ['emp_id', 'emp_name', 'designation', 'project_code']
+        extra_kwargs = {
+            'project_code': {'required': False}
+        }
 
 
 class ItemReceiveSerializer(serializers.ModelSerializer):
@@ -82,4 +85,32 @@ class ItemIssueSerializer(serializers.ModelSerializer):
 class ItemReturnSerializer(serializers.ModelSerializer):
     class Meta:
         model = ItemReturn
+        fields = '__all__'
+
+class RoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LoginCre
+        fields = ['role']  
+
+class MasterSerializer1(serializers.ModelSerializer):
+    class Meta:
+        model = Master
+        fields = ['c_id', 'master_type', 'item_code', 'item_name', 'location_code', 'units', 'price', 'make', 'instruction_specification', 'min_req_stock', 'quantity_received', 'quantity_issued', 'quantity', 'remarks']
+
+
+
+class MasterSerializerCreate(serializers.ModelSerializer):
+    class Meta:
+        model = Master
+        fields = ['c_id', 'master_type', 'item_code', 'item_name', 'location_code', 'units', 'price', 'make', 'instruction_specification', 'min_req_stock', 'remarks']
+
+
+class TempReceiveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TempReceiveItem
+        fields = '__all__'
+
+class TempIssueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TempIssueItem
         fields = '__all__'

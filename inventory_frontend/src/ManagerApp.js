@@ -10,6 +10,7 @@ import Notification from './components/manager/Notification';
 import ViewEntry from './components/manager/viewEntry';
 import Dasboard from './components/manager/Dashboard';
 import Project from './components/admin/projects/Project';
+import MasterFilter from './components/manager/dashboard/MasterFilter';
 
 
 function ManagerApp() {
@@ -23,6 +24,7 @@ function ManagerApp() {
          <Route path="/manager/appinfo" element={<AppinfoManager/>} />
 
          <Route path="/manager/master" element={<ChemicalManager/>} />
+         <Route path="/manager/master_filter" element={<MasterFilter/>} />
 
          <Route path="/manager/inventory" element={<InventoryManager/>} />
 

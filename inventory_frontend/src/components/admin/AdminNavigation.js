@@ -43,12 +43,6 @@ const AdminNavigation = () => {
           </CDBSidebarHeader>
           <CDBSidebarContent>
             <CDBSidebarMenu>
-              <NavLink exact to="/" activeClassName="activeClicked">
-                <CDBSidebarMenuItem className="black-text">
-                  <FcHome style={{ marginRight: '10px', fontSize: '24px' }} />
-                  Home
-                </CDBSidebarMenuItem>
-              </NavLink>
               <NavLink exact to="/admin/project_manage" activeClassName="activeClicked">
               <CDBSidebarMenuItem className="black-text">
                   <FcBarChart style={{ marginRight: '10px', fontSize: '24px' }} />
@@ -58,7 +52,7 @@ const AdminNavigation = () => {
               <NavLink exact to="/register" activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="black-text">
                   <FcBusinessman style={{ marginRight: '10px', fontSize: '24px' }} />
-                  New User
+                  Login Accounts
                 </CDBSidebarMenuItem>
               </NavLink>
 
@@ -72,7 +66,7 @@ const AdminNavigation = () => {
               <NavLink exact to="/employee_manage" activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="black-text">
                   <FcContacts style={{ marginRight: '10px', fontSize: '24px' }} />
-                  Employee Details
+                  Employee Master
                 </CDBSidebarMenuItem>
               </NavLink>
 
