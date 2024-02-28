@@ -679,10 +679,7 @@ def add_itemreceive1(request):
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@api_view(['POST'])
 def add_itemreceive(request):
-    print("Request data:", request.data)
-
     try:
         with transaction.atomic():
             # Fetch data from TempReceiveItem where deleted = 0
@@ -717,6 +714,7 @@ def add_itemreceive(request):
             # Update deleted field to 1 for the processed entries
             temp_items.update(deleted=1)
 
+        # Assuming you want to return a JSON response
         return Response("Item received and processed successfully", status=status.HTTP_201_CREATED)
 
     except Exception as e:
@@ -726,7 +724,7 @@ def add_itemreceive(request):
 
 @api_view(['GET'])
 def view_itemreceive(request):
-    print("Request data:", request.data)
+    #print("Request data:", request.data)
     # Perform a join between EmpDet, Project_Master, and LoginCre
     rec = ItemReceive.objects.select_related('c_id').all()
     
@@ -809,9 +807,8 @@ def add_itemissue1(request):
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
-@api_view(['POST'])
-def add_itemissue(request):
-    print("Request data:", request.data)
+
+def add_itemissue():
 
     try:
         # Fetch data from TempIssueItem where deleted = 0
@@ -1256,9 +1253,9 @@ def add_temp_issue_item(request):
 
 @api_view(['GET'])
 def view_temp_receive(request):
-    print("Request data:", request.data)
+   # print("Request data:", request.data)
     # Perform a join between EmpDet, Project_Master, and LoginCre
-    rec = TempReceiveItem.objects.select_related('c_id').all()
+    rec = TempReceiveItem.objects.select_related('c_id').filter(deleted=0)
     
     # Serialize the queryset
     serialized_data = []
@@ -1266,6 +1263,7 @@ def view_temp_receive(request):
         formatted_receipt_date = receive.receipt_date.strftime('%d-%m-%Y %I:%M %p')
 
         serialized_receive = {
+            'bill_no': receive.bill_no,
             'item_code': receive.c_id.item_code,
             'item_name': receive.c_id.item_name,
             'units': receive.c_id.units,
@@ -1273,12 +1271,13 @@ def view_temp_receive(request):
             'quantity_received': receive.quantity_received,
             'po_number': receive.po_number,
             'batch_number': receive.batch_number,
-            'remarks': receive.remarks
+            'remarks': receive.remarks,
+            'deleted': receive.deleted
         }
         serialized_data.append(serialized_receive)
     
     # Print for debugging
-    print("Serialized data:", serialized_data)
+    #print("Serialized data:", serialized_data)
 
     return Response(serialized_data)
 
@@ -1287,7 +1286,7 @@ def view_temp_receive(request):
 def view_temp_issue(request):
     print("Request data:", request.data)
     # Perform a join between EmpDet, Project_Master, and LoginCre
-    rec = TempIssueItem.objects.select_related('c_id', 'project_code').all()
+    rec = TempIssueItem.objects.select_related('c_id', 'project_code').filter(deleted=0)
     
     # Serialize the queryset
     serialized_data = []
@@ -1295,6 +1294,7 @@ def view_temp_issue(request):
         formatted_issue_date = issue.issue_date.strftime('%d-%m-%Y %I:%M %p')
 
         serialized_employee = {
+            'bill_no': issue.bill_no,
             'entry_no': issue.entry_no,
             'item_code': issue.c_id.item_code,
             'item_name': issue.c_id.item_name,
@@ -1306,7 +1306,8 @@ def view_temp_issue(request):
             'project_name': issue.project_code.project_name,
             'researcher_name': issue.researcher_name,
             'batch_number': issue.batch_number,
-            'remarks': issue.remarks
+            'remarks': issue.remarks,
+            'deleted': issue.deleted
         }
         serialized_data.append(serialized_employee)
     
@@ -1314,3 +1315,88 @@ def view_temp_issue(request):
     print("Serialized data:", serialized_data)
 
     return Response(serialized_data)
+
+@api_view(['POST'])
+def transfer_dataReceive(request):
+    if request.method == 'POST':
+        # Retrieve data from TempReceiveItem
+        temp_items = TempReceiveItem.objects.filter(deleted=0)
+
+        # Iterate over TempReceiveItem instances
+        for temp_item in temp_items:
+            # Extract relevant data
+            c_id_value = temp_item.c_id_id  # Access the ID of the related Master instance
+            quantity_received = temp_item.quantity_received
+
+            # Update the Master instance with the quantity received
+            Master.objects.filter(c_id=c_id_value).update(quantity=F('quantity') + quantity_received)
+            Master.objects.filter(c_id=c_id_value).update(
+                quantity_received=quantity_received
+            )
+
+            # Save the serialized data to ItemReceive
+            serializer = ItemReceiveSerializer(data={
+                'c_id': c_id_value,
+                'quantity_received': quantity_received,
+                'bill_no': temp_item.bill_no,
+                'receipt_date': temp_item.receipt_date,
+                'po_number': temp_item.po_number,
+                'batch_number': temp_item.batch_number,
+                'remarks': temp_item.remarks
+            })
+            if serializer.is_valid():
+                serializer.save()
+
+        # Update deleted field to 1 for the processed entries
+        temp_items.update(deleted=1)
+
+        return Response({"message": "Data transferred successfully."}, status=201)
+    return Response({"error": "Invalid request method."}, status=400)
+
+
+@api_view(['POST'])
+def transfer_dataIssue(request):
+    if request.method == 'POST':
+        # Retrieve data from TempIssueItem
+        temp_items = TempIssueItem.objects.filter(deleted=0)
+
+        # Iterate over TempIssueItem instances
+        for temp_item in temp_items:
+            # Extract relevant data
+            c_id_value = temp_item.c_id_id
+            quantity_issued = temp_item.quantity_issued
+            project_code_value = temp_item.project_code
+
+            # Update the quantity field based on the condition
+            Master.objects.filter(c_id=c_id_value).update(
+                quantity=Case(
+                    When(
+                        quantity__gt=0,
+                        then=F('quantity') - Value(quantity_issued)
+                    ),
+                    default=Value(0),  # If quantity is not greater than 0, set it to 0
+                    output_field=IntegerField()  # Ensure the output field matches the data type of quantity
+                ),
+                quantity_issued=quantity_issued
+            )
+
+            # Save the serialized data to ItemIssue
+            serializer = ItemIssueSerializer(data={
+                'bill_no': temp_item.bill_no,
+                'c_id': c_id_value,
+                'issue_date': temp_item.issue_date,
+                'quantity_issued': quantity_issued,
+                'issued_to': temp_item.issued_to,
+                'project_code': temp_item.project_code,
+                'researcher_name': temp_item.researcher_name,
+                'batch_number': temp_item.batch_number,
+                'remarks': temp_item.remarks
+            })
+            if serializer.is_valid():
+                serializer.save()
+
+        # Update deleted field to 1 for the processed entries
+        temp_items.update(deleted=1)
+
+        return Response({"message": "Data transferred successfully."}, status=201)
+    return Response({"error": "Invalid request method."}, status=400)

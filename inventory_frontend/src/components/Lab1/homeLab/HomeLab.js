@@ -9,7 +9,7 @@ import { getStockLevelApi } from '../../../services/AppinfoService';
 
 const HomeLab = () => {
   // State to track which button is clicked
-  const [selectedButton, setSelectedButton] = useState('ChemicalList');
+  const [selectedButton, setSelectedButton] = useState('');
   const [stockLevel, setStockLevel] = useState('')
 
   // Function to handle button click
@@ -36,13 +36,13 @@ const HomeLab = () => {
   return (
       <div>
           <div style={{ background: "#C5EA31", height: '70px' }} className="header">
-              <h2 style={{ textAlign: 'center', paddingTop: '15px', marginRight: '20px' }}>
+              <h2 style={{ textAlign: 'center', paddingTop: '15px' }}>
                 INVENTORY {' '} <label style={{ float: 'right', fontSize: '20px', fontWeight: 'bold', background: backgroundColor }}>{ stockLevel }</label>
               </h2>
           </div>
           <div className="header-menubar" style={{ textAlign: 'center' }}>
               <p id="manage"></p>
-              <ButtonToolbar>
+              <ButtonToolbar style={{textAlign: 'center', paddingLeft: '250px' }}>
                   <Button variant="primary" onClick={() => handleButtonClick('LabwareList')} style={{ backgroundColor: selectedButton === 'LabwareList' ? '#D3D3D3' : '#C5EA31', 
                   width: '150px', margin: '10px', borderRadius: '20px', color: "black", fontWeight: "bold" }}>
                       Labware Inventory

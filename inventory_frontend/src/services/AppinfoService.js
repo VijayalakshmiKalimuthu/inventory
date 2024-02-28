@@ -461,57 +461,6 @@ export function addEmpRegApi(emp) {
   .then(response => response.data);
 }
 
-//---------------------------ITEM RECEIVE---------------------------//
-
-
-export function getItemReceiveApi() {
-  return axios.get('http://127.0.0.1:8000/itemreceive')
-    .then(response => response.data)
-}
-
-
-export function addItemReceiveApi(receive) {
-  const currentDate = new Date().toISOString();
-  return axios.post('http://127.0.0.1:8000/add_temp_receive_item', {
-    entry_no: null,
-    bill: receive.bil,
-    c_id: receive.c_id,
-    receipt_date: currentDate,
-    quantity_received: receive.quantity_received,
-    po_number: receive.po_number,
-    batch_number: receive.batch_number,
-    remarks: receive.remarks
-  })
-  .then(response => response.data);
-}
-
-
-
-//---------------------------ITEM ISSUE---------------------------//
-
-export function getItemIssueApi() {
-  return axios.get('http://127.0.0.1:8000/itemissue')
-    .then(response => response.data)
-}
-
-
-export function addItemIssueApi(receive) {
-  const currentDate = new Date().toISOString();
-
-  return axios.post('http://127.0.0.1:8000/add_temp_issue_item', {
-    entry_no: null,
-    bill: receive.bil,
-    c_id: receive.c_id,
-    issue_date: currentDate,
-    quantity_issued: receive.quantity_issued,
-    issued_to: receive.issued_to,
-    project_code: receive.project_code,
-    researcher_name: receive.researcher_name,
-    batch_number: receive.batch_number,
-    remarks: receive.remarks
-  })
-  .then(response => response.data);
-}
 
 
 //---------------------------Get Employee name-----------------//
@@ -670,18 +619,101 @@ export function getLabwareDescApi() {
 //----------------------Temporary table----------------------------------//
 
 
-export function addTempToReceiveApi(data) {
-  return axios.post('http://127.0.0.1:8000/add_itemreceive', data)
+export function addTempToReceiveApi() {
+  return axios.get('http://127.0.0.1:8000/add_itemreceive')
     .then(response => response.data)
     .catch(error => {
       throw error; // Rethrow the error to handle it in the caller function
     });
 }
 
-export function addTempToIssueApi(data) {
-  return axios.post('http://127.0.0.1:8000/add_itemissue', data)
+export function addTempToIssueApi() {
+  return axios.post('http://127.0.0.1:8000/add_itemissue')
     .then(response => response.data)
     .catch(error => {
       throw error; // Rethrow the error to handle it in the caller function
     });
 }
+
+export function getTempReceiveApi() {
+  return axios.get('http://127.0.0.1:8000/temp_receive')
+    .then(response => response.data)
+}
+
+
+export function getTempIssueApi() {
+  return axios.get('http://127.0.0.1:8000/temp_issue')
+    .then(response => response.data)
+}
+
+
+export function addItemReceiveApi(data) {
+  return axios.post('http://127.0.0.1:8000/add_itemreceive1', data)
+    .then(response => response.data)
+    .catch(error => {
+      throw error; // Rethrow the error to handle it in the caller function
+    });
+}
+
+export function addItemIssueApi(data) {
+  return axios.post('http://127.0.0.1:8000/add_itemissue1', data)
+    .then(response => response.data)
+    .catch(error => {
+      throw error; // Rethrow the error to handle it in the caller function
+    });
+}
+
+
+//---------------------------ITEM RECEIVE---------------------------//
+
+
+export function getItemReceiveApi() {
+  return axios.get('http://127.0.0.1:8000/itemreceive')
+    .then(response => response.data)
+}
+
+
+export function addTempItemReceiveApi(receive) {
+  const currentDate = new Date().toISOString();
+  return axios.post('http://127.0.0.1:8000/add_temp_receive_item', {
+    entry_no: null,
+    bill_no: receive.bill_no,
+    c_id: receive.c_id,
+    receipt_date: currentDate,
+    quantity_received: receive.quantity_received,
+    po_number: receive.po_number,
+    batch_number: receive.batch_number,
+    remarks: receive.remarks
+  })
+  .then(response => response.data);
+}
+
+
+
+//---------------------------ITEM ISSUE---------------------------//
+
+export function getItemIssueApi() {
+  return axios.get('http://127.0.0.1:8000/itemissue')
+    .then(response => response.data)
+}
+
+
+export function addTempItemIssueApi(receive) {
+  const currentDate = new Date().toISOString();
+
+  return axios.post('http://127.0.0.1:8000/add_temp_issue_item', {
+    entry_no: null,
+    bill_no: receive.bill_no,
+    c_id: receive.c_id,
+    issue_date: currentDate,
+    quantity_issued: receive.quantity_issued,
+    issued_to: receive.issued_to,
+    project_code: receive.project_code,
+    researcher_name: receive.researcher_name,
+    batch_number: receive.batch_number,
+    remarks: receive.remarks
+  })
+  .then(response => response.data);
+}
+
+

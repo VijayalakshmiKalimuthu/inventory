@@ -45,8 +45,12 @@ urlpatterns = [
     path('update_emp/<int:pk>', views.update_emp, name='update_emp'),
     path('inactive_emp/<int:pk>', views.inactive_emp, name='inactive_emp'),
 
+    re_path(r'^add_itemissue1/?$', views.add_itemissue1, name='add_itemissue'),
+
     re_path(r'^add_itemissue/?$', views.add_itemissue, name='add_itemissue'),
     path('itemissue/', views.view_itemissue, name='view_itemissue'),
+
+    re_path(r'^add_itemreceive1/?$', views.add_itemreceive1, name='add_itemreceive'),
 
     re_path(r'^add_itemreceive/?$', views.add_itemreceive, name='add_itemreceive'),
     path('itemreceive/', views.view_itemreceive, name='view_itemreceive'),
@@ -87,6 +91,10 @@ urlpatterns = [
 
     re_path(r'^add_temp_issue_item/?$', views.add_temp_issue_item, name='add_temp_issue_item'),
     path('temp_issue/', views.view_temp_issue, name='view_temp_issue'),
+
+    path('transfer/receive/', views.transfer_dataReceive, name='transfer_data'),
+    path('transfer/issue/', views.transfer_dataIssue, name='transfer_dataissue'),
+    
     
     
  ]

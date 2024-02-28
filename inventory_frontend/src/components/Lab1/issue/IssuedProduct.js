@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {Modal, Col, Row, Form, Button} from 'react-bootstrap';
 // import {FormControl, FormGroup, FormLabel} from 'react-bootstrap';
-import { addItemIssueApi, getMasterApi, getProjectApi, getResEmployeeApi } from '../../../services/AppinfoService';
+import { addItemIssueApi, getMasterApi, getProjectApi, getResEmployeeApi, addTempItemIssueApi, addTempToIssueApi } from '../../../services/AppinfoService';
 import '../../inventory/formBorder.css';
 import Select from 'react-select';
+import TempIssueTable from './TempIssueTable';
 
 const IssuedProduct = () => {
+    const [message, setMessage] = useState('');
     const [itemsCodes, setItemsCodes] = useState([]);
     const [itemsNames, setItemsNames] = useState([]);
     const [selectedItemCode, setSelectedItemCode] = useState(null);
@@ -77,7 +79,7 @@ const IssuedProduct = () => {
 
     console.log("Researched Names:", resNames); // Log state to verify
 
-    const handleSubmit = () => {
+    const handleAdd = () => {
         const formData = new FormData(formRef.current); 
         const newErrorMessages = { ...errorMessages };
 
@@ -97,7 +99,7 @@ const IssuedProduct = () => {
         }
     
         const issueData = {
-            bill: formData.get('bill'),
+            bill_no: formData.get('bill'),
             c_id: selectedItemCode.value,
             quantity_issued: formData.get('quantityIssued'),
             issued_to: formData.get('issuedTo'),
@@ -109,7 +111,7 @@ const IssuedProduct = () => {
 
         };
     
-        addItemIssueApi(issueData)
+        addTempItemIssueApi(issueData)
         .then((result) => {
             window.alert("Issue added successfully");
             setSelectedItem(null); // Clear selected item
@@ -120,18 +122,39 @@ const IssuedProduct = () => {
             });
     };
 
+    const handleTransferData = async () => {
+        try {
+          const response = await fetch('http://localhost:8000/transfer/issue/', {
+            method: 'POST',
+          });
+    
+          const data = await response.json();
+          setMessage(data.message);
+          alert("Success")
+        } catch (error) {
+          console.error('Error:', error);
+          setMessage('An error occurred. Please try again.');
+          alert('An error occurred. Please try again.')
+        }
+      };
+
+
     return (
         <div>
             <div>
                 <h1 style={{ textAlign: 'center' }}>
-                    Add Issue
+                    Add Issue  {' '} 
+                    <Button variant="primary" onClick={handleAdd} style={{ width: '70px', float: 'right', marginLeft: "8px" }}>
+                            Add
+                    </Button>
+                    <Button onClick={handleTransferData} style={{float: 'right'}}>Submit</Button>
                 </h1>
             </div>
             <p></p>
             <div>
                     <Row>
                         <Col sm={12}>
-                        <Form onSubmit={handleSubmit} ref={formRef}>
+                        <Form onSubmit={handleAdd} ref={formRef}>
                             <Row>
                                 <Col>
                                     <Form.Group controlId="masterType">
@@ -141,7 +164,6 @@ const IssuedProduct = () => {
                                             className="form-control"
                                             style={{
                                                 borderColor: 'black',
-                                                width: 210,
                                                 display: 'inline-block', // Add this line
                                                 marginRight: '30px' // Make sure marginRight is still specified
                                             }}
@@ -155,11 +177,10 @@ const IssuedProduct = () => {
                                 </Col>
                                 <Col>
                                     <Form.Group controlId="bill">
-                                        <Form.Label style={{ marginRight: '8px' }}>Bill No</Form.Label>
+                                        <Form.Label style={{ marginRight: '8px' }}>Issued ID.</Form.Label>
                                         <Form.Control type="type" name="bill" required placeholder="" className="custom-border"
                                             style={{
                                                 borderColor: 'black',
-                                                width: 210,
                                                 display: 'inline-block', // Add this line
                                                 marginRight: '30px' // Make sure marginRight is still specified
                                             }}>
@@ -167,11 +188,6 @@ const IssuedProduct = () => {
                                     </Form.Group>
                                     <span style={{ color: 'red', float: 'center' }}>{errorMessages.bill}</span>
                                 </Col>
-                                <Col></Col>
-                            </Row>
-                            <p></p>
-
-                            <Row>
                                 <Col>
                                     <Form.Group controlId="itemCode">
                                         <Form.Label>Item Code</Form.Label>
@@ -196,6 +212,10 @@ const IssuedProduct = () => {
                                         />
                                     </Form.Group>
                                 </Col>
+                            </Row>
+                            <p></p>
+
+                            <Row>
                                 <Col>
                                     <Form.Group controlId="units">
                                         <Form.Label>Units</Form.Label>
@@ -203,10 +223,6 @@ const IssuedProduct = () => {
                                          style={{ borderColor: 'black' }} />
                                     </Form.Group>
                                 </Col>
-                            </Row>
-                            <p></p>
-
-                            <Row>
                                 <Col>
                                     <Form.Group controlId="quantityIssued">
                                         <Form.Label>Quantity Issued</Form.Label>
@@ -266,14 +282,12 @@ const IssuedProduct = () => {
                                     <span style={{ color: 'red', float: 'right' }}>{errorMessages.remarks}</span>
                                     </Col>
                                 </Row>
-                                <div style={{ paddingTop: '20px', paddingLeft: '950px' }}>
-                                    <Button variant="primary" onClick={handleSubmit} style={{ width: '70px'}}>
-                                        Add
-                                    </Button>
-                                </div>
                             </Form>
                         </Col>
                     </Row>
+            </div>
+            <div style={{paddingTop: '10px' }}>
+                <TempIssueTable />
             </div>
         </div>
     );

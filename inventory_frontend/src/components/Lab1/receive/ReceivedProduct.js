@@ -1,10 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Col, Row, Form, Button } from 'react-bootstrap';
-import { addItemReceiveApi, getMasterApi, getMasterChemicalApi, getMasterLabwareApi } from '../../../services/AppinfoService';
+import { addTempToReceiveApi, getMasterApi, getMasterChemicalApi, getMasterLabwareApi, addTempItemReceiveApi } from '../../../services/AppinfoService';
 import '../../inventory/formBorder.css';
 import Select from 'react-select';
+import TempReceiveTable from './TempReceiveTable';
+import axios from 'axios';
 
 const ReceivedProduct = () => {
+    const [message, setMessage] = useState('');
     const [itemsCodes, setItemsCodes] = useState([]);
     const [itemsNames, setItemsNames] = useState([]);
     const [selectedItemCode, setSelectedItemCode] = useState(null);
@@ -52,7 +55,7 @@ const ReceivedProduct = () => {
         setSelectedItemDetails(selectedItem.details);
     };
 
-    const handleSubmit = () => {
+    const handleAdd = () => {
         const formData = new FormData(formRef.current); // Access form data using ref
         const newErrorMessages = { ...errorMessages };
 
@@ -72,7 +75,7 @@ const ReceivedProduct = () => {
         }
         
         const receiveData = {
-            bill: formData.get('bill'),
+            bill_no: formData.get('bill'),
             c_id: selectedItemCode.value,
             quantity_received: formData.get('quantityReceived'),
             po_number: formData.get('poNumber'),
@@ -80,7 +83,7 @@ const ReceivedProduct = () => {
             remarks: formData.get('remarks'),
         };
 
-        addItemReceiveApi(receiveData)
+        addTempItemReceiveApi(receiveData)
             .then((result) => {
                 window.alert("Received Data added successfully");
                 setSelectedItemCode(null); // Clear selected item
@@ -100,18 +103,39 @@ const ReceivedProduct = () => {
             });
     };
 
+    const handleTransferData = async () => {
+        try {
+          const response = await fetch('http://localhost:8000/transfer/receive/', {
+            method: 'POST',
+          });
+    
+          const data = await response.json();
+          setMessage(data.message);
+          alert("Success")
+        } catch (error) {
+          console.error('Error:', error);
+          setMessage('An error occurred. Please try again.');
+          alert('An error occurred. Please try again.')
+        }
+      };
+
+
     return (
         <div>
             <div>
                 <h1 style={{ textAlign: 'center' }}>
-                    Add Receive
+                    Add Receive  {' '} 
+                    <Button variant="primary" onClick={handleAdd} style={{ width: '70px', float: 'right', marginLeft: "8px" }}>
+                            Add
+                    </Button>
+                    <Button onClick={handleTransferData} style={{float: 'right'}}>Submit</Button>
                 </h1>
             </div>
             <p></p>
             <div >
-                <Row style={{ paddingLeft: '80px'}}>
+                <Row style={{ paddingLeft: '30px'}}>
                     <Col sm={12}>
-                        <Form onSubmit={handleSubmit} ref={formRef}>
+                        <Form onSubmit={handleAdd} ref={formRef}>
                             <Row>                            
                                 <Col>
                                     <Form.Group controlId="masterType">
@@ -211,15 +235,11 @@ const ReceivedProduct = () => {
                                 </Col>
                             </Row>
                             <p></p>
-                        </Form>                    
-                        <div style={{ paddingTop: '10px', paddingLeft: '850px' }}>
-                            <Button variant="primary" onClick={handleSubmit} style={{ width: '70px'}}>
-                                    Add
-                            </Button>
-                        </div>
+                        </Form>
                     </Col>
                 </Row>
             </div>
+            <TempReceiveTable />
         </div>
         
     )
